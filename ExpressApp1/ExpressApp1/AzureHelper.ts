@@ -120,7 +120,7 @@ export function retrieveEntity(table: Table, partitionKey: string, rowKey: strin
  * TableQuery 类                                                                                                                      
  * 它代表了某个表上的一个查询                                                                                                                     
  */                                                                                                                                  
-//将这个方法queryEntityRowKey暴露出去                                                                                                         
+//它代表了某个表上的一个查询                                                                                               
 export function queryEntityRowKey(table: Table, key: string): Promise<any> {                                                         
     var query = new azure.TableQuery()                                                                                               
     .top(1)                                                                                                                          
