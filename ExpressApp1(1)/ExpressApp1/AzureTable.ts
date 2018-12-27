@@ -170,7 +170,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
                     throw error;
                 });
     }
-
+    //删除操作
     public deleteTable() : Promise<boolean> {
         return this.ensureTable()
         .then((created) => {
@@ -183,6 +183,11 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
      * the number of concurrent calls tha may occur, overwhelming the azure table may lead to failures. It is recommended to use some
      * form of retry logic.
      * */
+    /**
+    *BatchInsertEntity必须具有相同的分区键，并且限制为100个实体。在并行化期间，请确保限制
+    *可能发生的并发调用数量，压倒azure表可能导致失败。建议使用一些
+    *重试逻辑的形式。
+    **/
     //批量插入
     public batchInsertEntity(models :Model[], ignoreUndefined: boolean = false) : Promise<void> {
         let tableBatch = new TableBatch();
@@ -198,6 +203,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
     }
 
     private queryTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, array: Model[], resolve, reject) {
+        //查询操作
         this.service.queryEntities(this.setting.tableName, query, currentToken, (error, result, response) => {
             if (error) {
                 reject(error);
@@ -212,12 +218,12 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
             }
         });
     }
-
+    //查询操作
     public query(tableQuery: TableQuery, currentToken: TableService.TableContinuationToken, callback: ErrorOrResult<TableService.QueryEntitiesResult<Model>>)
     {
         return this.service.queryEntities(this.setting.tableName, tableQuery, currentToken, callback);
     }
-
+    //查询实体
     public queryEntities(query: TableQuery) {
         return new Promise<Model[]>((resolve, reject) => {
             this.queryTillEnd(query, null, [], resolve, reject);
@@ -228,11 +234,18 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
 interface TableServiceAsync extends TableService {
 	//检测表是否存在
     createTableIfNotExistsAsync(table: string): Promise<TableService.TableResult>;
+    //表如果存在执行删除
     deleteTableIfExistsAsync(table: string): Promise<boolean>;
+    //获取刚刚插入的实体
     retrieveEntityAsync<T>(table: string, partitionKey: string, rowKey: string, options: TableService.TableEntityRequestOptions): Promise<T>;
+    //更新操作
     replaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<TableService.EntityMetadata>;
+    //插入操作
     insertOrReplaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<TableService.EntityMetadata>;
+    //删除操作
     deleteEntityAsync<T>(table: string, entityDescriptor: T): Promise<void>;
-    executeBatchAsync<T>(table:string, tableBatch: TableBatch) : Promise<void>;
-    insertOrMergeAsync<T>(table:string, entityDescriptor: T) : Promise<void>;
+    //执行批量处理
+    executeBatchAsync<T>(table: string, tableBatch: TableBatch): Promise<void>;
+    //插入合并操作
+    insertOrMergeAsync<T>(table: string, entityDescriptor: T): Promise<void>;
 }
