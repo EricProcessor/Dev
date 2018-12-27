@@ -2,7 +2,7 @@ import { TableUtilities } from "azure-storage";
 
 export type EntityValueTypes = string | boolean | number | Date;
 export type EntityValues = { [key: string]: EntityValueTypes };
-//´´½¨ÊµÌåµÄ·½·¨
+//åˆ›å»ºå®žä½“çš„æ–¹æ³•
 var entGen = TableUtilities.entityGenerator;
 
 interface IEntityProperty<T> {
@@ -43,7 +43,7 @@ export class EntityConverter {
      * @param values Can be undefined, in this case only the value for the partiiton key and rowkey are used.
      * @param ignoreUndefined Ignores undefined values. Useful in certain azure merge cases.
      */
-    //½«¸ø¶¨¶ÔÏó×ª»»ÎªAzureÊµÌå¡£
+    //å°†ç»™å®šå¯¹è±¡è½¬æ¢ä¸ºAzureå®žä½“ã€‚
     public static convertToEntity(partitionKey: string, rowKey: string, values: { [key: string]: any }, ignoreUndefined: boolean) {
         const entity = Object.getOwnPropertyNames(values).reduce((o, k) => {
             let val = EntityConverter.convertToEntityValue(values[k]);
