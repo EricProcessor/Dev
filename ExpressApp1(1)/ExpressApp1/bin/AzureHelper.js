@@ -3,8 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const environment_1 = require("./core/environment");
 const StorageConfig_1 = require("./StorageConfig");
 const Config_1 = require("./Config");
+//引用azure-storage模块                                                                                                                  
 const azure = require("azure-storage");
-const development_mode = environment_1.Environment.isLocalDev();
+//枚举---定义变量                                                                                                                          
 var Table;
 (function (Table) {
     Table[Table["Users"] = 0] = "Users";
@@ -13,21 +14,34 @@ var Table;
     Table[Table["SigninTelemetry"] = 3] = "SigninTelemetry";
     Table[Table["Receipts"] = 4] = "Receipts";
 })(Table = exports.Table || (exports.Table = {}));
+/*
+ * 引用environment里定义方法
+ * Production----生产环境----0
+ * LocalDev----本地开发环境----3
+ * Staging----预发布环境----1
+ */
+const development_mode = environment_1.Environment.isLocalDev();
 const isProduction = environment_1.Environment.isProduction();
 const isStaging = environment_1.Environment.isStaging();
+/*
+ * 引用StorageConfig方法（根据环境类型切换不同环境的存储空间设置）
+ */
 const userStorageTable = StorageConfig_1.StorageConfig.getNewUserTableSettings();
 const telemetryTable = StorageConfig_1.StorageConfig.getTelemetryTableSettings();
 const receiptsTable = StorageConfig_1.StorageConfig.getReceiptsTableSettings();
 const userTableName = userStorageTable.tableName;
 const signinTelemetryTableName = telemetryTable.tableName;
 const receiptsTableName = receiptsTable.tableName;
-// We haven't ported allowList and userGuid yet.
+// We haven't ported allowList and userGuid yet.                                                                                     
 const allowListTableName = isProduction ? "allowlist" : isStaging ? "stagingallowlist" : "devallowlist";
 const userGuidTableName = isProduction ? "userguid" : isStaging ? "staginguserguid" : "devuserguid";
 let tableService;
 let telemetryTableService;
 let receiptsTableService;
-// Hacking this together over here. This is moving to the AzureTable stuff.
+// Hacking this together over here. This is moving to the AzureTable stuff.                                                          
+/*
+ *Config.useLocalEmulator返回值为false ---代表运行本地测试开发环境
+ **/
 if (Config_1.Config.useLocalEmulator) {
     console.log('Using local emulator');
     tableService = azure.createTableService(userStorageTable.connectionString);
@@ -35,11 +49,15 @@ if (Config_1.Config.useLocalEmulator) {
     receiptsTableService = azure.createTableService(receiptsTable.connectionString);
 }
 else {
-    tableService = azure.createTableService(process.env.AZURE_STORAGE_ACCOUNT || userStorageTable.accountName, process.env.AZURE_STORAGE_ACCESS_KEY || userStorageTable.accessKey);
+    //在使用Storage SDK时，必须为存储帐户提供要使用的连接信息                                                                                              
+    tableService = azure.createTableService(
+    //配置环境变量                                                                                                                     
+    process.env.AZURE_STORAGE_ACCOUNT || userStorageTable.accountName, process.env.AZURE_STORAGE_ACCESS_KEY || userStorageTable.accessKey);
     telemetryTableService = azure.createTableService(telemetryTable.accountName, telemetryTable.accessKey);
     receiptsTableService = azure.createTableService(receiptsTable.accountName, receiptsTable.accessKey);
 }
-function getTableService(table) {
+//获取表服务                                                                                                                              
+function getTableService(table /*Table为开始定义的枚举变量*/) {
     switch (table) {
         case Table.SigninTelemetry:
         case Table.AllowList:
@@ -50,7 +68,8 @@ function getTableService(table) {
             return tableService;
     }
 }
-function getTableName(table) {
+//获取表名称                                                                                                                              
+function getTableName(table /*Table为开始定义的枚举变量*/) {
     switch (table) {
         case Table.Users:
             return userTableName;
@@ -66,6 +85,9 @@ function getTableName(table) {
             throw Error("unrecongized table name");
     }
 }
+/*
+ 检查Table.Users, Table.AllowList, Table.UserGuid, Table.SigninTelemetry, Table.Receipts是否存在
+ * */
 [Table.Users, Table.AllowList, Table.UserGuid, Table.SigninTelemetry, Table.Receipts].forEach((table) => {
     getTableService(table).createTableIfNotExists(getTableName(table), function (error, result, response) {
         if (error) {
@@ -73,6 +95,7 @@ function getTableName(table) {
         }
     });
 });
+//获取来获取刚刚插入表中的实体----抛出retrieveEntity方法                                                                                               
 function retrieveEntity(table, partitionKey, rowKey) {
     return new Promise(function (resolve, reject) {
         getTableService(table).retrieveEntity(getTableName(table), partitionKey, rowKey, function (error, result, response) {
@@ -86,6 +109,11 @@ function retrieveEntity(table, partitionKey, rowKey) {
     });
 }
 exports.retrieveEntity = retrieveEntity;
+/*
+ * TableQuery 类
+ * 它代表了某个表上的一个查询
+ */
+//它代表了某个表上的一个查询                                                                                               
 function queryEntityRowKey(table, key) {
     var query = new azure.TableQuery()
         .top(1)
@@ -93,6 +121,7 @@ function queryEntityRowKey(table, key) {
     return queryEntity(table, query);
 }
 exports.queryEntityRowKey = queryEntityRowKey;
+//在某个表上的一个查询 ----在数据库中进行查询                                                                                                           
 function queryEntity(table, query) {
     return new Promise(function (resolve, reject) {
         var queryResponseHandler = function (error, result, response) {
@@ -112,6 +141,7 @@ function queryEntity(table, query) {
     });
 }
 exports.queryEntity = queryEntity;
+//在某个表上添加新实体----增                                                                                                                    
 function insertEntity(table, entity) {
     return new Promise(function (resolve, reject) {
         if (development_mode) {
@@ -134,6 +164,7 @@ function insertEntity(table, entity) {
     });
 }
 exports.insertEntity = insertEntity;
+//更新/编辑现有条目----改                                                                                                                     
 function updateEntity(table, entity) {
     return new Promise(function (resolve, reject) {
         if (development_mode) {
@@ -150,6 +181,7 @@ function updateEntity(table, entity) {
     });
 }
 exports.updateEntity = updateEntity;
+//删除现有条目----删                                                                                                                        
 function deleteEntity(table, entity) {
     return new Promise(function (resolve, reject) {
         if (development_mode) {
