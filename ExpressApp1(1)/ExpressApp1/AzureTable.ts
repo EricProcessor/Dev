@@ -1,6 +1,7 @@
 import {TableQuery, TableService, TableUtilities, createTableService, TableBatch, RetryPolicyFilter, ErrorOrResult} from "azure-storage";
 import { EntityConverter } from "./core/entityConverter";
 
+//存储账户设置
 export interface StorageAccountSettings {
     accessKey:string;
     accountName:string;
@@ -14,7 +15,7 @@ export interface TableSetting extends StorageAccountSettings {
     rowKeyName: string;
     entityResolver(enitityResult: object): object;
 }
-
+//检索实体
 export interface RetrievedEntity<T> {
     exists: boolean;
     entity: T;
