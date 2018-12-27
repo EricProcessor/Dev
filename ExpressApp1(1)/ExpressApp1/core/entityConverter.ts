@@ -58,7 +58,7 @@ export class EntityConverter {
 
         return entity;
     }
-
+    //转换到实体
     public static convertToEntityValue(value: EntityValueTypes): any {
         if (typeof value === 'undefined') {
             return undefined;
