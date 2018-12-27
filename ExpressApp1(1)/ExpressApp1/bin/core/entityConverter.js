@@ -1,6 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const azure_storage_1 = require("azure-storage");
+/*
+创建一个entGen实体
+官方例子:
+    var entGen = azure.TableUtilities.entityGenerator;
+    var task = {
+    PartitionKey: entGen.String('hometasks'),
+    RowKey: entGen.String('1'),
+    description: entGen.String('take out the trash'),
+    dueDate: entGen.DateTime(new Date(Date.UTC(2015, 6, 20)))
+    };
+*/
 var entGen = azure_storage_1.TableUtilities.entityGenerator;
 class EntityConverter {
     static map(entity) {

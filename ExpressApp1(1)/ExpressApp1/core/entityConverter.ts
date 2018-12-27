@@ -1,15 +1,25 @@
 import { TableUtilities } from "azure-storage";
 
-export type EntityValueTypes = string | boolean | number | Date;
-export type EntityValues = { [key: string]: EntityValueTypes };
-
+export type EntityValueTypes = string | boolean | number | Date;//实体值类型
+export type EntityValues = { [key: string]: EntityValueTypes };//实体值
+/*
+创建一个entGen实体
+官方例子:
+    var entGen = azure.TableUtilities.entityGenerator;
+    var task = {
+    PartitionKey: entGen.String('hometasks'),
+    RowKey: entGen.String('1'),
+    description: entGen.String('take out the trash'),
+    dueDate: entGen.DateTime(new Date(Date.UTC(2015, 6, 20)))
+    };
+*/
 var entGen = TableUtilities.entityGenerator;
 
 interface IEntityProperty<T> {
     _: T;
 }
 
-export class EntityConverter {
+export class EntityConverter {//实体转换器
     public static map<TK>(entity): TK {
         var mapped = {} as TK;
         Object.keys(entity).forEach((key) => {
