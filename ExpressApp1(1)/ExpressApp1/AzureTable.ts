@@ -183,6 +183,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
      * the number of concurrent calls tha may occur, overwhelming the azure table may lead to failures. It is recommended to use some
      * form of retry logic.
      * */
+    //批量插入
     public batchInsertEntity(models :Model[], ignoreUndefined: boolean = false) : Promise<void> {
         let tableBatch = new TableBatch();
         return this.ensureTable()
@@ -223,8 +224,9 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
         });
     }
 }
-
+//定义接口
 interface TableServiceAsync extends TableService {
+	//检测表是否存在
     createTableIfNotExistsAsync(table: string): Promise<TableService.TableResult>;
     deleteTableIfExistsAsync(table: string): Promise<boolean>;
     retrieveEntityAsync<T>(table: string, partitionKey: string, rowKey: string, options: TableService.TableEntityRequestOptions): Promise<T>;
