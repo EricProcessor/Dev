@@ -30,10 +30,10 @@ export class Environment {
     public static isLocalDev(): boolean {
         return Environment.getEnvironmentType() === EnvironmentType.LocalDevelopment;
     }
-    
+    //获取环境类型
     public static getEnvironmentType(): EnvironmentType {
+        //process.env属性返回一个包含用户环境信息的对象
         if (process.env.SLOT === 'development') {
-            
             return EnvironmentType.Development
         } else if (process.env.SLOT === 'staging') {
             return EnvironmentType.Staging;

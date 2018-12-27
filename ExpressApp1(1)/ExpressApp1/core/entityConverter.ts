@@ -1,25 +1,15 @@
 import { TableUtilities } from "azure-storage";
 
-export type EntityValueTypes = string | boolean | number | Date;//å®ä½“å€¼ç±»å‹
-export type EntityValues = { [key: string]: EntityValueTypes };//å®ä½“å€¼
-/*
-åˆ›å»ºä¸€ä¸ªentGenå®ä½“
-å®˜æ–¹ä¾‹å­:
-    var entGen = azure.TableUtilities.entityGenerator;
-    var task = {
-    PartitionKey: entGen.String('hometasks'),
-    RowKey: entGen.String('1'),
-    description: entGen.String('take out the trash'),
-    dueDate: entGen.DateTime(new Date(Date.UTC(2015, 6, 20)))
-    };
-*/
+export type EntityValueTypes = string | boolean | number | Date;
+export type EntityValues = { [key: string]: EntityValueTypes };
+//´´½¨ÊµÌåµÄ·½·¨
 var entGen = TableUtilities.entityGenerator;
 
 interface IEntityProperty<T> {
     _: T;
 }
 
-export class EntityConverter {//å®ä½“è½¬æ¢å™¨
+export class EntityConverter {
     public static map<TK>(entity): TK {
         var mapped = {} as TK;
         Object.keys(entity).forEach((key) => {
@@ -53,6 +43,7 @@ export class EntityConverter {//å®ä½“è½¬æ¢å™¨
      * @param values Can be undefined, in this case only the value for the partiiton key and rowkey are used.
      * @param ignoreUndefined Ignores undefined values. Useful in certain azure merge cases.
      */
+    //½«¸ø¶¨¶ÔÏó×ª»»ÎªAzureÊµÌå¡£
     public static convertToEntity(partitionKey: string, rowKey: string, values: { [key: string]: any }, ignoreUndefined: boolean) {
         const entity = Object.getOwnPropertyNames(values).reduce((o, k) => {
             let val = EntityConverter.convertToEntityValue(values[k]);
