@@ -1,26 +1,30 @@
 import {TableQuery, TableService, TableUtilities, createTableService, TableBatch, RetryPolicyFilter, ErrorOrResult} from "azure-storage";
 import { EntityConverter } from "./core/entityConverter";
-
-//存储账户设置
+/*
+    默认情况下，对于由Azure存储客户端库为Node.js新创建的服务实例，将不执行重试
+    entityResolver----重试策略
+        定制的重试逻辑都可以通过RetryPolicyFilter实例来使用
+*/
+//定义存储账户设置接口参数
 export interface StorageAccountSettings {
     accessKey:string;
     accountName:string;
     connectionString:string;
     retryPolicy: RetryPolicyFilter.IRetryPolicy;
 }
-
+//定义Table表设置接口参数
 export interface TableSetting extends StorageAccountSettings {
     tableName: string;
     partitionKeyName: string;
     rowKeyName: string;
     entityResolver(enitityResult: object): object;
 }
-//检索实体
+//定义检索实体接口参数
 export interface RetrievedEntity<T> {
     exists: boolean;
     entity: T;
 }
-
+//定义TableService接口泛型
 export class AzureTableService<T> {
     settings: T;
     service: TableServiceAsync;
@@ -29,10 +33,11 @@ export class AzureTableService<T> {
 /**
 * EntityResolver is used by Azure Storage retrival to convert the entity. It should be of type format: (entityResult: Object) => Object
 */
+//EntityResolver是用于Azure存储转换实体。它应该是类型格式：(entityResult: Object) => Object
 export interface EntityResolver {
     (entityResult: Object): Object;
 }
-
+//带约束的Azure存储转换实体方法
 function defaultEntityResolver(en: any) {
     const r = {} as any;
     for (let k in en) {
@@ -51,6 +56,14 @@ function defaultEntityResolver(en: any) {
  * 
  * As of now only rowkey values can be override, I expect partition keys to always be the same.
  */
+/**
+*Azure包装器，承诺Azure存储功能。该表与泛型“模型”紧密关联。
+*PartitionKey和RowKey当前通过表设置。
+*该类的唯一缺点是当前创建行时复制分区键和行键。
+*设计是故意这样保留的，因为表建议使用变体来分区键和行键，以便优化
+*查询。由于写入表的成本较低，因此允许复制分区键和行键。
+*到目前为止，只能重写行键值，我希望分区键总是相同的。
+*/
 export class AzureTable<Model> { // Slight template hack as typescript doesn't support multiple inheritances.
     protected service: TableServiceAsync;
     protected readonly setting:TableSetting;
@@ -66,6 +79,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
         this.setting = setting;
 
         // Connection string takes precedence
+        //连接字符串优先
         if (setting.connectionString) {
             this.service = <TableServiceAsync>createTableService(setting.connectionString);
         }
@@ -89,7 +103,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
         this.service.executeBatchAsync = denodeify(this.service, (this.service as TableService).executeBatch);
         this.service.insertOrMergeAsync = denodeify(this.service, (this.service as TableService).insertOrMergeEntity);
     }
-
+    //校验操作
     protected ensureTable(): Promise<TableService.TableResult> {
         let tableName = this.setting.tableName;
         if (!this.checkedTables[tableName]) {
@@ -98,11 +112,11 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
 
         return this.checkedTables[tableName];
     }
-
+    //获取行key值
     protected getRowKey(rowKey: string, model: Model) : string{
         return Object.is(rowKey, undefined) ? model[this.setting.rowKeyName] : rowKey;
     }
-
+    //检索实体
     public retrieve(model: Model, rowKey: string = undefined) : Promise<RetrievedEntity<Model>> {
         let retrievedEntity : RetrievedEntity<Model> = {} as any;
         return this.ensureTable()
@@ -132,6 +146,11 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
      * Note: All number values will be set to Int32
      * @param model The entity that will be inserted.
      */
+    /**
+    *尝试将实体插入或合并到表中。未定义的值将不会被现有实体替换。
+    *注意：所有数字值都将设置为Int32
+    *@param模型将被插入的实体。
+    */
     public insertOrMerge(model: Model, rowKey: string = undefined) : Promise<void> {
         return this.ensureTable()
             .then((created) => {                
@@ -149,21 +168,31 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
      * @param model The entity that will be inserted.
      * @param rowKey Optional rowKey value that will override the default.
      */
+    /**
+    *尝试将实体插入或替换到表中。未定义的值将反映在行中。
+    *注意：所有数字值都将设置为Int32
+    *@param模型将被插入的实体。
+    *@param rowKey可选rowKey值，该值将覆盖默认值。
+    */
+   //插入或替换方法
     public insertOrReplace(model: Model, rowKey: string = undefined) : Promise<void> {
         return this.ensureTable()
             .then((created) => {                
+                //调用的转换实体方法
                 const entity = EntityConverter.convertToEntity(model[this.setting.partitionKeyName], this.getRowKey(rowKey, model), model, false);
+                //插入或替换操作
                 return this.service.insertOrReplaceEntityAsync(this.setting.tableName, entity);
             }).then(result => {},
                 (error) => {
                     throw error;
                 });        
     }
-
+    //删除方法
     public delete(model: Model, rowKey: string = undefined) : Promise<void> {
         return this.ensureTable()
             .then((created)  => {
                 const entity = EntityConverter.convertToEntity(model[this.setting.partitionKeyName], this.getRowKey(rowKey, model), {}, true);
+                // 删除实体操作
                 return this.service.deleteEntityAsync(this.setting.tableName, entity);
             })
             .then(result => {},
@@ -171,10 +200,10 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
                     throw error;
                 });
     }
-    //删除操作
     public deleteTable() : Promise<boolean> {
         return this.ensureTable()
         .then((created) => {
+            //删除操作  表如果存在执行删除
             return this.service.deleteTableIfExistsAsync(this.setting.tableName);
         });
     }
