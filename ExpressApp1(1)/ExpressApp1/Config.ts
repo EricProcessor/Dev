@@ -1,5 +1,5 @@
 import { EnvironmentType } from "./core/environment";
-//ÅäÖÃ»·¾³ÎÄ¼ş
+//é…ç½®ç¯å¢ƒæ–‡ä»¶
 export class Config {
     public static readonly startingTrialCountTeacher: number = 25;
     public static readonly startingTrialCountStudent: number = 10;
@@ -16,15 +16,15 @@ export class Config {
     // Eg. When testing the server locally, this should be set to false.
     // Future: Global functions are created on module load and before app is initalized. If you use this globally, you need to set it before a
     // the storage table settings is run. At some point we will make everything into classes so initalization is cleaner.
-    //ÒıÈë±¾µØ¿ª·¢ÒÔ°ïÖúÔËĞĞÄ£ÄâÆ÷¡£µ«ÊÇÍ¨¹ıµ±Ç°µÄ±¾µØ²âÊÔ£¬ÎÒÃÇ
+    //å¼•å…¥æœ¬åœ°å¼€å‘ä»¥å¸®åŠ©è¿è¡Œæ¨¡æ‹Ÿå™¨ã€‚ä½†æ˜¯é€šè¿‡å½“å‰çš„æœ¬åœ°æµ‹è¯•ï¼Œæˆ‘ä»¬
 
-    //Ï£ÍûÄÜ¹»ÃüÖĞÖ÷·şÎñÆ÷¡£Õâ¸öÑ¡Ïî½«ÈÃ¿ª·¢ÈËÔ±¾ö¶¨ËûÃÇÏëÓÃ±¾µØÄ£ÄâÆ÷ÔËĞĞÊ²Ã´Ä£Ê½¡£
+    //å¸Œæœ›èƒ½å¤Ÿå‘½ä¸­ä¸»æœåŠ¡å™¨ã€‚è¿™ä¸ªé€‰é¡¹å°†è®©å¼€å‘äººå‘˜å†³å®šä»–ä»¬æƒ³ç”¨æœ¬åœ°æ¨¡æ‹Ÿå™¨è¿è¡Œä»€ä¹ˆæ¨¡å¼ã€‚
 
-    //Eg.ÔÚ±¾µØ²âÊÔ·şÎñÆ÷Ê±£¬Ó¦¸Ã½«ÆäÉèÖÃÎªfalse¡£
+    //Eg.åœ¨æœ¬åœ°æµ‹è¯•æœåŠ¡å™¨æ—¶ï¼Œåº”è¯¥å°†å…¶è®¾ç½®ä¸ºfalseã€‚
 
-    //Î´À´£ºÔÚÄ£¿é¼ÓÔØºÍÓ¦ÓÃ³ÌĞò³õÊ¼»¯Ö®Ç°£¬´´½¨È«¾Öº¯Êı¡£Èç¹ûÈ«¾ÖÊ¹ÓÃËü£¬ÔòĞèÒªÔÚ
+    //æœªæ¥ï¼šåœ¨æ¨¡å—åŠ è½½å’Œåº”ç”¨ç¨‹åºåˆå§‹åŒ–ä¹‹å‰ï¼Œåˆ›å»ºå…¨å±€å‡½æ•°ã€‚å¦‚æœå…¨å±€ä½¿ç”¨å®ƒï¼Œåˆ™éœ€è¦åœ¨
 
-    //ÔËĞĞ´æ´¢±íÉèÖÃ¡£ÔÚÄ³¸öÊ±ºò£¬ÎÒÃÇ½«°ÑÒ»ÇĞ¶¼±àÈëÀà£¬Òò´Ë³õÊ¼»¯¸ü¸É¾»¡£
+    //è¿è¡Œå­˜å‚¨è¡¨è®¾ç½®ã€‚åœ¨æŸä¸ªæ—¶å€™ï¼Œæˆ‘ä»¬å°†æŠŠä¸€åˆ‡éƒ½ç¼–å…¥ç±»ï¼Œå› æ­¤åˆå§‹åŒ–æ›´å¹²å‡€ã€‚
     public static useLocalEmulator = true;
 
     public static environmentOverride : EnvironmentType;
