@@ -30,7 +30,6 @@ var Environment = /** @class */ (function () {
         return Environment.getEnvironmentType() === EnvironmentType.LocalDevelopment;
     };
     Environment.getEnvironmentType = function () {
-        console.log("@@AN@@process.env.SLOT=" + process.env.SLOT);
         if (process.env.SLOT === 'development') {
             return EnvironmentType.Development;
         }
