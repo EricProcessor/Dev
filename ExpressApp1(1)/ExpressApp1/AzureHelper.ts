@@ -1,7 +1,3 @@
-/** 
-* @author : xin shi
-* @date : 2018-12-26
-*/
 import * as Utilities from "./utilities";
 import { Environment } from "./core/environment"                                                                                     
 import { StorageConfig } from "./StorageConfig";                                                                                     
@@ -45,10 +41,7 @@ let tableService;
 let telemetryTableService;                                                                                                           
 let receiptsTableService;                                                                                                            
                                                                                                                                      
-// Hacking this together over here. This is moving to the AzureTable stuff.                                                          
-/*                                                                                                                                   
- *Config.useLocalEmulator返回值为false ---代表运行本地测试开发环境                                                                                   
- **/                                                                                                                                 
+// Hacking this together over here. This is moving to the AzureTable stuff.                                                                                                                                                                                           
 if (Config.useLocalEmulator) {                                                                                                       
     console.log('Using local emulator');                                                                                             
     tableService = azure.createTableService(userStorageTable.connectionString);                                                      
@@ -99,12 +92,13 @@ function getTableName(table: Table /*Table为开始定义的枚举变量*/) {
  * */                                                                                                                                
 [Table.Users, Table.AllowList, Table.UserGuid, Table.SigninTelemetry, Table.Receipts].forEach((table: Table) => {                    
     getTableService(table).createTableIfNotExists(getTableName(table), function (error, result, response) {                          
-        if (error) {                                                                                                                 
+        if (error) {  
+            //退出进程
             process.exit(1);                                                                                                         
         }                                                                                                                            
     });                                                                                                                              
 })                                                                                                                                   
-//获取来获取刚刚插入表中的实体----抛出retrieveEntity方法                                                                                               
+//获取刚刚插入表中的实体                                                                                     
 export function retrieveEntity(table: Table, partitionKey: string, rowKey: string): Promise<any> {                                   
     return new Promise(function (resolve, reject) {                                                                                  
         getTableService(table).retrieveEntity(getTableName(table), partitionKey, rowKey, function (error, result, response) {        

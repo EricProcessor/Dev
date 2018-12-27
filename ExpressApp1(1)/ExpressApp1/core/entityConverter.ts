@@ -1,25 +1,15 @@
 import { TableUtilities } from "azure-storage";
 
-export type EntityValueTypes = string | boolean | number | Date;//实体值类型
-export type EntityValues = { [key: string]: EntityValueTypes };//实体值
-/*
-创建一个entGen实体
-官方例子:
-    var entGen = azure.TableUtilities.entityGenerator;
-    var task = {
-    PartitionKey: entGen.String('hometasks'),
-    RowKey: entGen.String('1'),
-    description: entGen.String('take out the trash'),
-    dueDate: entGen.DateTime(new Date(Date.UTC(2015, 6, 20)))
-    };
-*/
+export type EntityValueTypes = string | boolean | number | Date;
+export type EntityValues = { [key: string]: EntityValueTypes };
+//创建实体的方法
 var entGen = TableUtilities.entityGenerator;
 
 interface IEntityProperty<T> {
     _: T;
 }
 
-export class EntityConverter {//实体转换器
+export class EntityConverter {
     public static map<TK>(entity): TK {
         var mapped = {} as TK;
         Object.keys(entity).forEach((key) => {
@@ -53,6 +43,7 @@ export class EntityConverter {//实体转换器
      * @param values Can be undefined, in this case only the value for the partiiton key and rowkey are used.
      * @param ignoreUndefined Ignores undefined values. Useful in certain azure merge cases.
      */
+    //将给定对象转换为Azure实体。
     public static convertToEntity(partitionKey: string, rowKey: string, values: { [key: string]: any }, ignoreUndefined: boolean) {
         const entity = Object.getOwnPropertyNames(values).reduce((o, k) => {
             let val = EntityConverter.convertToEntityValue(values[k]);
