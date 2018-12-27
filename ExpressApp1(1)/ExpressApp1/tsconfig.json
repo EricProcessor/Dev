@@ -4,7 +4,7 @@
         "moduleResolution": "node",
         "target": "ES6",
         "noImplicitAny": false,
-        "rootDir": "src",
+        "rootDir": "./",
         "outDir": "bin",
         "sourceMap": true,
         "listEmittedFiles": true,
