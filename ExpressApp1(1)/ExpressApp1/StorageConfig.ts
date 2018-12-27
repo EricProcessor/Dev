@@ -8,14 +8,14 @@ import { TableSetting } from './AzureTable';
 export class StorageConfig {
     
     //@AnCommented public static readonly emulatorConnectionString = 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=base 64 encoded key;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;';
-    //Á¬½ÓTable±í
+    //è¿æ¥Tableè¡¨
     public static readonly emulatorConnectionString = 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;';
     public static readonly defaultAccountName = "meeservicesstorage";
     public static readonly defaultAccessKey = "base64 encoded key";
 
     public static readonly devAccountName = "meedevelopment";
     public static readonly devAccessKey = "base 64 encoded key";
-    //ĞÂÓÃ»§±íÉèÖÃ´æ´¢Î»ÖÃ
+    //æ–°ç”¨æˆ·è¡¨è®¾ç½®å­˜å‚¨ä½ç½®
     public static getNewUserTableSettings() {
         let tablename = 'stagingmeeusers';
         if (Environment.getEnvironmentType() == EnvironmentType.Production) {
@@ -24,7 +24,7 @@ export class StorageConfig {
 
         return this.getUserTableSettings(tablename, 'oid');
     }
-    //ÓÃ»§±íÉèÖÃ´æ´¢Î»ÖÃ
+    //ç”¨æˆ·è¡¨è®¾ç½®å­˜å‚¨ä½ç½®
     public static getUserTableSettings(overrideTableName: string = undefined, overrideRowKeyName :string = undefined) : TableSetting{
         let setting : TableSetting = {} as any;
         let environmentType = Environment.getEnvironmentType();
@@ -33,12 +33,12 @@ export class StorageConfig {
         setting.rowKeyName = overrideRowKeyName || 'unique_name';
         
         if (Config.useLocalEmulator) {
-            /*±¾µØ»·¾³µÄÇé¿öÏÂÉèÖÃ*/
+            /*æœ¬åœ°ç¯å¢ƒçš„æƒ…å†µä¸‹è®¾ç½®*/
             setting.connectionString = StorageConfig.emulatorConnectionString;
             setting.tableName = overrideTableName || 'developmentusers'
         }
-        else{//´æ´¢Î»ÖÃ
-            /*¿ª·¢»·¾³µÄÇé¿öÏÂÉèÖÃ*/
+        else{//å­˜å‚¨ä½ç½®
+            /*å¼€å‘ç¯å¢ƒçš„æƒ…å†µä¸‹è®¾ç½®*/
             switch(environmentType) {
                 case EnvironmentType.Production:
                     setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig.defaultAccountName;
@@ -60,7 +60,7 @@ export class StorageConfig {
     
         return setting;
     }
-    //ÓÃ»§Êı¾İ±íÉèÖÃ´æ´¢Î»ÖÃ
+    //ç”¨æˆ·æ•°æ®è¡¨è®¾ç½®å­˜å‚¨ä½ç½®
     public static getTelemetryTableSettings() : TableSetting{
         let setting : TableSetting = {} as any;
         let environmentType = Environment.getEnvironmentType();
@@ -93,7 +93,7 @@ export class StorageConfig {
     
         return setting;
     }
-    //¸¶·Ñ¼ÇÂ¼±íÉèÖÃ£¿
+    //ä»˜è´¹è®°å½•è¡¨è®¾ç½®ï¼Ÿ
     public static getReceiptsTableSettings() : TableSetting{
         let setting : TableSetting = {} as any;
         let environmentType = Environment.getEnvironmentType();
