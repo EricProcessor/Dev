@@ -48,8 +48,7 @@ interface Map<T> {
 interface BlobServiceAsync extends BlobService {
     createContainerIfNotExistsAsync(containerName: string) : Promise<BlobService.ContainerResult>;
     appendBlockFromTextAsync(container: string, blob: string, content: string | Buffer, options: BlobService.AppendBlobRequestOptions) : Promise<BlobService.BlobResult>;
-    /*
-    
+    /*    
     doesContainerExistAsync(container: string) : Promise<BlobService.ContainerResult>;
     createContainerIfNotExistsAsync(container: string) : Promise<BlobService.ContainerResult>;
     getContainerPropertiesAsync(container: string) : Promise<BlobService.ContainerResult>;

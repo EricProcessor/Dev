@@ -1,6 +1,10 @@
+//jwt一种实现服务器与客服端安全通讯的一种规范方案,可以实现安全的加密方案
 const jwt = require('jsonwebtoken');
+//fs模块是文件系统模块，负责读写文件
 const fs = require('fs');
+//用来生成随机字符串
 const uuid = require('uuid');
+//用于发送http请求
 const request = require("request");
 import * as Utilities from "./utilities";
 import { logActivity } from "./Logger";
@@ -9,9 +13,12 @@ import {Environment} from "./core/environment"
 import { User } from "./MeeUserTable";
 import { TenancyInfo } from "./BusinessStoreService";
 
+//平台信息
 export class PlatformInfo {
     // Used to distinguish between platform differences among requests sent with the same osVersion field.
     // The strings are put in user telemetry, so don't change them without good reason.
+    //用于区分使用同一操作系统发送的请求之间的平台差异。
+    //字符串是用户遥测的，所以没有充分理由不要更改它们。
     static Type = {
         Unknown: '',
         Win32: 'Win32 Msi',
@@ -77,7 +84,7 @@ export class UserID {
         public locale?: string)
     {
     }
-
+    //获取平台信息
     getPlatformInfo(): PlatformInfo {
         return new PlatformInfo(this.platform != null ? this.platform : '');
     }
@@ -96,7 +103,7 @@ export interface OnBehalfOfToken {
     scope: string;
     expires_in: string;
 }
-
+//获取token令牌
 export async function getOnBehalfOfToken(user: UserID, requestedAudience: string): Promise<string> {
 
     let tenantId = user.tenantId;
@@ -128,13 +135,14 @@ export async function getOnBehalfOfToken(user: UserID, requestedAudience: string
     let claims = {
         iss: apiClientId,
         sub: apiClientId,
-        jti: uuid.v1(),
+        jti: uuid.v1(), //根据时间戳生成随机uuid
         aud: requestURL,
         iat: now,
         nbf: now - 15,
         exp: now + 60
     };
     try {
+        //jwt.sign 生成token
         var clientAssertion = jwt.sign(claims, privateCert, { algorithm: 'RS256', 'header': { 'x5t': thumbprint } });
     }
     catch (error) {
@@ -191,7 +199,7 @@ export async function getOnBehalfOfToken(user: UserID, requestedAudience: string
         }
     });
 }
-
+//获取指纹
 function getCertThumbprint(): string {
     if (Environment.isProduction() || Environment.isStaging()) {
         return process.env.CERT_THUMBPRINT;
@@ -201,8 +209,8 @@ function getCertThumbprint(): string {
     }
 
 }
-
-function getCertPrivateKey(): string {
+//获得证书密钥
+function getCertPrivateKey(): string {//readFileSync同步读取文件，readFile为异步读取文件
     let key: string = Environment.isLocalDev() ? String(fs.readFileSync('server.key')) : process.env.CERT_PRIVATE_KEY;
     return Utilities.replacePipesWithLineFeeds(key);
 }
