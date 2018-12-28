@@ -45,6 +45,7 @@
     "@types/node": "^9.6.2",
     "@types/odata": "^0.3.3",
     "@types/request-promise": "^4.1.42",
-    "@types/serve-static": "^1.13.1"
+    "@types/serve-static": "^1.13.1",
+    "mongodb": "^3.1.10"
   }
 }
