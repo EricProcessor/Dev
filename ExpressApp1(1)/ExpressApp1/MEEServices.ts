@@ -25,12 +25,12 @@ import {SignInResult, PopupExperience, SignInResultEarlyAccess} from "./Protocol
 import { Guid } from "./core/guid";
 import { Experience } from "./Experience";
 import { CheckTenancy } from "./BusinessStoreService"
-
+//定义azure实体
 const entGen = azure.TableUtilities.entityGenerator;
 
 const privateTokenKey = getAuthPrivateKey();
 const publicTokenKey = getAuthPublicKey();
-
+//转换为小写字母
 function toLowercaseList(list: string[]): string[] {
     for (let i = 0; i < list.length; ++i) {
         list[i] = list[i].toLowerCase();
@@ -72,10 +72,13 @@ const allowedDomains = toLowercaseList([
 
 // Setup environment type. LocalDevelopment storge is meant to use the local Emulator. For server development, we map it to the development storage accounts.
 // Future: We should really look at applying some inversion of control concepts here. This will also help us do better testing.
+//安装环境类型。LocalDevelopment storge用于使用本地模拟器。对于服务器开发，我们将其映射到开发存储帐户。
+//未来：我们确实应该考虑在这里应用一些控制概念的反转。这也将帮助我们进行更好的测试。
 let newUserTableSettings = StorageConfig.getNewUserTableSettings();
 let userTable = new MultiUserTable(StorageConfig.getUserTableSettings(), newUserTableSettings, Config.readFromNewUserTable);
 
 // newUserTable: Used for test paths, should switch to this when we remove the old table.
+//newUserTable：用于测试路径，在删除旧表时应该切换到这个位置。
 let newUserTable = new UserTable(newUserTableSettings);
 let siginTelemtryTable = new SignInTelemetryTable(StorageConfig.getTelemetryTableSettings());
 
@@ -96,7 +99,7 @@ if (!appInsightsClient) {
             trackDependency: logger.log.bind(console, 'trackDependency'),
         };
 }
-
+//监听异常
 export function trackException(error: any) {
     appInsightsClient.trackException(new Error(error.message));
     appInsightsClient.trackEvent("exception", { content: JSON.stringify(error) });
@@ -104,15 +107,15 @@ export function trackException(error: any) {
         appInsightsClient.trackEvent("callstack", { content: JSON.stringify(error) });
     }
 }
-
+//监听警告
 export function trackWarning(error: any) {
     appInsightsClient.trackEvent("warning", { content: JSON.stringify(error) });
 }
-
+//监听事件
 export function trackEvent(name: any, body: any) {
     appInsightsClient.trackEvent(name, { error: JSON.stringify(body) });
 }
-
+//监听依赖
 export function trackDependency(name: string, command: string, duration: number, success: boolean) {
     appInsightsClient.trackDependency(name, command, duration, success);
 }
@@ -152,6 +155,8 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
 
     // Early access users exist, but they don't have a isLicensed field. So in that case we delete them and let them get created afresh.
     // this way they get the 'new user' notification
+    //早期访问用户存在，但是他们没有isLicensed字段。因此，在这种情况下，我们删除它们，并让它们重新创建。
+    //通过这种方式使他们获得“新用户”通知
     if (isExistingUser && (userEntity.entity.isLicensed === undefined)) {
         await logActivityVerbose('signin-ea-removal', userID.tenantId, userID.unique_name, userEntity);
         await userTable.delete(userEntity.entity);

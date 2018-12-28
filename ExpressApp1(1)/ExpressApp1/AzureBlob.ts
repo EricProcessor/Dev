@@ -2,7 +2,7 @@ import {BlobService, createBlobService, common, AccessCondition} from 'azure-sto
 import { EntityConverter } from "./core/entityConverter";
 
 export class AzureBlob {
- 
+    
     protected service: BlobServiceAsync;
     protected containerName: string;
 
