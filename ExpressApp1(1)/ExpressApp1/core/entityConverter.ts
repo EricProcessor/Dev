@@ -1,4 +1,5 @@
-//import { TableUtilities } from "azure-storage";
+import { TableUtilities } from "azure-storage";
+
 export type EntityValueTypes = string | boolean | number | Date;
 export type EntityValues = { [key: string]: EntityValueTypes };
 //创建实体的方法
@@ -8,8 +9,8 @@ interface IEntityProperty<T> {
     _: T;
 }
 
-export class EntityConverter {
-    public static map<TK>(entity): TK {
+export class EntityConverter {      //实体转换器
+    public static map<TK>(entity): TK {         //循环遍历方法
         var mapped = {} as TK;
         Object.keys(entity).forEach((key) => {
             var prop: IEntityProperty<any> = entity[key];
@@ -19,7 +20,8 @@ export class EntityConverter {
     }
 
     // Use this to convert callback into a promise (Taken from botbuilder-azure)
-    public static denodeify<T>(thisArg: any, fn: Function): (...args: any[]) => Promise<T> {
+    //使用这个方法 将回调函数 转换为 promise对象
+    public static denodeify<T>(thisArg: any, fn: Function): (...args: any[]) => Promise<T> {    //去噪，过滤
         return (...args: any[]) => {
             return new Promise<T>((resolve, reject) => {
                 args.push((error: Error, result: any) => {
@@ -57,7 +59,7 @@ export class EntityConverter {
 
         return entity;
     }
-    //转换到实体
+    //转换为实体值
     public static convertToEntityValue(value: EntityValueTypes): any {
         if (typeof value === 'undefined') {
             return undefined;

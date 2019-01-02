@@ -1,4 +1,5 @@
 "use strict";
+//该文件处于核心文件夹core中
 exports.__esModule = true;
 var Config_1 = require("../Config");
 var EnvironmentType;
