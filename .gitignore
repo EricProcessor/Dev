@@ -8,3 +8,5 @@ yarn-error.log*
 .vscode/
 js/
 .history/
+.vs/
+.vscode/
