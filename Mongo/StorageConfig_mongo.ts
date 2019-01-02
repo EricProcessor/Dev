@@ -18,6 +18,7 @@ export class StorageConfig_mongo {
         if (Environment.getEnvironmentType() == EnvironmentType.Production) {
             tablename = 'meeusers';
         }
+        return this.getUserTableSettings(tablename, 'oid');
     }
     //用户表设置存储位置
     public static getUserTableSettings(overrideTableName: string = undefined, overrideRowKeyName: string = undefined): TableSetting {
