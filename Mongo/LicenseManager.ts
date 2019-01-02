@@ -1,6 +1,6 @@
 //import * as AzureHelper from "./AzureHelper";
 import { UserID } from "./AAD";
-import * as Request from 'request-promise'
+import * as Request from './node_modules/_@types_request-promise@4.1.42@@types/request-promise'
 import { getOnBehalfOfToken } from "./AAD";
 import { logActivity, logActivityVerbose } from "./Logger";
 import * as Utilities from "./utilities";

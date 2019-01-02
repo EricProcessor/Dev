@@ -1,4 +1,3 @@
-// import {RetryPolicyFilter} from "azure-storage"
 import {Config} from "../Config"
 
 export enum EnvironmentType {

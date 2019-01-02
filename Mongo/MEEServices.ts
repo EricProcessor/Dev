@@ -1,5 +1,5 @@
-import * as Express from "express";
-import * as Request from "request-promise";
+import * as Express from "./node_modules/_@types_express@4.16.0@@types/express";
+import * as Request from "./node_modules/_@types_request-promise@4.1.42@@types/request-promise";
 
 const moment = require('moment');
 const request = require("request");
@@ -20,7 +20,7 @@ import { UserTable, User, UserInfo, MultiUserTable } from "./MeeUserTable";
 import {SignInTelemetryTable} from "./MeeSignInTable"
 import {ReceiptsTable, Receipt} from "./MeeReceiptsTable"
 import { Config } from "./Config"
-import {StorageConfig_mongo} from "./StorageConfig_mongo"
+import {StorageConfig_mongo} from "./StorageConfig"
 import {SignInResult, PopupExperience, SignInResultEarlyAccess} from "./Protocol"
 import { Guid } from "./core/guid";
 import { Experience } from "./Experience";

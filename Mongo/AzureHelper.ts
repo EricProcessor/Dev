@@ -1,6 +1,6 @@
 import * as Utilities from "./utilities";
 import { Environment } from "./core/environment"
-import { StorageConfig_mongo } from "./StorageConfig_mongo"
+import { StorageConfig } from "./StorageConfig"
 import { Config } from "./Config"
 import { Server } from "http";
 let DBurl = 'mongodb://127.0.0.1:27017/';
@@ -29,14 +29,14 @@ const development_mode = Environment.isLocalDev();
 const isProduction = Environment.isProduction();
 const isStaging = Environment.isStaging();
 /*                                                                                                                                   
- * 引用StorageConfig_mongo方法（根据环境类型切换不同环境的存储空间设置）
+ * 引用StorageConfig方法（根据环境类型切换不同环境的存储空间设置）
  */
 //新用户表设置存储位置
-const userStorageTable = StorageConfig_mongo.getNewUserTableSettings();
+const userStorageTable = StorageConfig.getNewUserTableSettings();
 //用户数据表设置存储位置
-const telemetryTable = StorageConfig_mongo.getTelemetryTableSettings();
+const telemetryTable = StorageConfig.getTelemetryTableSettings();
 //付费记录表设置？
-const receiptsTable = StorageConfig_mongo.getReceiptsTableSettings();
+const receiptsTable = StorageConfig.getReceiptsTableSettings();
 //新用户表设置存储表名称
 const userTableName = userStorageTable.tableName;
 //用户数据表设置存储表名称

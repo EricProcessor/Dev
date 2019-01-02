@@ -1,5 +1,5 @@
 import { request } from "http";
-import * as Request from 'request-promise'
+import * as Request from './node_modules/_@types_request-promise@4.1.42@@types/request-promise'
 import { UserID, getOnBehalfOfToken } from "./AAD";
 import { logActivityVerbose } from "./Logger";
 import { trackDependency } from "./MEEServices";
