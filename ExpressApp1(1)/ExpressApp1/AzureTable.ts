@@ -1,25 +1,25 @@
 import {TableQuery, TableService, TableUtilities, createTableService, TableBatch, RetryPolicyFilter, ErrorOrResult} from "azure-storage";
-import { EntityConverter } from "./core/entityConverter";
+import { EntityConverter } from "./core/entityConverter";   //实体转换
 /*
     默认情况下，对于由Azure存储客户端库为Node.js新创建的服务实例，将不执行重试
     entityResolver----重试策略
         定制的重试逻辑都可以通过RetryPolicyFilter实例来使用
 */
-//定义存储账户设置接口参数
+//定义  存储账户设置接口参数
 export interface StorageAccountSettings {
-    accessKey:string;
-    accountName:string;
-    connectionString:string;
-    retryPolicy: RetryPolicyFilter.IRetryPolicy;
+    accessKey:string;       //访问密钥
+    accountName:string;     //账户名称
+    connectionString:string;        //连接地址
+    retryPolicy: RetryPolicyFilter.IRetryPolicy;        //重试策略
 }
 //定义Table表设置接口参数
 export interface TableSetting extends StorageAccountSettings {
-    tableName: string;
-    partitionKeyName: string;
-    rowKeyName: string;
-    entityResolver(enitityResult: object): object;
+    tableName: string;  //表名称
+    partitionKeyName: string;       //分区键名称
+    rowKeyName: string;         //行键名称
+    entityResolver(enitityResult: object): object;      //重试策略
 }
-//定义检索实体接口参数
+//定义  检索实体接口  参数
 export interface RetrievedEntity<T> {
     exists: boolean;
     entity: T;
@@ -64,36 +64,40 @@ function defaultEntityResolver(en: any) {
 *查询。由于写入表的成本较低，因此允许复制分区键和行键。
 *到目前为止，只能重写行键值，我希望分区键总是相同的。
 */
+//模板有个小问题，因为typescript不支持多个继承
 export class AzureTable<Model> { // Slight template hack as typescript doesn't support multiple inheritances.
     protected service: TableServiceAsync;
-    protected readonly setting:TableSetting;
+    protected readonly setting:TableSetting;    //table表接口设置
     protected entityResolver;
 
-    protected checkedTables: { [name: string]: Promise<TableService.TableResult>; } = {};
+    protected checkedTables: { [name: string]: Promise<TableService.TableResult>; } = {};   //检查表是否存在
 
-    constructor(setting:TableSetting) {
+    constructor(setting:TableSetting) {     //传入表的设置对象
         if (!setting.rowKeyName || (setting.rowKeyName.length == 0) || !setting.partitionKeyName || (setting.rowKeyName.length == 0)) {
+            //抛错：必须定义 PartitionKeyName 和 RowKeyName
             throw new Error('PartitionKeyName & RowKeyName must be defined');
         }
 
         this.setting = setting;
 
         // Connection string takes precedence
-        //连接字符串优先
+        //优先处理  连接地址
         if (setting.connectionString) {
             this.service = <TableServiceAsync>createTableService(setting.connectionString);
         }
         else {
             this.service = <TableServiceAsync>createTableService(this.setting.accountName, this.setting.accessKey);
         }
+        //上面处理后，this.service接收一个  新的table服务客户端对象
 
-        if (this.setting.retryPolicy) {
+        if (this.setting.retryPolicy) {     //重试策略
             this.service.withFilter(this.setting.retryPolicy);
         }
 
         this.entityResolver = this.setting.entityResolver || defaultEntityResolver;
 
         let denodeify = EntityConverter.denodeify;
+        //将下边的  table服务对象的 一些方法，都转成promise对象的方法
         this.service.createTableIfNotExistsAsync = denodeify(this.service, (this.service as TableService).createTableIfNotExists);
         this.service.deleteTableIfExistsAsync = denodeify(this.service, (this.service as TableService).deleteTableIfExists);
         this.service.retrieveEntityAsync = denodeify(this.service, (this.service as TableService).retrieveEntity);
@@ -103,7 +107,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
         this.service.executeBatchAsync = denodeify(this.service, (this.service as TableService).executeBatch);
         this.service.insertOrMergeAsync = denodeify(this.service, (this.service as TableService).insertOrMergeEntity);
     }
-    //校验操作
+    //校验操作。判断是否有传入的 table表名称。没有的话，那就创建，并存入到 用于检查的存储table表名称的对象中
     protected ensureTable(): Promise<TableService.TableResult> {
         let tableName = this.setting.tableName;
         if (!this.checkedTables[tableName]) {
@@ -147,7 +151,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
      * @param model The entity that will be inserted.
      */
     /**
-    *尝试将实体插入或合并到表中。未定义的值将不会被现有实体替换。
+    *尝试将实体（内容）插入或合并到表中。未定义的值将不会被现有实体替换。
     *注意：所有数字值都将设置为Int32
     *@param模型将被插入的实体。
     */
@@ -187,7 +191,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
                     throw error;
                 });        
     }
-    //删除方法
+    //删除某个数据的方法
     public delete(model: Model, rowKey: string = undefined) : Promise<void> {
         return this.ensureTable()
             .then((created)  => {
@@ -200,6 +204,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
                     throw error;
                 });
     }
+    //删除某个表
     public deleteTable() : Promise<boolean> {
         return this.ensureTable()
         .then((created) => {
@@ -218,7 +223,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
     *可能发生的并发调用数量，压倒azure表可能导致失败。建议使用一些
     *重试逻辑的形式。
     **/
-    //批量插入
+    //批量数据插入
     public batchInsertEntity(models :Model[], ignoreUndefined: boolean = false) : Promise<void> {
         let tableBatch = new TableBatch();
         return this.ensureTable()
@@ -232,6 +237,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
                 });
     }
 
+    //查询到结束
     private queryTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, array: Model[], resolve, reject) {
         //查询操作
         this.service.queryEntities(this.setting.tableName, query, currentToken, (error, result, response) => {
@@ -253,7 +259,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
     {
         return this.service.queryEntities(this.setting.tableName, tableQuery, currentToken, callback);
     }
-    //查询实体
+    //查询实体（内容）
     public queryEntities(query: TableQuery) {
         return new Promise<Model[]>((resolve, reject) => {
             this.queryTillEnd(query, null, [], resolve, reject);

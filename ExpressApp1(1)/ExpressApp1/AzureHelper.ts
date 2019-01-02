@@ -1,8 +1,8 @@
 import * as Utilities from "./utilities";
-import { Environment } from "./core/environment"
-import { StorageConfig } from "./StorageConfig";
+import { Environment } from "./core/environment"    //环境
+import { StorageConfig } from "./StorageConfig";    //仓库配置
 import { StorageConfig_mongo } from "./StorageConfig_mongo"
-import { Config } from "./Config"
+import { Config } from "./Config"       //配置
 
 //引用azure-storage模块                                                                                                                  
 const azure = require("azure-storage");
@@ -96,7 +96,7 @@ function getTableName(table: Table /*Table为开始定义的枚举变量*/) {
  * */
 [Table.Users, Table.AllowList, Table.UserGuid, Table.SigninTelemetry, Table.Receipts].forEach((table: Table) => {
     getTableService(table).createTableIfNotExists(getTableName(table), function (error, result, response) {
-        if (error) {d
+        if (error) {
             //退出进程
             process.exit(1);
         }
