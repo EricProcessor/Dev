@@ -18,6 +18,8 @@ export class StorageConfig_mongo {
         if (Environment.getEnvironmentType() == EnvironmentType.Production) {
             tablename = 'meeusers';
         }
+
+        return this.getUserTableSettings(tablename, 'oid');
     }
     //用户表设置存储位置
     public static getUserTableSettings(overrideTableName: string = undefined, overrideRowKeyName: string = undefined): TableSetting {
@@ -35,25 +37,20 @@ export class StorageConfig_mongo {
         else {//存储位置
             /*开发环境的情况下设置*/
             switch (environmentType) {
-                   //生产
-                case EnvironmentType.Production:         //存储账户
-                 //  setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
-                                                         //存储Azure访问密钥环境变量。
-                //  setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
+                case EnvironmentType.Production:
+                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
+                    setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
                     setting.tableName = overrideTableName || 'users';
                     break;
-                        //测试
-                case EnvironmentType.Staging:                   
-                  //  setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
-                                                              
-                  //  setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
+                case EnvironmentType.Staging:
+                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
+                    setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
                     setting.tableName = overrideTableName || 'stagingusers'
                     break;
                 default:
-                //开发
-                case EnvironmentType.Development:   
-                 //   setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || "meedevelopment";
-                 //   setting.accessKey = process.env.AZURE_STORAGE_ACCOUNT || "base 64 encoded key";
+                case EnvironmentType.Development:
+                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || "meedevelopment";
+                    setting.accessKey = process.env.AZURE_STORAGE_ACCOUNT || "base 64 encoded key";
                     setting.tableName = overrideTableName || 'developmentusers'
             }
         }
@@ -85,8 +82,8 @@ export class StorageConfig_mongo {
                     break;
                 default:
                 case EnvironmentType.Development:
-                   // setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || "meedevelopment";
-                   // setting.accessKey = process.env.AZURE_STORAGE_ACCOUNT || "base 64 encoded key";
+                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || "meedevelopment";
+                    setting.accessKey = process.env.AZURE_STORAGE_ACCOUNT || "base 64 encoded key";
                     setting.tableName = Config.switchToNewSigninTelemetryTable ? 'developmentsignindata' : 'developmentsignintelemetry'
             }
         }
@@ -97,6 +94,7 @@ export class StorageConfig_mongo {
     public static getReceiptsTableSettings(): TableSetting {
         let setting: TableSetting = {} as any;
         let environmentType = Environment.getEnvironmentType();
+
         setting.partitionKeyName = 'anonimizedOid';
         setting.rowKeyName = 'transactionId';
         if (Config.useLocalEmulator) {
@@ -106,19 +104,19 @@ export class StorageConfig_mongo {
         else {
             switch (environmentType) {
                 case EnvironmentType.Production:
-                   // setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
-                  //  setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
+                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
+                    setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
                     setting.tableName = 'receiptstable';
                     break;
                 case EnvironmentType.Staging:
-                   // setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
-                    //setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
+                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
+                    setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
                     setting.tableName = 'stagingreceiptstable';
                     break;
                 default:
                 case EnvironmentType.Development:
-                  //  setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || "meedevelopment";
-                  //  setting.accessKey = process.env.AZURE_STORAGE_ACCOUNT || "base 64 encoded key";
+                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || "meedevelopment";
+                    setting.accessKey = process.env.AZURE_STORAGE_ACCOUNT || "base 64 encoded key";
                     setting.tableName = 'developmentreceiptsdata';
             }
         }
