@@ -96,7 +96,7 @@ function getTableName(table: Table /*Table为开始定义的枚举变量*/) {
  * */
 [Table.Users, Table.AllowList, Table.UserGuid, Table.SigninTelemetry, Table.Receipts].forEach((table: Table) => {
     getTableService(table).createTableIfNotExists(getTableName(table), function (error, result, response) {
-        if (error) {
+        if (error) {d
             //退出进程
             process.exit(1);
         }

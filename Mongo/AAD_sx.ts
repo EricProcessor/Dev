@@ -109,9 +109,10 @@ export async function getOnBehalfOfToken(user: UserID, requestedAudience: string
     let tenantId = user.tenantId;
     //let requestURLTemplate = "https://login.windows.net/{tenant-id}/oauth2/token";
     let requestURLTemplate = "https://oauth2.jdcloud.com/authorize?client_id={tenant-id}/&redirect_uri=https://www.jdcloud.com&response_type=token&scope=openid";
+    
     let requestURL = requestURLTemplate
         .replace("{tenant-id}", encodeURIComponent(tenantId));
-    //https://meeservices.minecraft.net
+
     //const meeServiceAppId = "16556bfc-5102-43c9-a82a-3ea5e4810689";
     const meeServiceAppId = "9561544065616502";
     let grantType = "urn:ietf:params:oauth:grant-type:jwt-bearer";

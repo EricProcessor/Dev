@@ -1,5 +1,4 @@
-import { TableUtilities } from "azure-storage";
-
+//import { TableUtilities } from "azure-storage";
 export type EntityValueTypes = string | boolean | number | Date;
 export type EntityValues = { [key: string]: EntityValueTypes };
 //创建实体的方法
