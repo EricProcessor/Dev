@@ -7,7 +7,7 @@ let DBurl = 'mongodb://127.0.0.1:27017/';
 let dbName = 'itying';
 let mongo_url = DBurl + dbName;
 //引用azure-storage模块                                                                                                                  
-const azure = require("azure-storage");
+// const azure = require("azure-storage");
 //数据库引用 
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
@@ -131,12 +131,12 @@ function getTableName(table: Table /*Table为开始定义的枚举变量*/) {
  * */
 // 检查表名称是否存在
 [Table.Users, Table.AllowList, Table.UserGuid, Table.SigninTelemetry, Table.Receipts].forEach((table: Table) => {
-    getTableService(table).createTableIfNotExists(getTableName(table), function (error, result, response) {
-        if (error) {
-            //退出进程
-            process.exit(1);
-        }
-    });
+    // getTableService(table).createTableIfNotExists(getTableName(table), function (error, result, response) {
+    //     if (error) {
+    //         //退出进程
+    //         process.exit(1);
+    //     }
+    // });
 })
 //获取刚刚插入表中的实体                                                                                     
 export function retrieveEntity(table: Table, partitionKey: string, rowKey: string): Promise<any> {

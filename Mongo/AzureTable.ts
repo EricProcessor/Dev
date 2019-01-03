@@ -11,7 +11,7 @@ import {TableQuery, TableService, TableUtilities, createTableService, TableBatch
 import { EntityConverter } from "./core/entityConverter";   //实体转换
 //引入
 const MongoClient = require("mongodb").MongoClient
-const dbUrl:string = "mongodb://localhost:27017/itying"      //设置数据库的连接地址。路径后边表示  具体的连接的数据库的名称
+let dbUrl:string = "mongodb://localhost:27017/itying"      //设置数据库的连接地址。路径后边表示  具体的连接的数据库的名称
 
 /*
     默认情况下，对于由Azure存储客户端库为Node.js新创建的服务实例，将不执行重试
