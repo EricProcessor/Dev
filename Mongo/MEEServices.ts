@@ -3,7 +3,7 @@ import * as Request from "./node_modules/_@types_request-promise@4.1.42@@types/r
 
 const moment = require('moment');
 const request = require("request");
-const azure = require("azure-storage");
+//const azure = require("azure-storage");
 const uuid = require("uuid");
 const fs = require("fs");
 const crypto = require("crypto");
@@ -26,7 +26,7 @@ import { Guid } from "./core/guid";
 import { Experience } from "./Experience";
 import { CheckTenancy } from "./BusinessStoreService"
 //定义azure实体
-const entGen = azure.TableUtilities.entityGenerator;
+//const entGen = azure.TableUtilities.entityGenerator;
 
 const privateTokenKey = getAuthPrivateKey();
 const publicTokenKey = getAuthPublicKey();
@@ -368,14 +368,23 @@ export async function registerUserGuid(res: Express.Response, user: UserID, ipAd
         let guid = uuid.v4();
         let role = await getUserRole(user);
 
+        // let newEntry = {
+        //     "PartitionKey": entGen.String(guid),
+        //     "RowKey": entGen.String(guid),
+        //     "tenantId": entGen.String(user.tenantId),
+        //     "uniqueName": entGen.String(user.unique_name),
+        //     "role": entGen.String(role),
+        //     "ipAddress": entGen.String(ipAddress),
+        //     "isUsed": entGen.Boolean(false)
+        // };
         let newEntry = {
-            "PartitionKey": entGen.String(guid),
-            "RowKey": entGen.String(guid),
-            "tenantId": entGen.String(user.tenantId),
-            "uniqueName": entGen.String(user.unique_name),
-            "role": entGen.String(role),
-            "ipAddress": entGen.String(ipAddress),
-            "isUsed": entGen.Boolean(false)
+            "PartitionKey": guid,
+            "RowKey": guid,
+            "tenantId": user.tenantId,
+            "uniqueName": user.unique_name,
+            "role": role,
+            "ipAddress":ipAddress,
+            "isUsed": false
         };
 
         await AzureHelper.insertEntity(AzureHelper.Table.UserGuid, newEntry);
@@ -421,7 +430,8 @@ export async function validateUserGuid(res: Express.Response, guid: string): Pro
 
             res.send(JSON.stringify(returnPayload));
 
-            azResult["isUsed"] = entGen.Boolean(true);
+            //azResult["isUsed"] = entGen.Boolean(true);
+            azResult["isUsed"] = true;
             await AzureHelper.updateEntity(AzureHelper.Table.UserGuid, azResult);
         }
         else {
@@ -689,21 +699,34 @@ function encodeName(name: string): string {
 
 async function createNewUserEarlyAccess(role: string, user: UserID): Promise<SignInResultEarlyAccess> {
     const defaultSkinName = "EduSkins_Alex";
+    // let newUser = {
+    //     "PartitionKey": entGen.String(user.tenantId),
+    //     "RowKey": entGen.String(user.unique_name),
+    //     "role": entGen.String(role),
+    //     "trialsAllowed": entGen.Int32(Config.startingTrialCountStudent),
+    //     "trialsUsed": entGen.Int32(1),
+    //     "tenantId": entGen.String(user.tenantId),
+    //     "unique_name": entGen.String(user.unique_name),
+    //     "name": entGen.String(user.name),
+    //     "skin": entGen.String(defaultSkinName)
+    // };
     let newUser = {
-        "PartitionKey": entGen.String(user.tenantId),
-        "RowKey": entGen.String(user.unique_name),
-        "role": entGen.String(role),
-        "trialsAllowed": entGen.Int32(Config.startingTrialCountStudent),
-        "trialsUsed": entGen.Int32(1),
-        "tenantId": entGen.String(user.tenantId),
-        "unique_name": entGen.String(user.unique_name),
-        "name": entGen.String(user.name),
-        "skin": entGen.String(defaultSkinName)
+        "PartitionKey": user.tenantId,
+        "RowKey": user.unique_name,
+        "role": role,
+        "trialsAllowed": Config.startingTrialCountStudent,
+        "trialsUsed": 1,
+        "tenantId": user.tenantId,
+        "unique_name": user.unique_name,
+        "name": user.name,
+        "skin": defaultSkinName
     };
 
     if (role === "teacher") {
-        newUser["acceptedEula"] = entGen.Boolean(false);
-        newUser["trialsAllowed"] = entGen.Int32(Config.startingTrialCountTeacher);
+        // newUser["acceptedEula"] = entGen.Boolean(false);
+        // newUser["trialsAllowed"] = entGen.Int32(Config.startingTrialCountTeacher);
+        newUser["acceptedEula"] = false;
+        newUser["trialsAllowed"] = Config.startingTrialCountTeacher;
     }
 
     await AzureHelper.insertEntity(AzureHelper.Table.Users, newUser);
@@ -985,25 +1008,42 @@ async function recordSigninTelemetry(user: UserID, isNewUser: string, isWhiteLis
     let dt = new Date();
 
     // create entity in azure user table
+    // let signinTelemetryEntity = {
+    //     "PartitionKey": entGen.String(dt.toISOString().substring(0, 10)),
+    //     "RowKey": entGen.String(uuid.v4().toString()),
+    //     "OMSUserId": entGen.String(user.oid),
+    //     "OMSTentantId": entGen.String(user.tenantId),
+    //     "ClientType": entGen.String(user.clientApplication),
+    //     "ClientVersion": entGen.String(user.clientDisplayVersion),
+    //     "OSPlatform": entGen.String(osPlatform),
+    //     "OSVersion": entGen.String(user.osVersion),
+    //     "IsNewUser": entGen.String(isNewUser),
+    //     "IsWhiteListed": entGen.String(isWhiteListed),
+    //     "IsLicensed": entGen.String(isLicensed),
+    //     "Role": entGen.String(role),
+    //     "Skin": entGen.String(skin),
+    //     "LicenseType": entGen.String(licenseType)
+    // };
     let signinTelemetryEntity = {
-        "PartitionKey": entGen.String(dt.toISOString().substring(0, 10)),
-        "RowKey": entGen.String(uuid.v4().toString()),
-        "OMSUserId": entGen.String(user.oid),
-        "OMSTentantId": entGen.String(user.tenantId),
-        "ClientType": entGen.String(user.clientApplication),
-        "ClientVersion": entGen.String(user.clientDisplayVersion),
-        "OSPlatform": entGen.String(osPlatform),
-        "OSVersion": entGen.String(user.osVersion),
-        "IsNewUser": entGen.String(isNewUser),
-        "IsWhiteListed": entGen.String(isWhiteListed),
-        "IsLicensed": entGen.String(isLicensed),
-        "Role": entGen.String(role),
-        "Skin": entGen.String(skin),
-        "LicenseType": entGen.String(licenseType)
+        "PartitionKey": dt.toISOString().substring(0, 10),
+        "RowKey": uuid.v4().toString(),
+        "OMSUserId": user.oid,
+        "OMSTentantId": user.tenantId,
+        "ClientType": user.clientApplication,
+        "ClientVersion": user.clientDisplayVersion,
+        "OSPlatform": osPlatform,
+        "OSVersion": user.osVersion,
+        "IsNewUser": isNewUser,
+        "IsWhiteListed": isWhiteListed,
+        "IsLicensed": isLicensed,
+        "Role": role,
+        "Skin": skin,
+        "LicenseType": licenseType
     };
 
     if (remainingTrialCount >= 0) {
-        signinTelemetryEntity['RemainingTrials'] = entGen.Int32(remainingTrialCount);
+        // signinTelemetryEntity['RemainingTrials'] = entGen.Int32(remainingTrialCount);
+        signinTelemetryEntity['RemainingTrials'] = remainingTrialCount;
     }
 
     await AzureHelper.insertEntity(AzureHelper.Table.SigninTelemetry, signinTelemetryEntity);
