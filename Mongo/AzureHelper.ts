@@ -60,18 +60,16 @@ let receiptsTableService;
 
 if (Config.useLocalEmulator) {
     console.log('Using local emulator');
-    tableService = new mongodb.Server(userStorageTable.connectionString);
+    tableService = userStorageTable.connectionString;
     //用户数据表设置存储位置
-    telemetryTableService = new mongodb.Server(telemetryTable.connectionString);
+    telemetryTableService = telemetryTable.connectionString;
 
-    receiptsTableService = new mongodb.Server(receiptsTable.connectionString);
+    receiptsTableService = receiptsTable.connectionString;
 }
 else {
     //在使用Storage SDK时，必须为存储帐户提供要使用的连接信息   
     tableService = new mongodb.Server();
-
     telemetryTableService = new mongodb.Server();
-
     receiptsTableService = new mongodb.Server();
     // tableService = azure.createTableService(
     //     //配置环境变量                                           
@@ -177,7 +175,7 @@ export function queryEntity(table: Table, query: any): Promise<any> {
                             console.log("数据库连接失败");
                             return;
                         }
-                        const db = client.db('');
+                        let db = client.db('');
                         db.collection(getTableName(table)).find(query, result.continuationToken, queryResponseHandler)
                     })
                 }
@@ -193,7 +191,7 @@ export function queryEntity(table: Table, query: any): Promise<any> {
                 console.log("数据库连接失败");
                 return;
             }
-            const db = client.db('');
+            let db = client.db('');
             db.collection(getTableName(table)).find({ query }, null, queryResponseHandler)
         })
     });
@@ -211,7 +209,7 @@ export function insertEntity(table: Table, entity: any): Promise<any> {
                 console.log("数据库连接失败");
                 return;
             }
-            const db = client.db('');
+            let db = client.db('');
             db.collection(getTableName(table)).insertOne({ entity }, function (error, result, response) {
                 try {
                     if (!error) {
@@ -252,7 +250,7 @@ export function updateEntity(table: Table, entity: any): Promise<any> {
                 console.log("数据库连接失败");
                 return;
             }
-            const db = client.db('');
+            let db = client.db('');
             db.collection(getTableName(table)).updateOne({ entity }, function (error, result, response) {
                 if (!error) {
                     resolve({ valid: true, azureResult: result, azureResponse: response });
@@ -281,7 +279,7 @@ export function deleteEntity(table: Table, entity: any): Promise<any> {
                 console.log("数据库连接失败");
                 return;
             }
-            const db = client.db('');
+            let db = client.db('');
             db.collection(getTableName(table)).deleteOne({ entity }, function (error, result, response) {
                 if (!error) {
                     console.log('success');
