@@ -1,9 +1,9 @@
-import { TableUtilities } from "azure-storage";
+//import { TableUtilities } from "azure-storage";
 
 export type EntityValueTypes = string | boolean | number | Date;
 export type EntityValues = { [key: string]: EntityValueTypes };
 //创建实体的方法
-var entGen = TableUtilities.entityGenerator;
+//var entGen = TableUtilities.entityGenerator;
 
 interface IEntityProperty<T> {
     _: T;
@@ -53,8 +53,10 @@ export class EntityConverter {
             return o;
         }, {} as { [key: string]: any });
 
-        entity.PartitionKey = entGen.String(partitionKey);
-        entity.RowKey = entGen.String(rowKey);
+        // entity.PartitionKey = entGen.String(partitionKey);
+        // entity.RowKey = entGen.String(rowKey);
+        entity.PartitionKey = String(partitionKey);
+        entity.RowKey = String(rowKey);
 
         return entity;
     }
@@ -67,19 +69,25 @@ export class EntityConverter {
         } else if (value === null) {
             return undefined;
         } else if (typeof value === 'string') {
-            return entGen.String(value);
+            //return entGen.String(value);
+            return String(value);
         } else if (typeof value === 'boolean') {
-            return entGen.Boolean(value);
+            //return entGen.Boolean(value);
+            return Boolean(value);
         } else if (typeof value === 'number') {
             if (Math.floor(value) === value) {
-                return entGen.Int32(value);
+                //return entGen.Int32(value);
+                return Number(value);
             } else {
-                return entGen.Double(value);
+                // return entGen.Double(value);
+                return value.toFixed(2);
             }
         } else if (value instanceof Date) {
-            return entGen.DateTime(value);
+            //return entGen.DateTime(value);
+            return new Date(value);
         } else { // if (typeof value === 'object') {
-            return entGen.String(JSON.stringify(value));
+            // return entGen.String(JSON.stringify(value));
+            return JSON.stringify(value);
         }
     }
 }

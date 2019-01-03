@@ -20,7 +20,7 @@ import { UserTable, User, UserInfo, MultiUserTable } from "./MeeUserTable";
 import {SignInTelemetryTable} from "./MeeSignInTable"
 import {ReceiptsTable, Receipt} from "./MeeReceiptsTable"
 import { Config } from "./Config"
-import {StorageConfig_mongo} from "./StorageConfig"
+import {StorageConfig} from "./StorageConfig"
 import {SignInResult, PopupExperience, SignInResultEarlyAccess} from "./Protocol"
 import { Guid } from "./core/guid";
 import { Experience } from "./Experience";
@@ -74,15 +74,15 @@ const allowedDomains = toLowercaseList([
 // Future: We should really look at applying some inversion of control concepts here. This will also help us do better testing.
 //安装环境类型。LocalDevelopment storge用于使用本地模拟器。对于服务器开发，我们将其映射到开发存储帐户。
 //未来：我们确实应该考虑在这里应用一些控制概念的反转。这也将帮助我们进行更好的测试。
-let newUserTableSettings = StorageConfig_mongo.getNewUserTableSettings();
-let userTable = new MultiUserTable(StorageConfig_mongo.getUserTableSettings(), newUserTableSettings, Config.readFromNewUserTable);
+let newUserTableSettings = StorageConfig.getNewUserTableSettings();
+let userTable = new MultiUserTable(StorageConfig.getUserTableSettings(), newUserTableSettings, Config.readFromNewUserTable);
 
 // newUserTable: Used for test paths, should switch to this when we remove the old table.
 //newUserTable：用于测试路径，在删除旧表时应该切换到这个位置。
 let newUserTable = new UserTable(newUserTableSettings);
-let siginTelemtryTable = new SignInTelemetryTable(StorageConfig_mongo.getTelemetryTableSettings());
+let siginTelemtryTable = new SignInTelemetryTable(StorageConfig.getTelemetryTableSettings());
 
-let receiptsTable = new ReceiptsTable(StorageConfig_mongo.getReceiptsTableSettings());
+let receiptsTable = new ReceiptsTable(StorageConfig.getReceiptsTableSettings());
 
 const appInsights = require("applicationinsights");
 let instrumentationKey : string = process.env.APPINSIGHTS_INSTRUMENTATIONKEY ? process.env.APPINSIGHTS_INSTRUMENTATIONKEY : 'a83286f4-84b8-44ea-9f10-b05513259137';

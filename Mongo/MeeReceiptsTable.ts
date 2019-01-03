@@ -1,5 +1,5 @@
 import {AzureTable, TableSetting, RetrievedEntity} from "./AzureTable"
-import { TableQuery } from 'azure-storage'
+//import { TableQuery } from 'azure-storage'
 
 /**
  * User Schema that is used to create the table. 用于创建表的用户架构
@@ -19,11 +19,13 @@ export class ReceiptsTable extends AzureTable<Receipt> {
     }
 
     public getAllWithTransactionId(transactionId: string) : Promise<Receipt[]> {
-        return this.queryEntities(new TableQuery().where('RowKey eq ?', transactionId));
+        //return this.queryEntities(new TableQuery().where('RowKey eq ?', transactionId));
+        return this.queryEntities({'RowKey':transactionId});
     }
 
     public getAllWithAnonimizedOid(anonimizedOid: string) : Promise<Receipt[]> {
-        return this.queryEntities(new TableQuery().where('PartitionKey eq ?', anonimizedOid));
+        //return this.queryEntities(new TableQuery().where('PartitionKey eq ?', anonimizedOid));
+        return this.queryEntities({'PartitionKey':anonimizedOid});
     }
 }
 

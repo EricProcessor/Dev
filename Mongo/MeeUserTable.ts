@@ -1,5 +1,5 @@
 import {AzureTable, TableSetting, RetrievedEntity }from "./AzureTable";
-import {TableQuery, TableService, TableUtilities} from 'azure-storage';
+//import {TableQuery, TableService, TableUtilities} from 'azure-storage';
 import {Guid} from './core/guid';
 import {UserID} from "./AAD";
 import {Config} from "./Config";
@@ -107,14 +107,14 @@ export class UserTable extends AzureTable<User> {
     }
 
     public querybyUniqueName(unique_name: string) : Promise<User[]> {
-        let stringFilter = TableQuery.stringFilter('unique_name', TableUtilities.QueryComparisons.EQUAL, unique_name);
-        let query = (new TableQuery()).where(stringFilter);
-        return this.queryEntities(query);
+        // let stringFilter = TableQuery.stringFilter('unique_name', TableUtilities.QueryComparisons.EQUAL, unique_name);
+        // let query = (new TableQuery()).where(stringFilter);
+        return this.queryEntities({'unique_name':unique_name});
     }
  
     public queryAllUsers() : Promise<User[]> {
-        let query = new TableQuery();
-        return this.queryEntities(query);
+        //let query = new TableQuery();
+        return this.queryEntities({});
     }
 
     public get(userID: UserID) : Promise<RetrievedEntity<User>> {
