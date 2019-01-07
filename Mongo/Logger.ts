@@ -21,7 +21,7 @@ let DBurl = 'mongodb://127.0.0.1/';
         process.env.AZURE_STORAGE_ACCOUNT    || "meeservicesstorage",
         process.env.AZURE_STORAGE_ACCESS_KEY || "uGGiCXyOCwbFrYXQ4ga03X/C0TAQZTC/4vreChUEBtSDdbJI5FEHZAFlQUQJky6itOtZDMrjZ7FHkp6/D1hCZA==");
 */
-// const tableService = new mongodb.Server(DBurl, 27017, { auto_reconnect: true });//auto_reconnect: true 连接异常自动重连
+const tableService = new mongodb.Server(DBurl, 27017, { auto_reconnect: true });//auto_reconnect: true 连接异常自动重连
 //Environment.isProduction()（枚举类型父类方法）通过这个方法返回的ture或false
 const activityTableName = Environment.isProduction() ? "diagnosticlogs" : "stagingdiagnosticlogs";
 
@@ -86,7 +86,7 @@ export async function logActivity(action: string, tenantId: string, unique_name:
                 console.log(error);
                 return;
             }
-            let db = client.db('table');   /*获取db对象--表名*/
+            let db = client.db(tableService);   /*获取db对象--表名*/
             db.collection(activityTableName).insert(newActivity, (err) => {
                 if (err) {
                     console.log('增加失败');

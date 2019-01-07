@@ -28,6 +28,8 @@ if (Environment.isLocalDev() && useFiddler) {
 }
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
+
 app.set('port', process.env.PORT || 1337);
 app.use(express.static('public'));
 
@@ -188,6 +190,7 @@ app.post('/getuserguid', function getuserguid(req, res) {
         }
 
         let identity = AADIdentity.fromToken(req.body.identityToken);
+
         if (!identity) {
             throw Error("Invalid identity token");
         }
@@ -310,6 +313,8 @@ app.post('/eula', function eula(req, res) {
         res.send(JSON.stringify({ "isValid": false }));
     }
 });
+
+console.log("查看下当前的环境：  " + Environment.isProduction())
 
 if (!Environment.isProduction()) {
 

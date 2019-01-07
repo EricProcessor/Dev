@@ -7,11 +7,12 @@
 // RetryPolicyFilter, 重试策略筛选器
 
 //ErrorOrResult错误结果
-import {TableQuery, TableService, TableUtilities, createTableService, TableBatch, RetryPolicyFilter, ErrorOrResult} from "azure-storage";
+// import {TableQuery, TableService, TableUtilities, createTableService, TableBatch, RetryPolicyFilter, ErrorOrResult} from "azure-storage";
 import { EntityConverter } from "./core/entityConverter";   //实体转换
+// import { StorageConfig } from "./StorageConfig"     //引入配置文件
 //引入
 const MongoClient = require("mongodb").MongoClient
-let dbUrl:string = "mongodb://localhost:27017/itying"      //设置数据库的连接地址。路径后边表示  具体的连接的数据库的名称
+let dbUrl:string = "mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359"      //设置数据库的连接地址
 
 /*
     默认情况下，对于由Azure存储客户端库为Node.js新创建的服务实例，将不执行重试
