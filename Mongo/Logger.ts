@@ -10,7 +10,7 @@ const logInDeveloperMode: boolean = true;
 const uuid = require("uuid");
 let mongodb = require('mongodb');
 let MongoClient = mongodb.MongoClient;
-let DBurl = 'mongodb://127.0.0.1/';
+let DBurl = 'mongodb://localhost:27017/';
 
 /*
     Azure 模块读取环境变量 AZURE_STORAGE_ACCOUNT 和 AZURE_STORAGE_ACCESS_KEY 
@@ -71,7 +71,7 @@ export async function logActivity(action: string, tenantId: string, unique_name:
         }
         // log diagnostic info to Azure  诊断日志存在Azure
         let dt = new Date();
-
+        let startTime = Date.now();
         let newActivity = {
             "PartitionKey": (dt.toISOString().substring(0, 10)).toString(),
             "RowKey": (uuid.v4().toString()).toString(),
@@ -85,15 +85,26 @@ export async function logActivity(action: string, tenantId: string, unique_name:
                 console.log(error);
                 return;
             }
-            let db = client.db('table');   /*获取db对象--表名*/
+            let db = client.db('Table');   /*获取db对象--表名*/
             db.collection(activityTableName).insert(newActivity, (err) => {
                 if (err) {
-                    console.log('增加失败');
                     return false;
                 }
-                console.log('增加成功');
+                let duration = Date.now() - startTime;
+                MEEServices.trackDependency("meetelemetry", "insertEntity", duration, true);
+                try {
+                    if (error) {
+                        throw error;
+                    }
+                    else {
+                        resolve();
+                    }
+                }catch (err) {
+                    err['entity'] = newActivity;
+                    reject(err);
+                }
+                db.close();  /*关闭数据库*/
             });
-            client.close();  /*关闭数据库*/
         });
         // let startTime = Date.now();
         // tableService.insertEntity(activityTableName, newActivity, function (error, result, response) {
