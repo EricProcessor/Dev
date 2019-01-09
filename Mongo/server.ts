@@ -30,7 +30,7 @@ if (Environment.isLocalDev() && useFiddler) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.set('port', process.env.PORT || 1337);
+app.set('port', process.env.PORT || 3033);
 app.use(express.static('public'));
 
 
