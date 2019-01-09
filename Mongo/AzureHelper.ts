@@ -60,11 +60,11 @@ let receiptsTableService;
 
 if (Config.useLocalEmulator) {
     console.log('Using local emulator');
-    tableService = new mongodb.Server(userStorageTable.connectionString);
+    tableService = userStorageTable.connectionString;
     //用户数据表设置存储位置
-    telemetryTableService = new mongodb.Server(telemetryTable.connectionString);
+    telemetryTableService = telemetryTable.connectionString;
 
-    receiptsTableService = new mongodb.Server(receiptsTable.connectionString);
+    receiptsTableService = receiptsTable.connectionString;
 }
 else {
     //在使用Storage SDK时，必须为存储帐户提供要使用的连接信息   
