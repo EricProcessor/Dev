@@ -24,7 +24,7 @@ export interface StorageAccountSettings {
     accessKey:string;       //访问密钥
     accountName:string;     //账户名称
     connectionString:string;        //连接地址
-    retryPolicy: RetryPolicyFilter.IRetryPolicy;        //重试策略
+    retryPolicy: any;        //重试策略
 }
 //定义Table表设置接口参数
 export interface TableSetting extends StorageAccountSettings {
@@ -39,10 +39,10 @@ export interface RetrievedEntity<T> {
     entity: T;
 }
 //定义TableService接口泛型
-export class AzureTableService<T> {
-    settings: T;
-    service: TableServiceAsync;
-}
+// export class AzureTableService<T> {
+//     settings: T;
+//     service: TableServiceAsync;
+// }
 
 /**
 * EntityResolver is used by Azure Storage retrival to convert the entity. It should be of type format: (entityResult: Object) => Object
@@ -80,13 +80,13 @@ function defaultEntityResolver(en: any) {
 */
 //模板有个小问题，因为typescript不支持多个继承
 export class AzureTable<Model> { // Slight template hack as typescript doesn't support multiple inheritances.
-    protected service: TableServiceAsync;
-    protected readonly setting:TableSetting;    //table表接口设置
+    // protected service: TableServiceAsync;
+    protected readonly setting;    //table表接口设置
     protected entityResolver;
 
-    protected checkedTables: { [name: string]: Promise<TableService.TableResult>; } = {};   //检查表是否存在
+    // protected checkedTables: { [name: string]: Promise<T>; } = {};   //检查表是否存在
 
-    constructor(setting:TableSetting) {     //传入表的设置对象
+    constructor(setting) {     //传入表的设置对象
         if (!setting.rowKeyName || (setting.rowKeyName.length == 0) || !setting.partitionKeyName || (setting.rowKeyName.length == 0)) {
             //抛错：必须定义 PartitionKeyName 和 RowKeyName
             throw new Error('PartitionKeyName & RowKeyName must be defined');
@@ -106,7 +106,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
         //上面处理后，this.service接收一个  新的table服务客户端对象
 
         if (this.setting.retryPolicy) {     //重试策略
-            this.service.withFilter(this.setting.retryPolicy);
+            // this.service.withFilter(this.setting.retryPolicy);
         }
 
         this.entityResolver = this.setting.entityResolver || defaultEntityResolver;
@@ -136,29 +136,29 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
         return Object.is(rowKey, undefined) ? model[this.setting.rowKeyName] : rowKey;
     }
     //检索实体（不知道怎么处理）
-    public retrieve(model: Model, rowKey: string = undefined) : Promise<RetrievedEntity<Model>> {
-        let retrievedEntity : RetrievedEntity<Model> = {} as any;
-        return this.ensureTable()
-            .then((created) => {
-                let options: TableService.TableEntityRequestOptions = {} as any;
-                options.entityResolver = this.entityResolver;
-                return this.service.retrieveEntityAsync<Model>(this.setting.tableName, model[this.setting.partitionKeyName], rowKey || model[this.setting.rowKeyName], options)
-                .then((result) => {                 
-                    retrievedEntity.entity = result as Model;
-                    retrievedEntity.exists = true;
-                },
-                (error) => {
-                    if (error.statusCode === 404) {
-                        retrievedEntity.exists = false;
-                        return;
-                    }
-                    else {
-                        console.log("Retrieve User Error:" + error);
-                        throw error;
-                    }
-                });
-       }).then(result => retrievedEntity);
-    }
+    // public retrieve(model: Model, rowKey: string = undefined) : Promise<RetrievedEntity<Model>> {
+    //     let retrievedEntity : RetrievedEntity<Model> = {} as any;
+    //     return this.ensureTable()
+    //         .then((created) => {
+    //             let options: any;
+    //             options.entityResolver = this.entityResolver;
+    //             // return this.service.retrieveEntityAsync<Model>(this.setting.tableName, model[this.setting.partitionKeyName], rowKey || model[this.setting.rowKeyName], options)
+    //             .then((result) => {                 
+    //                 retrievedEntity.entity = result as Model;
+    //                 retrievedEntity.exists = true;
+    //             },
+    //             (error) => {
+    //                 if (error.statusCode === 404) {
+    //                     retrievedEntity.exists = false;
+    //                     return;
+    //                 }
+    //                 else {
+    //                     console.log("Retrieve User Error:" + error);
+    //                     throw error;
+    //                 }
+    //             });
+    //    }).then(result => retrievedEntity);
+    // }
 
     /**
      * Trys to insert or merge an entity into the table. Values that are undefined will not be replaced for existing entities.
@@ -170,7 +170,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
     *注意：所有数字值都将设置为Int32
     *@param模型将被插入的实体。
     */
-    public insertOrMerge(model: Model, rowKey: string = undefined) : Promise<void> {
+    public insertOrMerge(model: Model, rowKey: string = undefined) {
         const entity = EntityConverter.convertToEntity(model[this.setting.partitionKeyName], this.getRowKey(rowKey, model), model, true);
         const _this = this
         //开始像Mongodb中插入数据
@@ -217,7 +217,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
     *@param rowKey可选rowKey值，该值将覆盖默认值。
     */
    //插入或替换方法
-    public insertOrReplace(model: Model, rowKey: string = undefined) : Promise<void> {
+    public insertOrReplace(model: Model, rowKey: string = undefined) {
         const _this = this
         const entity = EntityConverter.convertToEntity(model[this.setting.partitionKeyName], this.getRowKey(rowKey, model), model, false);
         MongoClient.connect(dbUrl, (err, db) => {
@@ -251,7 +251,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
         //         });        
     }
     //删除某个数据的方法
-    public delete(model: Model, rowKey: string = undefined) : Promise<void> {
+    public delete(model: Model, rowKey: string = undefined) {
         const _this = this
         const entity = EntityConverter.convertToEntity(model[this.setting.partitionKeyName], this.getRowKey(rowKey, model), {}, true);
         MongoClient.connect(dbUrl, (err, db) => {
@@ -285,7 +285,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
         //         });
     }
     //删除某个表
-    public deleteTable() : Promise<boolean> {
+    public deleteTable() {
         MongoClient.connect(dbUrl, (err, db) => {
             if (err) {
                 console.log(err)
@@ -319,7 +319,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
     *重试逻辑的形式。
     **/
     //批量数据插入
-    public batchInsertEntity(models :Model[], ignoreUndefined: boolean = false) : Promise<void> {
+    public batchInsertEntity(models :Model[], ignoreUndefined: boolean = false) {
         MongoClient.connect(dbUrl, (err, db) => {
             if (err) {
                 console.log(err)
@@ -353,7 +353,7 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
     }
 
     //查询到结束
-    private queryTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, array: Model[], resolve, reject) {
+    private queryTillEnd(query, currentToken, array: Model[], resolve, reject) {
         //查询操作
         MongoClient.connect(dbUrl, (err, db) => {
             if (err) {
@@ -380,33 +380,34 @@ export class AzureTable<Model> { // Slight template hack as typescript doesn't s
         // });
     }
     //查询操作
-    public query(tableQuery: TableQuery, currentToken: TableService.TableContinuationToken, callback: ErrorOrResult<TableService.QueryEntitiesResult<Model>>)
+    public query(tableQuery, currentToken, callback)
     {
-        return this.service.queryEntities(this.setting.tableName, tableQuery, currentToken, callback);
+        return this.queryEntities(this.setting.tableName);
+        // return this.queryEntities(this.setting.tableName, tableQuery, currentToken, callback);
     }
     //查询实体（内容）
-    public queryEntities(query: TableQuery) {
+    public queryEntities(query) {
         return new Promise<Model[]>((resolve, reject) => {
             this.queryTillEnd(query, null, [], resolve, reject);
         });
     }
 }
 //定义接口
-interface TableServiceAsync extends TableService {
-	//检测表是否存在
-    createTableIfNotExistsAsync(table: string): Promise<TableService.TableResult>;
-    //表如果存在执行删除
-    deleteTableIfExistsAsync(table: string): Promise<boolean>;
-    //获取刚刚插入的实体
-    retrieveEntityAsync<T>(table: string, partitionKey: string, rowKey: string, options: TableService.TableEntityRequestOptions): Promise<T>;
-    //更新操作
-    replaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<TableService.EntityMetadata>;
-    //插入操作
-    insertOrReplaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<TableService.EntityMetadata>;
-    //删除操作
-    deleteEntityAsync<T>(table: string, entityDescriptor: T): Promise<void>;
-    //执行批量处理
-    executeBatchAsync<T>(table: string, tableBatch: TableBatch): Promise<void>;
-    //插入合并操作
-    insertOrMergeAsync<T>(table: string, entityDescriptor: T): Promise<void>;
-}
+// interface TableServiceAsync extends TableService {
+// 	//检测表是否存在
+//     createTableIfNotExistsAsync(table: string): Promise<TableService.TableResult>;
+//     //表如果存在执行删除
+//     deleteTableIfExistsAsync(table: string): Promise<boolean>;
+//     //获取刚刚插入的实体
+//     retrieveEntityAsync<T>(table: string, partitionKey: string, rowKey: string, options: TableService.TableEntityRequestOptions): Promise<T>;
+//     //更新操作
+//     replaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<TableService.EntityMetadata>;
+//     //插入操作
+//     insertOrReplaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<TableService.EntityMetadata>;
+//     //删除操作
+//     deleteEntityAsync<T>(table: string, entityDescriptor: T): Promise<void>;
+//     //执行批量处理
+//     executeBatchAsync<T>(table: string, tableBatch: TableBatch): Promise<void>;
+//     //插入合并操作
+//     insertOrMergeAsync<T>(table: string, entityDescriptor: T): Promise<void>;
+// }

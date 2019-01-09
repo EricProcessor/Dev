@@ -1,6 +1,6 @@
 import {AzureTable, TableSetting, RetrievedEntity }from "../AzureTable"
 import {User, UserTable} from "../MeeUserTable"
-import {TableQuery, TableService} from 'azure-storage'
+// import {TableQuery, TableService} from 'azure-storage'
 import {Guid} from '../core/guid'
 import {Config} from "../Config"
 import { EntityConverter } from "../core/entityConverter";
@@ -119,7 +119,7 @@ export class UserCopy {
         }
     }
 
-    public async copyTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, resolve, reject) {
+    public async copyTillEnd(query, currentToken, resolve, reject) {
         // Query will return 1000 entities at a time
         this.originalTable.query(query, currentToken, (error, result, response) =>  this.handleQuery(error, result, response, query, resolve, reject));
     }

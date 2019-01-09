@@ -30,7 +30,7 @@ if (Environment.isLocalDev() && useFiddler) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.set('port', process.env.PORT || 3033);
+app.set('port', process.env.PORT || 1337);
 app.use(express.static('public'));
 
 
@@ -317,7 +317,7 @@ app.post('/eula', function eula(req, res) {
 console.log("查看下当前的环境：  " + Environment.isProduction())
 
 if (!Environment.isProduction()) {
-
+    console.log("进入本地环境路由")
     // this section is testing endpoints
     app.get('/logexception', function logexception(req, res) {
         res.type('text/plain');
