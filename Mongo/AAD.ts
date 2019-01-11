@@ -210,6 +210,7 @@ export function getCertThumbprint(): string {
 }
 //获得证书密钥
 export function getCertPrivateKey(): string {//readFileSync同步读取文件，readFile为异步读取文件
+    console.log(Environment.isLocalDev());
     let key: string = Environment.isLocalDev() ? String(fs.readFileSync('private.pem')) : process.env.CERT_PRIVATE_KEY;
     return Utilities.replacePipesWithLineFeeds(key);
 }

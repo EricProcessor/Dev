@@ -55,7 +55,7 @@ app.post("/signin", function (req, res) {
     console.log("进入signin");
     console.log("数据库地址"+dbUrl);
     console.log(req);
-    console.log(req.body+"----"+req.body.access_token);
+    console.log(req.body);
     if(req.body && req.body.access_token){
         let userInfoStr = JSON.stringify(req.body);
         let userInfoJson = JSON.parse(userInfoStr);
@@ -70,6 +70,10 @@ app.post("/signin", function (req, res) {
                     console.log(err);
                     return;
                 }
+                //插入时间戳
+                userInfoJson.timestamp = (new Date()).getTime();
+                //用户状态
+                userInfoJson.status = 0;
                 // 连接成功后，进行 添加数据
                 db.collection("Users").insertOne(userInfoJson, (error, result) => {
                     if (error) {
@@ -80,26 +84,28 @@ app.post("/signin", function (req, res) {
                     var getB2BToken = jwt.sign(userInfoStr, getCertPrivateKey(), { algorithm: 'RS256', 'header': { 'x5t': getCertThumbprint() } });
                     console.log(getB2BToken);
                     client.close();
-                    request(
-                        {
-                          url: `http://116.196.92.36:8081/getB2BToken`,
-                          method: "POST",
-                          json: true,
-                          body: {
-                              "accessToken":getB2BToken
-                          }
-                        },function (error, response){
-                            if (!error && response.statusCode == 200) {
-                                console.log("发送B2BToken成功")
-                            }
-                        }
-                    )
+                    // request(
+                    //     {
+                    //       url: `http://116.196.92.36:8081/getB2BToken`,
+                    //       method: "POST",
+                    //       json: true,
+                    //       body: {
+                    //           "accessToken":getB2BToken
+                    //       }
+                    //     },function (error, response){
+                    //         if (!error && response.statusCode == 200) {
+                    //             console.log("发送B2BToken成功");
+                    //             //res.send(JSON.stringify({ "accessToken": getB2BToken }));
+                    //         }
+                    //     }
+                    // )
+                    res.send(JSON.stringify({ "accessToken":getB2BToken,"success": "成功", "status" : "0000" }));
                     return;
                 });
             }
         );
     }
-    res.send(JSON.stringify({ statusCode: 200, success : "成功"}));
+    
 })
 // -------------------------------------------------
 app.post("/cmsignin", function cmsignin(req, res) {
