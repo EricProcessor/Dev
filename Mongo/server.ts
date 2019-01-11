@@ -10,10 +10,14 @@ import * as Utilities from "./utilities";
 import { Environment, EnvironmentType } from "./core/environment";
 import { UserTable } from "./MeeUserTable";
 import { Config } from "./Config";
-
+const uuid = require('uuid');
 // import { request } from 'https';
 const MongoClient = require("mongodb").MongoClient;
 const jwt = require("jsonwebtoken");
+var options = {  
+    auto_reconnect: true,
+    useNewUrlParser:true
+};
 // let devlop = true;
 // let dbUrl: string = Environment.isProduction()
 //     ? "mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359"
@@ -54,54 +58,82 @@ app.post("/signin", function (req, res) {
     res.type("application/json");
     console.log("进入signin");
     console.log("数据库地址"+dbUrl);
-    console.log(req);
     console.log(req.body);
     if(req.body && req.body.access_token){
         let userInfoStr = JSON.stringify(req.body);
         let userInfoJson = JSON.parse(userInfoStr);
         //col.update(key, data, {upsert:true})
         MongoClient.connect(
-            dbUrl,
-            { useNewUrlParser: true },
+            dbUrl,options,
             (err, client) => {
                 const db = client.db("Table");
                 console.log("数据库地址" + dbUrl);
                 if (err) {
                     console.log(err);
                     return;
-                }
+                };
                 //插入时间戳
                 userInfoJson.timestamp = (new Date()).getTime();
                 //用户状态
                 userInfoJson.status = 0;
                 // 连接成功后，进行 添加数据
-                db.collection("Users").insertOne(userInfoJson, (error, result) => {
-                    if (error) {
+                // 查重后添加数据
+                let userId = userInfoJson.userid;
+                
+                db.collection("Users").findOne({"userid": userId},(error, items)=>{
+                    if(error){
                         console.log(error);
                         return;
                     }
-                    console.log("插入数据成功" + userInfoStr);
-                    var getB2BToken = jwt.sign(userInfoStr, getCertPrivateKey(), { algorithm: 'RS256', 'header': { 'x5t': getCertThumbprint() } });
-                    console.log(getB2BToken);
+
+                    console.log("这里的是items，看看有没有值：" + JSON.stringify(items))
+
+                    if(!items){
+                        //新用户执行插入操作
+                        userInfoJson.userid = userId;
+                        userInfoJson.aud = "https://meeservices.minecraft.net";
+                        userInfoJson.iss = "https://sts.windows.net/38dd6634-1931-4c59-a9b4-d16cd9d97d57/";
+                        userInfoJson.iat = "1546998515";
+                        userInfoJson.nbf = "1546998515";
+                        userInfoJson.exp = "1546998515";
+                        userInfoJson.acr = "1";
+                        userInfoJson.aio = "421AApF60RfBj7soft180FF3uVVO1P";
+                        userInfoJson.appid = "b36b1432-1a1c-4c82-9b76-24de1cab42f2";
+                        userInfoJson.amr = ["pwd"];
+                        userInfoJson.appidacr = "0";
+                        userInfoJson.deviceid = "ce84205d-7de2-4a75-83a8-4f7abe80f67c";
+                        userInfoJson.family_name = "フラグ";
+                        userInfoJson.given_name = "ブラック";
+                        userInfoJson.ipaddr = "167.220.2.189";
+                        userInfoJson.name = "Tラックフラグ";
+                        userInfoJson.oid = uuid.v1();
+                        userInfoJson.puid = "10037FFE9995AD69";
+                        userInfoJson.scp = "user_impersonation";
+                        userInfoJson.sub = "t6aAd90jCLrex51aabS4Zqyf8_aSpHxTuB9B9jpvpL8";
+                        userInfoJson.tid = "38dd6634-1931-4c50-a9b4-d16cd9d97d57";
+                        userInfoJson.unique_name = "stu15@usmie.com";
+                        userInfoJson.upn = "stu15 @usmie.com";
+                        userInfoJson.uti = "R74NFhfd0EWX9wTPhaQLAA";
+                        userInfoJson.ver = "1.0";
+                        console.log("这里的是userInfoJson: " + JSON.stringify(userInfoJson))
+                        db.collection("Users").insertOne(userInfoJson, (error, data) => {
+                            if (error) {
+                                console.log(error);
+                                return;
+                            }
+                            console.log("插入数据成功111" + JSON.stringify(userInfoJson));
+                        });
+                    }else{
+                         //存在的用户执行查询getUserInfo
+                         userInfoJson = queryMongodb(userId,db);
+                    }
                     client.close();
-                    // request(
-                    //     {
-                    //       url: `http://116.196.92.36:8081/getB2BToken`,
-                    //       method: "POST",
-                    //       json: true,
-                    //       body: {
-                    //           "accessToken":getB2BToken
-                    //       }
-                    //     },function (error, response){
-                    //         if (!error && response.statusCode == 200) {
-                    //             console.log("发送B2BToken成功");
-                    //             //res.send(JSON.stringify({ "accessToken": getB2BToken }));
-                    //         }
-                    //     }
-                    // )
-                    res.send(JSON.stringify({ "accessToken":getB2BToken,"success": "成功", "status" : "0000" }));
-                    return;
-                });
+                })
+                var getB2BToken = jwt.sign(userInfoJson, getCertPrivateKey(), { algorithm: 'RS256', 'header': { 'x5t': getCertThumbprint() } });
+                console.log(getB2BToken);
+                res.send(JSON.stringify({ "accessToken":getB2BToken, "status" : "0000" }));
+                return;
+                
             }
         );
     }
@@ -352,15 +384,44 @@ if (!Environment.isProduction()) {
     // e.g.  http://localhost:1337/getUserInfo?id=markgrin@microsoft.com
     app.get("/getUserInfo", function getUserInfo(req, res) {
         res.type("application/json");
-        logActivity("getUserInfo", "", "", req.query.id);
-        MEEServices.getUserInfo(res, req.query.id);
+        // logActivity("getUserInfo", "", "", req.query.id);
+        // MEEServices.getUserInfo(res, req.query.id);
+        let userid = req.query.userid;
+        console.log(userid);
+        MongoClient.connect(dbUrl,options,
+            (err, client) => {
+                const db = client.db("Table");
+                console.log("数据库地址" + dbUrl);
+                if (err) {
+                    console.log(err);
+                    return;
+                };
+                let userInfo = queryMongodb(userid-0,db);
+                console.log("userInfo"+userInfo);
+                res.send(JSON.stringify({ "userInfo":userInfo, "status" : "0000" }));
+                client.close();
+            }
+        );
     });
 
     // e.g.  http://meeservices-staging/deleteUser?id=markgrin@microsoft.com
     app.get("/deleteUser", function deleteUser(req, res) {
         res.type("application/json");
-        logActivity("deleteUser", "", "", req.query.id);
-        MEEServices.deleteUser(res, req.query.id);
+        // logActivity("deleteUser", "", "", req.query.id);
+        // MEEServices.deleteUser(res, req.query.id);
+        let userId = req.query.userid;
+        MongoClient.connect(dbUrl, options, (err, client) => {
+            const db = client.db("Table");
+            db.collection("Users").deleteMany({ "userid": userId-0 }, (error) => {
+                if (error) {
+                    console.log("删除数据失败")
+                    return
+                }
+                console.log("删除数据成功！");
+                db.close();
+                res.send(JSON.stringify({ "status" : "0000" ,"msg" : "删除数据成功" }));
+            })
+        });
     });
 
     // e.g.  http://localhost:1337/setTrialCounts?id=markgrin@microsoft.com&trialsAllowed=22&trialsUsed=3
@@ -451,3 +512,18 @@ app.use(<express.ErrorRequestHandler>function (err, req, res, next) {
 app.listen(app.get("port"), function () {
     console.log("Express start on port " + app.get("port") + "...");
 });
+
+function queryMongodb(userId,db){
+    console.log(userId);
+    db.collection("Users").findOne({"userid": userId},(error, items)=>{
+        if(error){
+            console.log(error);
+            return;
+        }
+        // items.toArray(function(err,item){
+        //     return JSON.stringify(item);
+        // });
+        console.log("查询数据1111"+JSON.stringify(items));
+        return JSON.stringify(items);
+    })
+}
