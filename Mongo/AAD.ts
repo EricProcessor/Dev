@@ -178,7 +178,6 @@ export async function getOnBehalfOfToken(user: UserID, requestedAudience: string
                     success = true;
                     MEEServices.trackDependency("graph", "getOnBehalfOfToken", duration, success);
 
-
                     if (!error) {
                         let bodyObj = JSON.parse(body);
 
