@@ -200,7 +200,7 @@ export async function getOnBehalfOfToken(user: UserID, requestedAudience: string
     });
 }
 //获取指纹
-function getCertThumbprint(): string {
+export function getCertThumbprint(): string {
     if (Environment.isProduction() || Environment.isStaging()) {
         return process.env.CERT_THUMBPRINT;
     }
@@ -210,7 +210,7 @@ function getCertThumbprint(): string {
 
 }
 //获得证书密钥
-function getCertPrivateKey(): string {//readFileSync同步读取文件，readFile为异步读取文件
-    let key: string = Environment.isLocalDev() ? String(fs.readFileSync('server.key')) : process.env.CERT_PRIVATE_KEY;
+export function getCertPrivateKey(): string {//readFileSync同步读取文件，readFile为异步读取文件
+    let key: string = Environment.isLocalDev() ? String(fs.readFileSync('private.pem')) : process.env.CERT_PRIVATE_KEY;
     return Utilities.replacePipesWithLineFeeds(key);
 }
