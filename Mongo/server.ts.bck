@@ -1,0 +1,573 @@
+import express = require("express");
+//import * as express from "express";
+import * as bodyParser from "body-parser";
+import { AADIdentity } from "./AADTokens";
+import { UserID } from "./AAD";
+import { getOnBehalfOfToken, getCertPrivateKey, getCertThumbprint } from "./AAD";
+import { logActivity, logActivityVerbose } from "./Logger";
+import * as MEEServices from "./MEEServices";
+import * as Utilities from "./utilities";
+import { Environment, EnvironmentType } from "./core/environment";
+import { UserTable } from "./MeeUserTable";
+import { Config } from "./Config";
+const uuid = require('uuid');
+// import { request } from 'https';
+const MongoClient = require("mongodb").MongoClient;
+const jwt = require("jsonwebtoken");
+var options = {  
+    auto_reconnect: true,
+    useNewUrlParser:true,
+    poolSize: 20
+};
+// let devlop = true;
+// let dbUrl: string = Environment.isProduction()
+//     ? "mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359"
+//     : "mongodb://127.0.0.1:27017"; //设置数据库的连接地址
+let dbUrl: string = "mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359";
+const moment = require("moment");
+const request = require("request");
+
+const version_edu_evaluation = 65596;
+const version_edu_earlyaccess = 65598;
+const version_codebuilder_beta = 110;
+
+const app = express();
+
+const useFiddler = false;
+
+if (Environment.isLocalDev() && useFiddler) {
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0"; // Ignore 'UNABLE_TO_VERIFY_LEAF_SIGNATURE' authorization error
+    process.env["HTTP_PROXY"] = "http://127.0.0.1:8888";
+    process.env["HTTPS_PROXY"] = "http://127.0.0.1:8888";
+}
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.set("port", process.env.PORT || 1337);
+app.use(express.static("public"));
+
+// -------------------------------------------------
+app.get("/", function root(req, res) {
+    res.type("text/plain");
+    res.send("Hello, This is a License Server for MEE!");
+    // res.end('<form action="http://116.196.92.36/oauth" method="post"><input type="text" style="width: 300px; height: 30px; line-height: 30px;" name="username" placeholder="用户名"><br><br><input type="password" style="width: 300px; height: 30px; line-height: 30px;"  name="password" placeholder="密　码"><br><br><input type="submit" style="width: 100px; height: 30px; text-align: center; line-height: 30px;" value="登录" /></form>')
+    //res.redirect("http://116.196.92.36/oauth")/
+});
+//--------signin接口，负责接收--------
+app.post("/signin", function (req, res) {
+    res.type("application/json");
+    console.log("进入signin");
+    console.log("数据库地址"+dbUrl);
+    console.log(req.body);
+    if(req.body && req.body.access_token){
+        let userInfoStr = JSON.stringify(req.body);
+        let userInfoJson = JSON.parse(userInfoStr);
+        //col.update(key, data, {upsert:true})
+        MongoClient.connect(
+            dbUrl,options,
+            (err, client) => {
+                const db = client.db("Table");
+                console.log("数据库地址" + dbUrl);
+                if (err) {
+                    console.log(err);
+                    return;
+                };
+                //插入时间戳
+                userInfoJson.timestamp = (new Date()).getTime();
+                // 连接成功后，进行 添加数据
+                // 查重后添加数据（这里是用 传过来的数据account来当做唯一的标识来 查找数据）
+                let account = userInfoJson.account;
+                let access_token = userInfoJson.access_token;
+                
+                db.collection("Users").findOne({"unique_name": account},(error, items)=>{
+                    if(error){
+                        console.log(error);
+                        return;
+                    }
+                    if(!items){
+                        let attributeObj = {
+                                            "aud":"https://meeservices.minecraft.net",
+                                            "iss": "https://sts.windows.net/38dd6634-1931-4c59-a9b4-d16cd9d97d57/",
+                                            "iat": "1546998515",
+                                            "nbf": "1546998515",
+                                            "exp": "1546998515",
+                                            "acr": "1",
+                                            "aio": "421AApF60RfBj7soft180FF3uVVO1P",
+                                            "appid": "b36b1432-1a1c-4c82-9b76-24de1cab42f2",
+                                            "amr": ["pwd"],
+                                            "appidacr": "0",
+                                            "deviceid": "ce84205d-7de2-4a75-83a8-4f7abe80f67c",
+                                            "family_name": "家庭姓名",
+                                            "given_name": "随机姓名",
+                                            "ipaddr": "167.220.2.189",
+                                            "oid": uuid.v1(),
+                                            "puid": "10037FFE9995AD69",
+                                            "scp": "user_impersonation",
+                                            "sub": "t6aAd90jCLrex51aabS4Zqyf8_aSpHxTuB9B9jpvpL8",
+                                            "tid": "38dd6634-1931-4c50-a9b4-d16cd9d97d57",
+                                            "unique_name": account,
+                                            "upn": account,
+                                            "uti": "R74NFhfd0EWX9wTPhaQLAA",
+                                            "ver": "1.0",
+                                            "timestamp": new Date().getTime()
+                                            }
+                        for (var attr in attributeObj) {
+                            userInfoJson[attr] || (userInfoJson[attr] = attributeObj[attr])
+                        }
+                        db.collection("Users").insertOne(userInfoJson, (error, data) => {
+                            if (error) {
+                                console.log(error);
+                                return;
+                            }
+                            delete userInfoJson._id    //删除"_id"属性。不需要
+                            var getB2BToken = jwt.sign(userInfoJson, getCertPrivateKey(), { algorithm: 'RS256', 'header': { 'x5t': getCertThumbprint() } });
+                                console.log(getB2BToken);
+                                res.send(JSON.stringify({ "accessToken":getB2BToken, "status" : "0000" }));
+                                return;
+                        });
+                    }else{
+                        //存在的用户执行查询getUserInfo
+                        let nowTime = new Date().getTime()
+                        db.collection("Users").updateOne({"unique_name": account}, {$set: {
+                                "access_token": access_token,
+                                "timestamp": nowTime
+                            }
+                        }, (error, msg) => {
+                            if (error) {
+                                console.log(error);
+                                return;
+                            }
+                            items.access_token = access_token; //更新unique_name为account
+                            items.timestamp = nowTime; //更新timestamp为当前时间戳
+                            delete items._id    //删除"_id"属性。不需要
+                            var getB2BToken = jwt.sign(items, getCertPrivateKey(), { algorithm: 'RS256', 'header': { 'x5t': getCertThumbprint() } });
+                            console.log(getB2BToken);
+                            res.send(JSON.stringify({ "accessToken": getB2BToken, "status": "0000", "name": "这个" }));
+                        });
+                    }
+                    client.close();
+                }) 
+            }
+        );
+    }
+})
+// -------------------------------------------------
+app.post("/cmsignin", function cmsignin(req, res) {
+    // called by classroom mode
+    res.type("application/json");
+
+    try {
+        if (
+            !(
+                (req.body && req.body.accessToken && req.body.identityToken && true) ||
+                false
+            )
+        ) {
+            throw Error("Invalid post data");
+        }
+
+        let identity = AADIdentity.fromToken(req.body.identityToken);
+        if (!identity) {
+            throw Error("Invalid identity token");
+        }
+
+        logActivity("cmsignin", identity.tenantId, identity.uniqueName, req.body);
+
+        if (identity.expirationDate < new Date()) {
+            throw Error(
+                `Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`
+            );
+        }
+
+        let user = new UserID(
+            identity.tenantId,
+            identity.uniqueName,
+            identity.userName,
+            identity.name,
+            identity.oid,
+            req.body.accessToken
+        );
+        user.clientApplication = "ClassroomMode";
+        user.clientDisplayVersion = req.body.applicationVersion;
+        user.osVersion = req.body.osVersion;
+        MEEServices.classroomModeSignin(res, user);
+    } catch (error) {
+        logActivity("/cmsignin", "#error", error.message, req.body);
+        MEEServices.trackException(error);
+        res.send(JSON.stringify({ isValid: false }));
+    }
+});
+
+// -------------------------------------------------
+app.post("/getuserguid", function getuserguid(req, res) {
+    // called by classroom mode
+    res.type("application/json");
+
+    try {
+        if (
+            !(
+                (req.body && req.body.accessToken && req.body.identityToken && true) ||
+                false
+            )
+        ) {
+            throw Error("Invalid post data");
+        }
+
+        let identity = AADIdentity.fromToken(req.body.identityToken);
+
+        if (!identity) {
+            throw Error("Invalid identity token");
+        }
+
+        if (identity.expirationDate < new Date()) {
+            throw Error(
+                `Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`
+            );
+        }
+
+        logActivity(
+            "getuserguid",
+            identity.tenantId,
+            identity.uniqueName,
+            req.body
+        );
+
+        let user = new UserID(
+            identity.tenantId,
+            identity.uniqueName,
+            identity.userName,
+            identity.name,
+            identity.oid,
+            req.body.accessToken
+        );
+
+        MEEServices.registerUserGuid(res, user, req.body.ipAddress);
+        logActivity(
+            "getuserguid-success",
+            identity.tenantId,
+            identity.uniqueName,
+            req.body
+        );
+    } catch (error) {
+        logActivity("/getuserguid", "#error", error.message, req.body);
+        MEEServices.trackException(error);
+        res.send(JSON.stringify({ isValid: false }));
+    }
+});
+
+// -------------------------------------------------
+app.post("/validateuserguid", function validateuserguid(req, res) {
+    res.type("application/json");
+    // called by mc client in cm scenario
+
+    try {
+        if (!((req.body && req.body.guid && true) || false)) {
+            throw Error("Invalid post data");
+        }
+
+        logActivity("validateuserguid", "", "", req.body);
+
+        MEEServices.validateUserGuid(res, req.body.guid);
+        logActivity("validateuserguid", "", "", req.body);
+    } catch (error) {
+        logActivity("/validateuserguid", "#error", error.message, req.body);
+        MEEServices.trackException(error);
+        res.send(JSON.stringify({ isValid: false }));
+    }
+});
+
+// -------------------------------------------------
+app.post("/skin", function skin(req, res) {
+    res.type("application/json");
+    console.log("进入skin接口");
+    let identityToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IndVTG1ZZnNxZFF1V3RWXy1oeFZ0REpKWk00USIsImtpZCI6IndVTG1ZZnNxZFF1V3RWXy1oeFZ0REpKWk00USJ9.eyJhdWQiOiJodHRwczovL21lZXNlcnZpY2VzLm1pbmVjcmFmdC5uZXQiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8zOGRkNjYzNC0xMDMxLTRjNTAtYTliNC1kMTZjZDlkOTdkNTcvIiwiaWF0IjoxNTQzNjI2MDgxLCJuYmYiOjE1NDM2MjYwODEsImV4cCI6MTU0MzYyOTk4MSwiYWNyIjoiMSIsImFpbyI6IkFTUUEyLzhKQUFBQXZleTJxc2hVM29GbHpQcEtqTFhxcnhwZnJyMi9wbDVqczBaVzViZFJlU1U9IiwiYW1yIjpbInB3ZCJdLCJhcHBpZCI6ImIzNmIxNDMyLTFhMWMtNGM4Mi05Yjc2LTI0ZGUxY2FiNDJmMiIsImFwcGlkYWNyIjoiMCIsImRldmljZWlkIjoiODZiYzYwZjUtNzJiZS00YmVjLTgyMjMtNDQyOTk3MzM2ODI2IiwiZmFtaWx5X25hbWUiOiJNY0t1bmUiLCJnaXZlbl9uYW1lIjoiSmVmZiIsImlwYWRkciI6IjEzMS4xMDcuMTU5LjEyNiIsIm5hbWUiOiJKZWZmIE1jS3VuZSIsIm9pZCI6ImFkZDAwY2I2LWFjZWYtNDhiNi05MzczLWY5Y2MyYzNkZGRhNCIsInB1aWQiOiIxMDAzMDAwMEE1MkMzREU1Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoidEZNeS1pOE9TTVdlLXJNdDc4MUpJaFV6TmxrR3NJaXF1RmFsa2g2Um1HNCIsInRpZCI6IjM4ZGQ2NjM0LTEwMzEtNGM1MC1hOWI0LWQxNmNkOWQ5N2Q1NyIsInVuaXF1ZV9uYW1lIjoiSmVmZkB1c21pZS5jb20iLCJ1cG4iOiJKZWZmQHVzbWllLmNvbSIsInV0aSI6IkowMHYxWU9HdlVTNnVEeEM5M0FCQUEiLCJ2ZXIiOiIxLjAifQ.GQXZPWjoghRTdkHkU_niqfZ03IT3K0vpywjc5Coiu9_xWzcJz3yYOU28hOd9Unfwav0CGRy_AJoE8hW0xpZcJrKBtAamiqeALT3gVtQfP1iM1mZrXTN0aQyMF6WunZUL7VONyzNq_cd2SZb8fwKMMiSeUA7cBJzHaxXPUc-EwTSNVwlwoU_GCrrFoL8aEkudCrs-eR_oeuZmTm_8-Q0qmOPrNLXwnnHAGrUEMh-rxpzmpg4UjL8Ml49u2us1PFKHOdthUcVJHKX_8Brx4ipLV2hJnI_6i7kxyluN_plgj_-4qP1g_u3140blLc_Qrq3ApDe9N2E8-Pc_9OsIKhUC6Q";
+    let identity = AADIdentity.fromToken(identityToken);
+    res.send("identityToken:"+JSON.stringify(identity)+"req---body:"+req);
+    console.log(req);
+    /*
+        try {
+            if (
+                !((req.body &&req.body.clientVersion &&req.body.build &&req.body.identityToken &&req.body.skin &&true) ||false)
+            ) {
+                throw Error("Invalid post data");
+            }
+
+            let identity = AADIdentity.fromToken(req.body.identityToken);
+            if (!identity) {
+                throw Error("Invalid identity token");
+            }
+
+            if (identity.expirationDate < new Date()) {
+                let reason = "Expired identity token";
+                logActivity("skin", reason, "", req.body);
+                res.send(JSON.stringify({ isValid: false, reason: reason }));
+                return;
+            }
+
+            let user = new UserID(
+                identity.tenantId,
+                identity.uniqueName,
+                identity.userName,
+                identity.name,
+                identity.oid,
+                ""
+            );
+
+            let skin = req.body.skin;
+
+            logActivity("setSkin", user.tenantId, user.unique_name, req.body);
+
+            MEEServices.setSkin(res, user, skin);
+        } catch (error) {
+            logActivity("/setSkin", "#error", error.message, req.body);
+            MEEServices.trackException(error);
+            res.send(JSON.stringify({ isValid: false }));
+        }
+    */
+});
+
+// -------------------------------------------------
+app.post("/eula", function eula(req, res) {
+    res.type("application/json");
+
+    try {
+        if (
+            !(
+                (req.body &&
+                    req.body.clientVersion &&
+                    req.body.build &&
+                    req.body.identityToken &&
+                    true) ||
+                false
+            )
+        ) {
+            throw Error("Invalid post data");
+        }
+
+        let identity = AADIdentity.fromToken(req.body.identityToken);
+        if (!identity) {
+            throw Error("Invalid identity token");
+        }
+
+        if (identity.expirationDate < new Date()) {
+            throw Error(
+                `Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`
+            );
+        }
+
+        let user = new UserID(
+            identity.tenantId,
+            identity.uniqueName,
+            identity.userName,
+            identity.name,
+            identity.oid,
+            ""
+        );
+
+        logActivity("eula", user.tenantId, user.unique_name, req.body);
+
+        MEEServices.acceptEula(res, user);
+    } catch (error) {
+        logActivity("/eula", "#error", error.message, req.body);
+        MEEServices.trackException(error);
+        res.send(JSON.stringify({ isValid: false }));
+    }
+});
+
+console.log("查看下当前的环境：  " + Environment.isProduction());
+
+if (!Environment.isProduction()) {
+    console.log("进入本地环境路由");
+    // this section is testing endpoints
+    app.get("/logexception", function logexception(req, res) {
+        res.type("text/plain");
+        MEEServices.trackException(new Error("this is an error"));
+        res.send("i logged an exception!");
+    });
+
+    app.get("/env", function env(req, res) {
+        res.type("text/plain");
+        logActivity("env", "", "", req.body);
+        res.send(process.env);
+    });
+
+    // e.g.  http://localhost:1337/getUserInfo?id=markgrin@microsoft.com
+    app.get("/getUserInfo", function getUserInfo(req, res) {
+        res.type("application/json");
+        // logActivity("getUserInfo", "", "", req.query.id);
+        // MEEServices.getUserInfo(res, req.query.id);
+        let account = req.query.account;
+        MongoClient.connect(dbUrl,options,
+            (err, client) => {
+                const db = client.db("Table");
+                console.log("数据库地址" + dbUrl);
+                if (err) {
+                    console.log(err);
+                    return;
+                };
+                db.collection("Users").find({"unique_name": account}, (error, items)=>{
+                    if(error){
+                        console.log(error);
+                        return;
+                    }
+                    items.toArray((err, data) => {
+                        let userInfoJson = data[0]
+                        console.log(userInfoJson)
+                        //老用户的数据操作
+                        userInfoJson.unique_name = account; //更新unique_name为account
+                        userInfoJson.timestamp = new Date().getTime(); //更新timestamp为当前时间戳
+                        delete userInfoJson._id    //删除"_id"属性。不需要
+
+                        userInfoJson = JSON.stringify(userInfoJson)
+
+                        var getB2BToken = jwt.sign(userInfoJson, getCertPrivateKey(), { algorithm: 'RS256', 'header': { 'x5t': getCertThumbprint() } });
+                        console.log(getB2BToken)
+                        res.send(JSON.stringify({ "accessToken":getB2BToken, "status" : "0000" }));
+                        let userInfo = queryMongodb(account,db);
+                        console.log("userInfo"+userInfo);
+                        res.send(JSON.stringify({ "userInfo":userInfo, "status" : "0000" }));
+                        client.close();
+                        return
+                    })
+                })
+                let userInfo = queryMongodb(account,db);
+                console.log("userInfo"+userInfo);
+                res.send(JSON.stringify({ "userInfo":userInfo, "status" : "0000" }));
+                client.close();
+            }
+        );
+    });
+
+    // e.g.  http://meeservices-staging/deleteUser?id=markgrin@microsoft.com
+    app.get("/deleteUser", function deleteUser(req, res) {
+        res.type("application/json");
+        // logActivity("deleteUser", "", "", req.query.id);
+        // MEEServices.deleteUser(res, req.query.id);
+        let userId = req.query.userid;
+        MongoClient.connect(dbUrl, options, (err, client) => {
+            const db = client.db("Table");
+            db.collection("Users").deleteMany({ "userid": userId-0 }, (error) => {
+                if (error) {
+                    console.log("删除数据失败")
+                    return
+                }
+                console.log("删除数据成功！");
+                db.close();
+                res.send(JSON.stringify({ "status" : "0000" ,"msg" : "删除数据成功" }));
+            })
+        });
+    });
+
+    // e.g.  http://localhost:1337/setTrialCounts?id=markgrin@microsoft.com&trialsAllowed=22&trialsUsed=3
+    app.get("/setTrialCounts", function setTrialCounts(req, res) {
+        res.type("application/json");
+        logActivity("setTrialCounts", "", "", req.query);
+        let trialsAllowed: number = parseInt(req.query.trialsAllowed);
+        let trialsUsed: number = parseInt(req.query.trialsUsed);
+        MEEServices.setTrialCounts(res, req.query.id, trialsAllowed, trialsUsed);
+    });
+    
+}
+// -------------------------------------------------
+app.post("/setReceipt", function setReceipt(req, res) {
+    res.type("application/json");
+
+    try {
+        if (
+            !(
+                (req.body &&
+                    req.body.clientVersion &&
+                    req.body.build &&
+                    req.body.identityToken &&
+                    req.body.receipt &&
+                    req.body.aoid &&
+                    true) ||
+                false
+            )
+        ) {
+            throw Error("Invalid post data");
+        }
+
+        let identity = AADIdentity.fromToken(req.body.identityToken);
+        if (!identity) {
+            throw Error("Invalid identity token");
+        }
+
+        if (identity.expirationDate < new Date()) {
+            throw Error(
+                `Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`
+            );
+        }
+
+        let user = new UserID(
+            identity.tenantId,
+            identity.uniqueName,
+            identity.userName,
+            identity.name,
+            identity.oid,
+            ""
+        );
+
+        let receipt = req.body.receipt;
+        let anonimizedOid = req.body.aoid;
+
+        logActivity(
+            "setReceipt",
+            anonimizedOid,
+            user.unique_name,
+            JSON.stringify(req.body).substring(0, 1024)
+        );
+
+        MEEServices.setReceipt(res, anonimizedOid, user, receipt);
+    } catch (error) {
+        logActivity(
+            "/setReceipt",
+            "#error",
+            error.message,
+            JSON.stringify(req.body).substring(0, 1024)
+        );
+        MEEServices.trackException(error);
+        res.send(JSON.stringify({ isValid: false }));
+    }
+});
+
+//================================ DO NOT ADD NEW HANDLERS BELOW HERE ==================================
+
+// custom 404 page
+app.use(function (req, res) {
+    MEEServices.send404(req, res);
+});
+
+// custom 500 page
+app.use(<express.ErrorRequestHandler>function (err, req, res, next) {
+    MEEServices.send500(req, res, err);
+});
+
+app.listen(app.get("port"), function () {
+    console.log("Express start on port " + app.get("port") + "...");
+});
+
+function queryMongodb(account,db){
+    let dataList
+    console.log("是否执行")
+    db.collection("Users").find({"unique_name": account},(error, items)=>{
+        if(error){
+            console.log(error);
+            return;
+        }
+
+        items.toArray((err, data) => {
+
+        })
+
+        console.log(items)
+        console.log(111)
+        
+        // items.toArray(function(err,item){
+        //     return JSON.stringify(item);
+        // });
+        // console.log("查询数据1111"+JSON.stringify(items));
+        return JSON.stringify(items);
+    })
+}
