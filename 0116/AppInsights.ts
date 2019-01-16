@@ -10,7 +10,7 @@ function setupInsights() {
         return {
             defaultClient: {
                 trackEvent: logger.log.bind(console, 'trackEvent'),
-                trackException: logger.error.bind(console, 'trackException'),
+                // trackException: logger.error.bind(console, 'trackException'),
                 trackMetric: logger.log.bind(console, 'trackMetric'),
                 trackDependency: logger.log.bind(console, 'trackDependency'),
             },

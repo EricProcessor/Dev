@@ -17,8 +17,8 @@ var mongodb = require('mongodb');
 //引入
 var MongoClient = mongodb.MongoClient;
 //jd---服务器连接地址
-let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017/';
-
+let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmo,17,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin':'mongodb://127.0.0.1:27017/';
+// let dbUrl = !Environment.isProduction()?'mongodb://mongodb:passw0rd@116.196.91.10:27017':'mongodb://127.0.0.1:27017';
 
 var options = {
     auto_reconnect: true,
@@ -148,15 +148,17 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
 
     public retrieve(model: Model, rowKey: string = undefined): Promise<RetrievedEntity<Model>> {
         console.log("进入retrieve方法");
-        console.log("model" + model.unique_name)
+        console.log("model+++++++++++++" +JSON.stringify(model) )
         let retrievedEntity: RetrievedEntity<Model> = {} as any;
-        return MongoClient.connect(dbUrl + "userInfo", options).then(
+        return MongoClient.connect(dbUrl , options).then(
             client => {
                 console.log("进入retrieve方法数据库");
+                //{"tenantId":"38dd6634-1031-4c50-a9b4-d16cd9d97d57","oid":"d2bb1fae-fe7e-4473-a161-92aefee52a3d","unique_name":"stu15@usmie.com"}
                 return client.db("userInfo").collection("User").findOne(model).then(final => {
                     console.log(final)
                     retrievedEntity.entity = final as Model;
                     retrievedEntity.exists = true;
+                    console.log("final+++++++++++++++"+final);
                     client.close();
                     return retrievedEntity
 

@@ -89,7 +89,7 @@ app.post('/signin', function signin(req, res) {
         if (invalidPostDataReason) {
             logActivity('server-signin-invalid', invalidPostDataReason, '', req.body);
             let result = { "isValid": false, "reason": invalidPostDataReason };
-            MEEServices.trackWarning(result);
+            // MEEServices.trackWarning(result);
             res.send(JSON.stringify(result));
             return;
         }
@@ -102,7 +102,7 @@ app.post('/signin', function signin(req, res) {
         if (identity.expirationDate < new Date()) {
             throw Error(`Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`);
         }
-
+        console.log("$$$$$$$$$$$$$$$$$$###########@@@@@@@@@@!!!!!!!!!!^identity.uniqueName++++++++++这个事++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++少时诵诗书所所所"+identity.uniqueName);
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, req.body.accessToken, undefined, undefined, undefined, undefined, req.body.platform, req.body.locale);
         
         if (user && user.unique_name.startsWith("live.com#")) {
@@ -125,7 +125,7 @@ app.post('/signin', function signin(req, res) {
 
     } catch (error) {
         logActivity('server-signin-error', '#error', error.message, req.body);
-        MEEServices.trackException(error);
+        // MEEServices.trackException(error);
         res.send(JSON.stringify({ "isValid": false, reason: `${error.message}` }));
     }
 });
@@ -163,7 +163,7 @@ app.post('/cmsignin', function cmsignin(req, res) {
 
     } catch (error) {
         logActivity('/cmsignin', '#error', error.message, req.body);
-        MEEServices.trackException(error);
+        // MEEServices.trackException(error);
         res.send(JSON.stringify({ "isValid": false }));
     }
 });
@@ -199,7 +199,7 @@ app.post('/getuserguid', function getuserguid(req, res) {
         logActivity('getuserguid-success', identity.tenantId, identity.uniqueName, req.body);
     } catch (error) {
         logActivity('/getuserguid', '#error', error.message, req.body);
-        MEEServices.trackException(error);
+        // MEEServices.trackException(error);
         res.send(JSON.stringify({ "isValid": false }));
     }
 });
@@ -223,7 +223,7 @@ app.post('/validateuserguid', function validateuserguid(req, res) {
         logActivity('validateuserguid', '', '', req.body);
     } catch (error) {
         logActivity('/validateuserguid', '#error', error.message, req.body);
-        MEEServices.trackException(error);
+        // MEEServices.trackException(error);
         res.send(JSON.stringify({ "isValid": false }));
     }
 });
@@ -268,7 +268,7 @@ app.post('/skin', function skin(req, res) {
 
     } catch (error) {
         logActivity('/setSkin', '#error', error.message, req.body);
-        MEEServices.trackException(error);
+        // MEEServices.trackException(error);
         res.send(JSON.stringify({ "isValid": false }));
     }
 });
@@ -305,7 +305,7 @@ app.post('/eula', function eula(req, res) {
 
     } catch (error) {
         logActivity('/eula', '#error', error.message, req.body);
-        MEEServices.trackException(error);
+        // MEEServices.trackException(error);
         res.send(JSON.stringify({ "isValid": false }));
     }
 });
@@ -317,7 +317,7 @@ if (!Environment.isProduction()) {
     // this section is testing endpoints
     app.get('/logexception', function logexception(req, res) {
         res.type('text/plain');
-        MEEServices.trackException(new Error("this is an error"));
+        // MEEServices.trackException(new Error("this is an error"));
         res.send("i logged an exception!");
     });
 
@@ -375,7 +375,7 @@ app.post('/setReceipt', function setReceipt(req, res) {
         if (identity.expirationDate < new Date()) {
             throw Error(`Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`);
         }
-
+        
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, "");
 
         let receipt = req.body.receipt;
@@ -387,7 +387,7 @@ app.post('/setReceipt', function setReceipt(req, res) {
 
     } catch (error) {
         logActivity('/setReceipt', '#error', error.message, JSON.stringify(req.body).substring(0, 1024));
-        MEEServices.trackException(error);
+        // MEEServices.trackException(error);
         res.send(JSON.stringify({ "isValid": false }));
     }
 });

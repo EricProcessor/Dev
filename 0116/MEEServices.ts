@@ -88,47 +88,47 @@ let siginTelemtryTable = new SignInTelemetryTable(StorageConfig.getTelemetryTabl
 
 let receiptsTable = new ReceiptsTable(StorageConfig.getReceiptsTableSettings());
 
-const appInsights = require("applicationinsights");
-let instrumentationKey: string = process.env.APPINSIGHTS_INSTRUMENTATIONKEY ? process.env.APPINSIGHTS_INSTRUMENTATIONKEY : 'a83286f4-84b8-44ea-9f10-b05513259137';
+// const appInsights = require("applicationinsights");
+// let instrumentationKey: string = process.env.APPINSIGHTS_INSTRUMENTATIONKEY ? process.env.APPINSIGHTS_INSTRUMENTATIONKEY : 'a83286f4-84b8-44ea-9f10-b05513259137';
 
-appInsights.setup(instrumentationKey).start();
-let appInsightsClient = appInsights.defaultClient;
-if (!appInsightsClient) {
-    const logger = console;
-    process.stderr.write('Skipping app insights setup - in development mode with no ikey set\n');
-    appInsightsClient = {
-        trackEvent: logger.log.bind(console, 'trackEvent'),
-        trackException: logger.error.bind(console, 'trackException'),
-        trackMetric: logger.log.bind(console, 'trackMetric'),
-        trackDependency: logger.log.bind(console, 'trackDependency'),
-    };
-}
+// appInsights.setup(instrumentationKey).start();
+// let appInsightsClient = appInsights.defaultClient;
+// if (!appInsightsClient) {
+//     const logger = console;
+//     process.stderr.write('Skipping app insights setup - in development mode with no ikey set\n');
+//     appInsightsClient = {
+//         trackEvent: logger.log.bind(console, 'trackEvent'),
+//         trackException: logger.error.bind(console, 'trackException'),
+//         trackMetric: logger.log.bind(console, 'trackMetric'),
+//         trackDependency: logger.log.bind(console, 'trackDependency'),
+//     };
+//}
 //监听异常
-export function trackException(error: any) {
-    appInsightsClient.trackException(new Error(error.message));
-    appInsightsClient.trackEvent("exception", { content: JSON.stringify(error) });
-    if (error.stacktrace) {
-        appInsightsClient.trackEvent("callstack", { content: JSON.stringify(error) });
-    }
-}
-//监听警告
-export function trackWarning(error: any) {
-    appInsightsClient.trackEvent("warning", { content: JSON.stringify(error) });
-}
-//监听事件
-export function trackEvent(name: any, body: any) {
-    appInsightsClient.trackEvent(name, { error: JSON.stringify(body) });
-}
-//监听依赖
-export function trackDependency(name: string, command: string, duration: number, success: boolean) {
-    appInsightsClient.trackDependency(name, command, duration, success);
-}
+// export function trackException(error: any) {
+//     appInsightsClient.trackException(new Error(error.message));
+//     appInsightsClient.trackEvent("exception", { content: JSON.stringify(error) });
+//     if (error.stacktrace) {
+//         appInsightsClient.trackEvent("callstack", { content: JSON.stringify(error) });
+//     }
+// }
+// //监听警告
+// export function trackWarning(error: any) {
+//     appInsightsClient.trackEvent("warning", { content: JSON.stringify(error) });
+// }
+// //监听事件
+// export function trackEvent(name: any, body: any) {
+//     appInsightsClient.trackEvent(name, { error: JSON.stringify(body) });
+// }
+// //监听依赖
+// export function trackDependency(name: string, command: string, duration: number, success: boolean) {
+//     appInsightsClient.trackDependency(name, command, duration, success);
+// }
 
 
 // == 0.16+ version of signin ====================================================================
 
 export async function signIn(res: Express.Response, user: UserID, reqBody: any): Promise<void> {
-    console.log("UserID是这样来的" + UserID);
+    console.log("UserID是这样来的" + UserID.unique_name);
     try {
         console.log("成功了");
         await logActivity('server-signin', user.tenantId, user.unique_name, reqBody);
@@ -138,7 +138,7 @@ export async function signIn(res: Express.Response, user: UserID, reqBody: any):
     }
     catch (err) {
         // console.log("失敗");
-        trackException(err);
+        //trackException(err);
         await logActivity('signin-error', user.tenantId, user.unique_name, err);
         res.send(JSON.stringify({ isValid: false }));
     }
@@ -146,17 +146,20 @@ export async function signIn(res: Express.Response, user: UserID, reqBody: any):
 
 async function signTheUserIn(res: Express.Response, userID: UserID) {
     console.log("进入signTheUserIn");
-    let isWhiteListed: boolean = (isUserInWhitelistedDomain(userID) || await isUserOnIndividualWhitelist(userID));
+    // let isWhiteListed: boolean = (isUserInWhitelistedDomain(userID) || await isUserOnIndividualWhitelist(userID));
+    let isWhiteListed: boolean = true;
     let doLicenseCheck: boolean = !isWhiteListed;
-    console.log("isWhiteListed----------------" + isWhiteListed);
+    console.log("isWhiteListed----------------&&&&&&&&&&&&&&&&$%$%%%$#$#$#$##$$#$#$#$#$#####@$GGGGGGFGFFFFFFFFFFFFFFFFFFFFFFFFFFFF" + isWhiteListed);
     let startTime = Date.now();
+    console.log("userID**************************************************a大叔大婶大所大所***"+JSON.stringify(userID) );
     let userEntity = await userTable.get(userID);
     //let userEntity = queryUser(userID);
     console.log("userEntity------" + JSON.stringify(userEntity));
     let duration = Date.now() - startTime;
-    trackDependency("azure-storage/meeservicesstorage", "retrieveEntity", duration, true);
+    //trackDependency("azure-storage/meeservicesstorage", "retrieveEntity", duration, true);
 
     let isExistingUser: boolean = userEntity.exists;
+    console.log("isExistingUser-------"+isExistingUser)
     let user = userEntity.entity;
     // TODO: Move logging to blob storage
     await logActivityVerbose('signin-azurehelper-retrieveentity', userID.tenantId, userID.unique_name, userEntity);
@@ -330,7 +333,7 @@ export async function signInEarlyAccess(res: Express.Response, user: UserID, req
 
         res.send(JSON.stringify(result));
     } catch (error) {
-        trackException(error);
+        // trackException(error);
         await logActivity('signinEarlyAccess-error', user.tenantId, user.unique_name, error);
         res.send(JSON.stringify({ isValid: false }));
     }
@@ -363,7 +366,7 @@ export async function classroomModeSignin(res: Express.Response, userID: UserID)
         }
     }
     catch (err) {
-        trackException(err);
+        // trackException(err);
         res.send(JSON.stringify({ isValid: false }));
         await logActivity('cmsignin-error', userID.tenantId, userID.unique_name, err);
     }
@@ -405,7 +408,7 @@ export async function registerUserGuid(res: Express.Response, user: UserID, ipAd
         res.send(JSON.stringify(returnPayload));
     }
     catch (err) {
-        trackException(err);
+        // trackException(err);
         await logActivity('registerUserGuid-error', user.tenantId, user.unique_name, err);
         res.send(JSON.stringify({ isValid: false }));
     }
@@ -449,7 +452,7 @@ export async function validateUserGuid(res: Express.Response, guid: string): Pro
         }
     }
     catch (err) {
-        trackException(err);
+        // trackException(err);
         await logActivity('validateUserGuid-error', '#error', err.message, guid);
         res.send(JSON.stringify({ isValid: false }));
     }
@@ -471,7 +474,7 @@ export async function acceptEula(res: Express.Response, user: UserID): Promise<v
         console.log("updateEula-------"+JSON.stringify(user));
         await newUserTable.updateEula(user, true);
     } catch (error) {
-        trackException(error);
+        // trackException(error);
         await logActivity('updateEula-error', '#error', error.message, undefined);
     } finally {
         res.send(JSON.stringify({ isValid: true }));
