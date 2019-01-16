@@ -10,14 +10,15 @@
 // import {TableQuery, TableService, TableUtilities, createTableService, TableBatch, RetryPolicyFilter, ErrorOrResult} from "azure-storage";
 import { EntityConverter } from "./core/entityConverter";   //实体转换
 import { StorageConfig } from "./StorageConfig"     //引入配置文件
+import { Environment } from "./core/environment"
 //import { Promise } from "./node_modules/@types/q";
 import { connect } from "net";
 var mongodb = require('mongodb');
 //引入
 var MongoClient = mongodb.MongoClient;
 //jd---服务器连接地址
-// var dbUrl = 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin';
-var dbUrl = 'mongodb://127.0.0.1:27017/';
+let dbUrl = Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin':'mongodb://127.0.0.1:27017/';
+
 
 var options = {
     auto_reconnect: true,
@@ -320,8 +321,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         MongoClient.connect(dbUrl + "userInfo", (err, client) => {
             let db = client.db("User");
             if (err) {
-                console.log(err)
-                console.log("数据库连接失败")
+                console.log(err);
                 return
             }
 
