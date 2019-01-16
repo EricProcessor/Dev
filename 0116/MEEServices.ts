@@ -1,6 +1,6 @@
-import * as Express from "./node_modules/_@types_express@4.16.0@@types/express";
-import * as Request from "./node_modules/_@types_request-promise@4.1.42@@types/request-promise";
-
+// import * as Express from "./node_modules/_@types_express@4.16.0@@types/express";
+// import * as Request from "./node_modules/_@types_request-promise@4.1.42@@types/request-promise";
+import Express = require('express')
 const moment = require('moment');
 const request = require("request");
 //const azure = require("azure-storage");
@@ -8,23 +8,27 @@ const uuid = require("uuid");
 const fs = require("fs");
 const crypto = require("crypto");
 const path = require("path");
+let mongodb = require('mongodb');
+let MongoClient = mongodb.MongoClient;
 
 import * as Utilities from "./utilities";
 import { UserID } from "./AAD";
 import { getOnBehalfOfToken } from "./AAD";
 import * as LicenseManager from "./LicenseManager";
-import { logActivity,logActivityVerbose } from "./Logger";
+import { logActivity, logActivityVerbose } from "./Logger";
 import * as AzureHelper from "./AzureHelper";
-import {Environment, EnvironmentType} from "./core/environment"
+import { Environment, EnvironmentType } from "./core/environment"
 import { UserTable, User, UserInfo, MultiUserTable } from "./MeeUserTable";
-import {SignInTelemetryTable} from "./MeeSignInTable"
-import {ReceiptsTable, Receipt} from "./MeeReceiptsTable"
+import { SignInTelemetryTable } from "./MeeSignInTable"
+import { ReceiptsTable, Receipt } from "./MeeReceiptsTable"
 import { Config } from "./Config"
-import {StorageConfig} from "./StorageConfig"
-import {SignInResult, PopupExperience, SignInResultEarlyAccess} from "./Protocol"
+import { StorageConfig } from "./StorageConfig"
+import { SignInResult, PopupExperience, SignInResultEarlyAccess } from "./Protocol"
 import { Guid } from "./core/guid";
 import { Experience } from "./Experience";
 import { CheckTenancy } from "./BusinessStoreService"
+import { async } from "./node_modules/@types/q";
+import { fromCallback } from "./node_modules/@types/bluebird";
 //定义azure实体
 //const entGen = azure.TableUtilities.entityGenerator;
 
@@ -85,19 +89,19 @@ let siginTelemtryTable = new SignInTelemetryTable(StorageConfig.getTelemetryTabl
 let receiptsTable = new ReceiptsTable(StorageConfig.getReceiptsTableSettings());
 
 const appInsights = require("applicationinsights");
-let instrumentationKey : string = process.env.APPINSIGHTS_INSTRUMENTATIONKEY ? process.env.APPINSIGHTS_INSTRUMENTATIONKEY : 'a83286f4-84b8-44ea-9f10-b05513259137';
+let instrumentationKey: string = process.env.APPINSIGHTS_INSTRUMENTATIONKEY ? process.env.APPINSIGHTS_INSTRUMENTATIONKEY : 'a83286f4-84b8-44ea-9f10-b05513259137';
 
 appInsights.setup(instrumentationKey).start();
 let appInsightsClient = appInsights.defaultClient;
 if (!appInsightsClient) {
     const logger = console;
     process.stderr.write('Skipping app insights setup - in development mode with no ikey set\n');
-    appInsightsClient =  {
-            trackEvent: logger.log.bind(console, 'trackEvent'),
-            trackException: logger.error.bind(console, 'trackException'),
-            trackMetric: logger.log.bind(console, 'trackMetric'),
-            trackDependency: logger.log.bind(console, 'trackDependency'),
-        };
+    appInsightsClient = {
+        trackEvent: logger.log.bind(console, 'trackEvent'),
+        trackException: logger.error.bind(console, 'trackException'),
+        trackMetric: logger.log.bind(console, 'trackMetric'),
+        trackDependency: logger.log.bind(console, 'trackDependency'),
+    };
 }
 //监听异常
 export function trackException(error: any) {
@@ -124,12 +128,16 @@ export function trackDependency(name: string, command: string, duration: number,
 // == 0.16+ version of signin ====================================================================
 
 export async function signIn(res: Express.Response, user: UserID, reqBody: any): Promise<void> {
-
+    console.log("UserID是这样来的" + UserID);
     try {
+        console.log("成功了");
         await logActivity('server-signin', user.tenantId, user.unique_name, reqBody);
+        console.log("23232131");
         await signTheUserIn(res, user);
+        console.log("23232qqqqqqqqqqqqq131");
     }
     catch (err) {
+        // console.log("失敗");
         trackException(err);
         await logActivity('signin-error', user.tenantId, user.unique_name, err);
         res.send(JSON.stringify({ isValid: false }));
@@ -137,21 +145,21 @@ export async function signIn(res: Express.Response, user: UserID, reqBody: any):
 }
 
 async function signTheUserIn(res: Express.Response, userID: UserID) {
-
+    console.log("进入signTheUserIn");
     let isWhiteListed: boolean = (isUserInWhitelistedDomain(userID) || await isUserOnIndividualWhitelist(userID));
     let doLicenseCheck: boolean = !isWhiteListed;
-
+    console.log("isWhiteListed----------------" + isWhiteListed);
     let startTime = Date.now();
     let userEntity = await userTable.get(userID);
+    //let userEntity = queryUser(userID);
+    console.log("userEntity------" + JSON.stringify(userEntity));
     let duration = Date.now() - startTime;
     trackDependency("azure-storage/meeservicesstorage", "retrieveEntity", duration, true);
 
     let isExistingUser: boolean = userEntity.exists;
     let user = userEntity.entity;
-
     // TODO: Move logging to blob storage
     await logActivityVerbose('signin-azurehelper-retrieveentity', userID.tenantId, userID.unique_name, userEntity);
-
 
     // Early access users exist, but they don't have a isLicensed field. So in that case we delete them and let them get created afresh.
     // this way they get the 'new user' notification
@@ -181,14 +189,13 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
 
     if (doLicenseCheck) {
         userID.tenancyInfo = await CheckTenancy.CheckAccount(userID);
-        
+
         if (userID.tenancyInfo.isEduTenant) {
             let licenseCheckResult = await LicenseManager.EnsureUserIsLicensed(userID, (isExistingUser ? user.anonimizedOid : ""));
             isLicensed = licenseCheckResult.licenseInfo.isLicensed;
             if (!licenseCheckResult.hitError) {
                 lastLicenseCheck = new Date();
-                if (isLicensed)
-                {
+                if (isLicensed) {
                     licenseType = licenseCheckResult.licenseInfo.licenseType;
                 }
             }
@@ -202,55 +209,55 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
 
     let role: string;
     let lastRoleCheck: Date;
-    
-    if (isExistingUser && (user.lastRoleCheck !== undefined)) {
-        let currentTime = moment(new Date());
-        let lastCheck = moment(user.lastRoleCheck);
-        if (currentTime.diff(lastCheck, 'days') < Config.roleCheckCacheDuration) {
-            role = user.role;
-        }
-    }
 
-    if (!role) {
-        role = await getUserRole(userID);        
-        lastRoleCheck = new Date();
-    }
+    // if (isExistingUser && (user.lastRoleCheck !== undefined)) {
+    //     let currentTime = moment(new Date());
+    //     let lastCheck = moment(user.lastRoleCheck);
+    //     if (currentTime.diff(lastCheck, 'days') < Config.roleCheckCacheDuration) {
+    //         role = user.role;
+    //     }
+    // }
 
+    // if (!role) {
+    //     role = await getUserRole(userID);   
+    //     lastRoleCheck = new Date();
+    // }
     let userInfo: UserInfo;
 
     if (isExistingUser) {
+        console.log("isExistingUser111")
         userInfo = await userTable.updateExistingUser(userID, user, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck);
     }
     else {
+        console.log("isExistingUser222")
         userInfo = await userTable.addNewUser(userID, role, isLicensed, licenseType, Guid.newGuid());
     }
 
     let signedToken = createSignedToken(userID);
     let clientSettings = ((userEntity.exists && user.clientSettings) ? user.clientSettings : "");
-
     let experience: PopupExperience = Experience.getExperience(userID, userInfo, isExistingUser);
     let result = makeSignInResult(!isExistingUser, userInfo, getMinecraftName(userID), signedToken, clientSettings, experience);
+    console.log("result---------" + result)
     await logActivity('signin-success', userID.tenantId, userID.unique_name, JSON.stringify(result));
-
+    console.log("----------------------signin-success-----------------" + JSON.stringify(result))
     res.send(JSON.stringify(result));
+    // if (experience && experience.transformExperienceState != null) {
+    //     try {
+    //         userInfo.user.experienceState = experience.transformExperienceState(userInfo.user.experienceState);
+    //         await userTable.storeExperienceState(userInfo.user);
+    //     }
+    //     catch (error) {
+    //         trackException(error);
+    //         await logActivity('transformexperiencestate-error', user.tenantId, user.unique_name, error);
+    //     }
+    // }
 
-    if (experience && experience.transformExperienceState != null) {
-        try {
-            userInfo.user.experienceState = experience.transformExperienceState(userInfo.user.experienceState);
-            await userTable.storeExperienceState(userInfo.user);
-        }
-        catch (error) {
-            trackException(error);
-            await logActivity('transformexperiencestate-error', user.tenantId, user.unique_name, error);
-        }
-    }
-
-    if (Config.switchToNewSigninTelemetryTable) {
-        await siginTelemtryTable.recordUser(userInfo.user, !isExistingUser, isWhiteListed, userID);
-    }
-    else {
-        await recordSigninTelemetry(userID, (!isExistingUser).toString(), isWhiteListed.toString(), isLicensed.toString(), licenseType, role, (1 + userInfo.remainingTrialCount), userInfo.user.skin);
-    }
+    // if (Config.switchToNewSigninTelemetryTable) {
+    //     await siginTelemtryTable.recordUser(userInfo.user, !isExistingUser, isWhiteListed, userID);
+    // }
+    // else {
+    //     await recordSigninTelemetry(userID, (!isExistingUser).toString(), isWhiteListed.toString(), isLicensed.toString(), licenseType, role, (1 + userInfo.remainingTrialCount), userInfo.user.skin);
+    // }
 }
 
 
@@ -348,7 +355,7 @@ export async function classroomModeSignin(res: Express.Response, userID: UserID)
 
             // Try and get the anonmized id.
             await userTable.get(userID).then((user) => {
-                return siginTelemtryTable.recordUser(user.entity, !user.exists, undefined , userID);
+                return siginTelemtryTable.recordUser(user.entity, !user.exists, undefined, userID);
             });
         }
         else {
@@ -383,7 +390,7 @@ export async function registerUserGuid(res: Express.Response, user: UserID, ipAd
             "tenantId": user.tenantId,
             "uniqueName": user.unique_name,
             "role": role,
-            "ipAddress":ipAddress,
+            "ipAddress": ipAddress,
             "isUsed": false
         };
 
@@ -404,7 +411,7 @@ export async function registerUserGuid(res: Express.Response, user: UserID, ipAd
 
 export async function validateUserGuid(res: Express.Response, guid: string): Promise<void> {
     try {
-        let guidTableEntity = await AzureHelper.retrieveEntity(AzureHelper.Table.UserGuid, guid, guid);       
+        let guidTableEntity = await AzureHelper.retrieveEntity(AzureHelper.Table.UserGuid, guid, guid);
         let azResult = guidTableEntity.azureResult;
 
         if (azResult) {
@@ -459,6 +466,7 @@ export async function setSkin(res: Express.Response, user: UserID, newSkin: stri
 
 export async function acceptEula(res: Express.Response, user: UserID): Promise<void> {
     try {
+        console.log("updateEula-------"+JSON.stringify(user));
         await newUserTable.updateEula(user, true);
     } catch (error) {
         trackException(error);
@@ -488,19 +496,19 @@ export async function setReceipt(res: Express.Response, anonimizedOid: string, u
                     if (purchaseData.length != 1) {
                         throw new Error(`error: expecting product length == 1.`);
                     }
-            
+
                     if ((purchaseData[0].bundleId != "com.mojang.minecraft-edu") ||
                         (purchaseData[0].productId != "MinecraftEducationEdition")) {
                         throw new Error(`error: invalid bundleId '${purchaseData[0].bundleId}' or productId '${purchaseData[0].productId}'.`);
                     }
-                                
-                    let receipt : Receipt = {} as any;
+
+                    let receipt: Receipt = {} as any;
 
                     receipt.anonimizedOid = anonimizedOid;
                     receipt.tenantId = user.tenantId;
                     receipt.transactionId = purchaseData[0].transactionId;
                     receipt.expirationDate = moment(purchaseData[0].expirationDate).toISOString();
-        
+
                     receiptsTable.getAllWithTransactionId(receipt.transactionId).then((result) => {
                         if (result.length == 1) {
                             // receipt is bound to an existing user
@@ -519,7 +527,7 @@ export async function setReceipt(res: Express.Response, anonimizedOid: string, u
                         else {
                             // empty array means that the receipt is not bound to a user
                             // bind the receipt to the current user
-                            receiptsTable.insertOrReplace(receipt).then(function(){
+                            receiptsTable.insertOrReplace(receipt).then(function () {
                                 res.send(JSON.stringify({ isValid: true }));
                             });
                         }
@@ -529,13 +537,13 @@ export async function setReceipt(res: Express.Response, anonimizedOid: string, u
                     logActivityVerbose('appleReceiptVerify.validate', user.tenantId, user.unique_name, err.message.substring(0, 1024));
                     res.send(JSON.stringify({ isValid: false }));
                 });
-            })
+        })
         .catch(function (err) {
             logActivityVerbose('appleReceiptVerify.setup', user.tenantId, user.unique_name, err.message.substring(0, 1024));
             res.send(JSON.stringify({ isValid: false }));
         });
 }
-
+//获取用户信息。res是响应对象， unique_name是 查询用户信息的唯一标识符
 export async function getUserInfo(res: Express.Response, unique_name: string): Promise<void> {
 
     if (Environment.isProduction()) {
@@ -545,7 +553,7 @@ export async function getUserInfo(res: Express.Response, unique_name: string): P
 
     try {
         let entity = await newUserTable.querybyUniqueName(unique_name);
-        res.send(JSON.stringify({'entity': entity}));
+        res.send(JSON.stringify({ 'entity': entity }));
     }
     catch (error) {
         res.send(JSON.stringify({ "error": error.message }));
@@ -553,26 +561,27 @@ export async function getUserInfo(res: Express.Response, unique_name: string): P
 }
 
 // TODO: Move this over to userTalbe. Not sure why they pass rowkey instead of passing the partitionkey as well.
+//删除用户。 res是响应对象， unique_name是 查询用户信息的唯一标识符
 export async function deleteUser(res: Express.Response, unique_name: string): Promise<void> {
 
     if (Environment.isProduction()) {
-       res.sendStatus(403);
-      return;
+        res.sendStatus(403);
+        return;
     }
 
     try {
         let entity = await newUserTable.querybyUniqueName(unique_name);
-        if (!entity || (entity.length != 1)) {
+        if (!entity) {
             throw new Error(`deleteUser: Found issues with entities, unsure what to delete.`);
         }
         else {
-            await newUserTable.delete(entity[0]);
+            await newUserTable.delete(unique_name);
         }
 
         res.send({ "isValid": true });
     }
     catch (error) {
-        res.send(JSON.stringify( { "error": error.message } ));
+        res.send(JSON.stringify({ "error": error.message }));
     }
 }
 
@@ -585,14 +594,14 @@ export async function setTrialCounts(res: Express.Response, unique_name: string,
 
     try {
         let entity = await newUserTable.querybyUniqueName(unique_name);
-        if (!entity || (entity.length != 1)) {
+        if (!entity) {
             throw new Error(`setTrialCounts: Found issues with entities, unsure what to update.`);
         }
         else {
-            let userId = UserID.fromUser(entity[0]);
+            let userId = UserID.fromUser(entity);
             await newUserTable.setTrialCounts(userId, trialsAllowed, trialsUsed);
             res.send(JSON.stringify(await newUserTable.get(userId)));
-        }       
+        }
     }
     catch (error) {
         res.send(JSON.stringify({ "error": error.message }));
@@ -642,9 +651,9 @@ function makeSignInResultEaryAccess(role: string, user: UserID, skinName: string
 
 function makeSignInResult(isNewUser: boolean, userInfo: UserInfo, minecraftName: string, signedToken: string, clientSettings: string, popup?: PopupExperience): SignInResult {
     let user = userInfo.user;
-
+    console.log("user--------111" + JSON.stringify(user));
     let userid = Config.returnAnonimizedId ? user.anonimizedOid : user.oid;
-
+    console.log("userid--------111" + JSON.stringify(userid));
     let result: SignInResult = {
         isValid: true,
         isLicensed: user.isLicensed,
@@ -660,7 +669,7 @@ function makeSignInResult(isNewUser: boolean, userInfo: UserInfo, minecraftName:
         clientSettings: clientSettings,
         popup: popup
     };
-
+    console.log("SignInResult--------111" + JSON.stringify(result));
     if (userInfo.user.role === "teacher") {
         result.acceptedEula = userInfo.user.acceptedEula;
     }
@@ -745,11 +754,11 @@ async function getUserRole(user: UserID): Promise<string> {
         let duration = Date.now() - startTime;
         success = true;
         trackDependency("portal.office.com/getUserRole", "getUserRole", duration, success);
-        await logActivityVerbose('signin-getuserrole', user.tenantId, user.unique_name, "");
-        
+        //await logActivityVerbose('signin-getuserrole', user.tenantId, user.unique_name, "");
+        console.log("role" + result);
         return result;
     }
-    catch(err) {
+    catch (err) {
         trackWarning("role check failed: " + err);
         return await getUserRoleEarlyAccessHack(user);
     }
@@ -797,7 +806,7 @@ async function getUserRoleRisky(user: UserID): Promise<string> {
                     }
                 });
         }
-        catch(e) {
+        catch (e) {
             reject(e);
         }
     });
@@ -985,11 +994,11 @@ async function getUserRoleEarlyAccess(user: UserID): Promise<string> {
     });
 }
 
-async function recordSigninTelemetry(user: UserID, isNewUser: string, isWhiteListed:string, isLicensed: string, licenseType: string, role: string, remainingTrialCount: number, skin: string) {
+async function recordSigninTelemetry(user: UserID, isNewUser: string, isWhiteListed: string, isLicensed: string, licenseType: string, role: string, remainingTrialCount: number, skin: string) {
 
-    if (user.osVersion.indexOf('test') >= 0 && 
-            (Environment.getEnvironmentType() == EnvironmentType.Staging) || 
-            (Environment.getEnvironmentType() == EnvironmentType.Production)) {
+    if (user.osVersion.indexOf('test') >= 0 &&
+        (Environment.getEnvironmentType() == EnvironmentType.Staging) ||
+        (Environment.getEnvironmentType() == EnvironmentType.Production)) {
         return;
     }
 
@@ -1067,8 +1076,19 @@ function createSignedToken(user: UserID): string {
 
     // Crypto returns a sign object, which is a utility for generating signatures.
     let sign = crypto.createSign('RSA-SHA256');
+    console.log("sign-----------" + sign);
     sign.update(dataToSign);
     let signature = sign.sign(privateTokenKey, "hex");
     var signedToken = `${dataToSign}|${signature}`;
+    console.log("signedToken-----------" + signedToken);
     return signedToken;
+}
+var options = {
+    auto_reconnect: true,
+    useNewUrlParser: true,
+    poolSize: 20
+};
+export interface RetrievedEntity<T> {
+    exists: boolean;
+    entity: T;
 }

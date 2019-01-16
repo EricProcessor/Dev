@@ -10,8 +10,14 @@ const logInDeveloperMode: boolean = true;
 const uuid = require("uuid");
 let mongodb = require('mongodb');
 let MongoClient = mongodb.MongoClient;
-let DBurl = 'mongodb://localhost:27017/';
+// let DBurl = 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin';
+var DBurl = 'mongodb://127.0.0.1:27017';
 
+var options = {
+    auto_reconnect: true,
+    useNewUrlParser: true,
+    poolSize: 20
+};
 /*
     Azure 模块读取环境变量 AZURE_STORAGE_ACCOUNT 和 AZURE_STORAGE_ACCESS_KEY 
     或 AZURE_STORAGE_CONNECTION_STRING 以获取连接到 Azure 存储器帐户所需的信息。 
@@ -21,6 +27,8 @@ let DBurl = 'mongodb://localhost:27017/';
         process.env.AZURE_STORAGE_ACCOUNT    || "meeservicesstorage",
         process.env.AZURE_STORAGE_ACCESS_KEY || "uGGiCXyOCwbFrYXQ4ga03X/C0TAQZTC/4vreChUEBtSDdbJI5FEHZAFlQUQJky6itOtZDMrjZ7FHkp6/D1hCZA==");
 */
+// const tableService = new mongodb.Server(DBurl, 27017, { auto_reconnect: true });//auto_reconnect: true 连接异常自动重连
+const tableService = "Table" //设置数据库名称
 //Environment.isProduction()（枚举类型父类方法）通过这个方法返回的ture或false
 const activityTableName = Environment.isProduction() ? "diagnosticlogs" : "stagingdiagnosticlogs";
 
@@ -58,6 +66,7 @@ export async function logActivityVerbose(action: string, tenantId: string, uniqu
     });
 }
 
+//记录日志活动。 action操作类型， tenantId租户的id， unique_name:唯一的名称 details：详细内容
 export async function logActivity(action: string, tenantId: string, unique_name: string, details: any) {
     if (typeof details === 'string') {
         details = { "message": details };
@@ -65,13 +74,15 @@ export async function logActivity(action: string, tenantId: string, unique_name:
     return new Promise(function (resolve, reject) {
         // log everything to console
         console.log(`action: ${action}  tenantId: ${tenantId}  unique_name: ${unique_name} details: ${JSON.stringify(details)}`);
+        console.log("eeeewwwwww");
         // if developer mode, we are done
         if (developer_mode && !logInDeveloperMode) {
+            console.log(33333333);
             resolve();
         }
         // log diagnostic info to Azure  诊断日志存在Azure
         let dt = new Date();
-        let startTime = Date.now();
+
         let newActivity = {
             "PartitionKey": (dt.toISOString().substring(0, 10)).toString(),
             "RowKey": (uuid.v4().toString()).toString(),
@@ -80,30 +91,21 @@ export async function logActivity(action: string, tenantId: string, unique_name:
             "unique_name": (unique_name).toString(),
             "details": (JSON.stringify(details)).toString()
         };
-        MongoClient.connect(DBurl, (error, client) => {//连接数据库
+        MongoClient.connect(DBurl, options, (error, client) => {//连接数据库
             if (error) {//失败
                 console.log(error);
                 return;
             }
-            let db = client.db('Table');   /*获取db对象--表名*/
-            db.collection(activityTableName).insert(newActivity, (err) => {
+            console.log("连接数据库成功")
+            let db = client.db(tableService);   /*获取db对象--表名*/
+            db.collection(activityTableName).insertOne(newActivity, (err) => {
                 if (err) {
+                    console.log(err);
                     return false;
+                } else {
+                    resolve();
                 }
-                let duration = Date.now() - startTime;
-                MEEServices.trackDependency("meetelemetry", "insertEntity", duration, true);
-                try {
-                    if (error) {
-                        throw error;
-                    }
-                    else {
-                        resolve();
-                    }
-                }catch (err) {
-                    err['entity'] = newActivity;
-                    reject(err);
-                }
-                db.close();  /*关闭数据库*/
+                client.close();  /*关闭数据库*/
             });
         });
         // let startTime = Date.now();

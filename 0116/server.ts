@@ -10,6 +10,8 @@ import * as Utilities from "./utilities";
 import {Environment, EnvironmentType} from "./core/environment"
 import {UserTable} from "./MeeUserTable"
 import { Config } from "./Config"
+// const easyMonitor = require('easy-monitor');
+// easyMonitor('你的项目名称');
 const moment = require('moment');
 
 const version_edu_evaluation = 65596;
@@ -21,13 +23,9 @@ const app = express();
 const useFiddler = false;
 
 
-if (Environment.isLocalDev() && useFiddler) {
-    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'; // Ignore 'UNABLE_TO_VERIFY_LEAF_SIGNATURE' authorization error
-    process.env['HTTP_PROXY']= "http://127.0.0.1:8888";
-    process.env['HTTPS_PROXY'] = "http://127.0.0.1:8888";
-}
-
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
+
 app.set('port', process.env.PORT || 1337);
 app.use(express.static('public'));
 
@@ -42,8 +40,7 @@ app.post('/signin', function signin(req, res) {
     res.type('application/json');
 
     try {
-
-        if (!((req.body && req.body.clientVersion))) {
+        if (!((req.body && req.body.clientVersion))) {//验证有没有post请求和请求有没有clientVersion
             let reason = 'Invalid post data - no body and client version';
             logActivity('server-signin-invalid', reason, '', req.body);
             res.send(JSON.stringify({ "isValid": false, "reason": reason }));
@@ -51,10 +48,8 @@ app.post('/signin', function signin(req, res) {
         }
 
         let clientVersion = parseInt(req.body.clientVersion);   // this is the 'protocol version' from MC
-        let isEarlyAccess: boolean = clientVersion >= version_edu_earlyaccess;
-
+        let isEarlyAccess: boolean = clientVersion >= version_edu_earlyaccess;//布尔值
         if (isEarlyAccess) {
-
             if (Environment.isStaging() || moment().isAfter('2016-12-31')) {
                 let reason = 'Invalid client - edu_earlyaccess';
                 logActivity('server-signin-invalid', reason, '', req.body);
@@ -177,7 +172,7 @@ app.post('/cmsignin', function cmsignin(req, res) {
 app.post('/getuserguid', function getuserguid(req, res) {
     // called by classroom mode
     res.type('application/json');
-
+    console.log("进入getuserguid方法")
     try {
         if (!((
             req.body &&
@@ -186,8 +181,9 @@ app.post('/getuserguid', function getuserguid(req, res) {
             true) || false)) {
             throw Error("Invalid post data");
         }
-
+        
         let identity = AADIdentity.fromToken(req.body.identityToken);
+        console.log("getuserguid------identity----"+identity)
         if (!identity) {
             throw Error("Invalid identity token");
         }
@@ -236,7 +232,9 @@ app.post('/validateuserguid', function validateuserguid(req, res) {
 // -------------------------------------------------
 app.post('/skin', function skin(req, res) {
     res.type('application/json');
-
+    // let idinfo =AADIdentity.fromToken(req.body.identityToken)
+    // res.send(idinfo);
+    
     try {
         if (!((
             req.body &&
@@ -249,6 +247,7 @@ app.post('/skin', function skin(req, res) {
         }
 
         let identity = AADIdentity.fromToken(req.body.identityToken);
+        console.log("identity-----"+JSON.stringify(identity));
         if (!identity) {
             throw Error("Invalid identity token");
         }
@@ -278,7 +277,7 @@ app.post('/skin', function skin(req, res) {
 // -------------------------------------------------
 app.post('/eula', function eula(req, res) {
     res.type('application/json');
-
+    console.log("进入eula方法")
     try {
         if (!((
             req.body &&
@@ -290,6 +289,7 @@ app.post('/eula', function eula(req, res) {
         }
 
         let identity = AADIdentity.fromToken(req.body.identityToken);
+        
         if (!identity) {
             throw Error("Invalid identity token");
         }
@@ -299,7 +299,7 @@ app.post('/eula', function eula(req, res) {
         }
 
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, "");
-
+        console.log("identity-----user"+JSON.stringify(user))
         logActivity('eula', user.tenantId, user.unique_name, req.body);
 
         MEEServices.acceptEula(res, user);
@@ -310,6 +310,8 @@ app.post('/eula', function eula(req, res) {
         res.send(JSON.stringify({ "isValid": false }));
     }
 });
+
+console.log("查看下当前的环境：  " + Environment.isProduction())
 
 if (!Environment.isProduction()) {
 
@@ -328,7 +330,7 @@ if (!Environment.isProduction()) {
 
     // e.g.  http://localhost:1337/getUserInfo?id=markgrin@microsoft.com
     app.get('/getUserInfo', function getUserInfo(req, res) {
-       res.type('application/json');
+        res.type('application/json');
         logActivity('getUserInfo', '', '', req.query.id);
         MEEServices.getUserInfo(res, req.query.id);
     });

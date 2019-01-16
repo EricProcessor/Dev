@@ -1,4 +1,4 @@
-import {AzureTable, TableSetting, RetrievedEntity} from "./AzureTable"
+import {MongodbTable, TableSetting, RetrievedEntity} from "./AzureTable"
 //import { TableQuery } from 'azure-storage'
 
 /**
@@ -13,19 +13,19 @@ export interface Receipt {
     tenantId: string
 }
 
-export class ReceiptsTable extends AzureTable<Receipt> {
+export class ReceiptsTable extends MongodbTable<Receipt> {
     constructor(setting: TableSetting) {
         super(setting);
     }
 
-    public getAllWithTransactionId(transactionId: string) : Promise<Receipt[]> {
+    public getAllWithTransactionId(transactionId: string){
         //return this.queryEntities(new TableQuery().where('RowKey eq ?', transactionId));
-        return this.queryEntities({'RowKey':transactionId});
+        return this.findOne("Users",{'RowKey':transactionId});
     }
 
-    public getAllWithAnonimizedOid(anonimizedOid: string) : Promise<Receipt[]> {
+    public getAllWithAnonimizedOid(anonimizedOid: string){
         //return this.queryEntities(new TableQuery().where('PartitionKey eq ?', anonimizedOid));
-        return this.queryEntities({'PartitionKey':anonimizedOid});
+        return this.findOne("Users",{'PartitionKey':anonimizedOid});
     }
 }
 

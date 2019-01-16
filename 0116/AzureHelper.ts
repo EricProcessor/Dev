@@ -3,8 +3,9 @@ import { Environment } from "./core/environment"
 import { StorageConfig } from "./StorageConfig"
 import { Config } from "./Config"
 import { Server } from "http";
-let DBurl = 'mongodb://127.0.0.1:27017/';
-let dbName = 'itying';
+// let DBurl = 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin';
+let DBurl = 'mongodb://127.0.0.1:27017';
+let dbName = 'userInfo';
 let mongo_url = DBurl + dbName;
 //引用azure-storage模块                                                                                                                  
 // const azure = require("azure-storage");
@@ -60,14 +61,16 @@ let receiptsTableService;
 
 if (Config.useLocalEmulator) {
     console.log('Using local emulator');
-    tableService = userStorageTable.connectionString;
+    //DBurl + "|user"
+    tableService = new mongodb.Server(userStorageTable.connectionString);
     //用户数据表设置存储位置
-    telemetryTableService = telemetryTable.connectionString;
+    telemetryTableService = new mongodb.Server(telemetryTable.connectionString);
 
-    receiptsTableService = receiptsTable.connectionString;
+    receiptsTableService = new mongodb.Server(receiptsTable.connectionString);
 }
 else {
-    //在使用Storage SDK时，必须为存储帐户提供要使用的连接信息   
+    //在使用Storage SDK时，必须为存储帐户提供要使用的连接信息 
+    //  DBurl + "|user"
     tableService = new mongodb.Server();
 
     telemetryTableService = new mongodb.Server();
@@ -172,14 +175,16 @@ export function queryEntity(table: Table, query: any): Promise<any> {
             } else {
                 if (result.continuationToken) {
                     // getTableService(table).queryEntities(getTableName(table), query, result.continuationToken, queryResponseHandler);
-                    MongoClient.connect(getTableService(table), function (err, client) {
-                        if (err) {
-                            console.log("数据库连接失败");
-                            return;
-                        }
-                        const db = client.db('');
-                        db.collection(getTableName(table)).find(query, result.continuationToken, queryResponseHandler)
-                    })
+                    // 提取连接字符串和TABLE名称---节前
+                    let db =
+                        MongoClient.connect(getTableService(table), function (err, client) {
+                            if (err) {
+                                console.log("数据库连接失败");
+                                return;
+                            }
+                            const db = client.db('');
+                            db.collection(getTableName(table)).find(query, result.continuationToken, queryResponseHandler)
+                        })
                 }
                 else {
                     resolve([]);
@@ -226,22 +231,8 @@ export function insertEntity(table: Table, entity: any): Promise<any> {
                 }
             })
         })
-        // getTableService(table).insertEntity(getTableName(table), entity, function (error, result, response) {
-        //     try {
-        //         if (!error) {
-        //             resolve({ valid: true, azureResult: result, azureResponse: response });
-        //         } else {
-        //             throw error;
-        //         }
-        //     }
-        //     catch (err) {
-        //         err['entity'] = entity;
-        //         reject(err);
-        //     }
-        // });
     });
 }
-//更新/编辑现有条目----改                                                                                                                     
 export function updateEntity(table: Table, entity: any): Promise<any> {
     return new Promise(function (resolve, reject) {
         if (development_mode) {
@@ -259,6 +250,7 @@ export function updateEntity(table: Table, entity: any): Promise<any> {
                 } else {
                     reject(error);
                 }
+                client.close();
             })
         })
         // getTableService(table).replaceEntity(getTableName(table), entity, function (error, result, response) {

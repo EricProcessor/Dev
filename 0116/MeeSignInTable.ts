@@ -1,4 +1,4 @@
-import {AzureTable, TableSetting, RetrievedEntity} from "./AzureTable"
+import {MongodbTable, TableSetting, RetrievedEntity} from "./AzureTable"
 
 import {User} from "./MeeUserTable" // TODO: Move to AAD.ts
 import {UserID} from "./AAD"
@@ -28,7 +28,7 @@ export interface SignInTelemetry {
     AppDetail: string;
 }
 
-export class SignInTelemetryTable extends AzureTable<SignInTelemetry> {
+export class SignInTelemetryTable extends MongodbTable<SignInTelemetry> {
     constructor(setting: TableSetting) {
         super(setting);
     }

@@ -1,54 +1,24 @@
 import { EnvironmentType, Environment } from './core/environment'
 import { Config } from './Config'
-import { TableSetting } from './AzureTable';
-let MongoClient = require('mongodb').MongoClient;
-let DBurl = 'mongodb://127.0.0.1:27017/';
-let dbName = 'itying';
+import { TableSetting } from './AzureTable'
+// let DBurl = 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin';
+let DBurl = 'mongodb://127.0.0.1:27017';
+let dbName = '/userInfo';
 let mongo_url = DBurl + dbName;
-export class StorageConfig_mongo {
+
+export class StorageConfig {
     public static readonly emulatorConnectionString = mongo_url;
     public static readonly defaultAccountName = "meeservicesstorage";
     public static readonly defaultAccessKey = "base64 encoded key";
     public static readonly devAccountName = "meedevelopment";
     public static readonly devAccessKey = "base 64 encoded key";
 
-    linkMongo() {//连接数据库
-        MongoClient.connect(StorageConfig_mongo.emulatorConnectionString, function (err, client) {
-            if (err) {
-                console.log('连接数据库失败');
-                return;
-            }
-            let db = client.db(dbName);
-            //查询数据
-            var list = [];  /*放数据库里面查询的所有数据*/
-
-            var result = db.collection('user').find({});
-            result.each(function (error, doc) {
-                // console.log(doc);
-                if (error) {
-                    console.log(error);
-                } else {
-                    if (doc != null) {
-                        list.push(doc);
-                    } else {  /*doc==null表示数据循环完成*/
-                        /*获取数据以后*/
-                        return list;
-                    }
-
-                }
-
-            })
-            //console.log(result);
-
-        })
-    }
     //新用户表设置存储位置
     public static getNewUserTableSettings() {
         let tablename = 'stagingmeeusers';
         if (Environment.getEnvironmentType() == EnvironmentType.Production) {
             tablename = 'meeusers';
         }
-
         return this.getUserTableSettings(tablename, 'oid');
     }
     //用户表设置存储位置
@@ -61,26 +31,23 @@ export class StorageConfig_mongo {
 
         if (Config.useLocalEmulator) {
             /*本地环境的情况下设置*/
-            setting.connectionString = StorageConfig_mongo.emulatorConnectionString;
+            setting.connectionString = StorageConfig.emulatorConnectionString;
             setting.tableName = overrideTableName || 'developmentusers'
         }
         else {//存储位置
             /*开发环境的情况下设置*/
             switch (environmentType) {
-                case EnvironmentType.Production:
-                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
-                    setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
+                //生产
+                case EnvironmentType.Production:         //存储账户
                     setting.tableName = overrideTableName || 'users';
                     break;
+                //测试
                 case EnvironmentType.Staging:
-                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
-                    setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
                     setting.tableName = overrideTableName || 'stagingusers'
                     break;
                 default:
+                //开发
                 case EnvironmentType.Development:
-                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || "meedevelopment";
-                    setting.accessKey = process.env.AZURE_STORAGE_ACCOUNT || "base 64 encoded key";
                     setting.tableName = overrideTableName || 'developmentusers'
             }
         }
@@ -95,25 +62,19 @@ export class StorageConfig_mongo {
         setting.partitionKeyName = 'Date';
         setting.rowKeyName = 'RandomId';
         if (Config.useLocalEmulator) {
-            setting.connectionString = StorageConfig_mongo.emulatorConnectionString;
+            setting.connectionString = StorageConfig.emulatorConnectionString;
             setting.tableName = 'developmentsignintelemetry'
         }
         else {
             switch (environmentType) {
                 case EnvironmentType.Production:
-                    setting.accountName = "meetelemetry";
-                    setting.accessKey = "base 64 encoded key";
                     setting.tableName = Config.switchToNewSigninTelemetryTable ? 'signindata' : 'signintelemetry';
                     break;
                 case EnvironmentType.Staging:
-                    setting.accountName = "meetelemetry";
-                    setting.accessKey = "base 64 encoded key";
                     setting.tableName = Config.switchToNewSigninTelemetryTable ? 'stagingsignindata' : 'stagingsignintelemetry'
                     break;
                 default:
                 case EnvironmentType.Development:
-                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || "meedevelopment";
-                    setting.accessKey = process.env.AZURE_STORAGE_ACCOUNT || "base 64 encoded key";
                     setting.tableName = Config.switchToNewSigninTelemetryTable ? 'developmentsignindata' : 'developmentsignintelemetry'
             }
         }
@@ -124,29 +85,22 @@ export class StorageConfig_mongo {
     public static getReceiptsTableSettings(): TableSetting {
         let setting: TableSetting = {} as any;
         let environmentType = Environment.getEnvironmentType();
-
         setting.partitionKeyName = 'anonimizedOid';
         setting.rowKeyName = 'transactionId';
         if (Config.useLocalEmulator) {
-            setting.connectionString = StorageConfig_mongo.emulatorConnectionString;
+            setting.connectionString = StorageConfig.emulatorConnectionString;
             setting.tableName = 'developmentreceipts'
         }
         else {
             switch (environmentType) {
                 case EnvironmentType.Production:
-                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
-                    setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
                     setting.tableName = 'receiptstable';
                     break;
                 case EnvironmentType.Staging:
-                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || StorageConfig_mongo.defaultAccountName;
-                    setting.accessKey = process.env.AZURE_STORAGE_ACCESS_KEY || StorageConfig_mongo.defaultAccessKey;
                     setting.tableName = 'stagingreceiptstable';
                     break;
                 default:
                 case EnvironmentType.Development:
-                    setting.accountName = process.env.AZURE_STORAGE_ACCOUNT || "meedevelopment";
-                    setting.accessKey = process.env.AZURE_STORAGE_ACCOUNT || "base 64 encoded key";
                     setting.tableName = 'developmentreceiptsdata';
             }
         }
@@ -154,4 +108,3 @@ export class StorageConfig_mongo {
         return setting;
     }
 }
-

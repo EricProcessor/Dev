@@ -90,6 +90,7 @@ export class UserID {
     }
 
     static fromUser(user: User) : UserID {
+        console.log("进入user");
         let userID : UserID = {} as any;
         userID.tenantId = user.tenantId;
         userID.unique_name = user.unique_name;
@@ -200,7 +201,7 @@ export async function getOnBehalfOfToken(user: UserID, requestedAudience: string
     });
 }
 //获取指纹
-export function getCertThumbprint(): string {
+function getCertThumbprint(): string {
     if (Environment.isProduction() || Environment.isStaging()) {
         return process.env.CERT_THUMBPRINT;
     }
@@ -210,7 +211,7 @@ export function getCertThumbprint(): string {
 
 }
 //获得证书密钥
-export function getCertPrivateKey(): string {//readFileSync同步读取文件，readFile为异步读取文件
-    let key: string = Environment.isLocalDev() ? String(fs.readFileSync('private.pem')) : process.env.CERT_PRIVATE_KEY;
+function getCertPrivateKey(): string {//readFileSync同步读取文件，readFile为异步读取文件
+    let key: string = Environment.isLocalDev() ? String(fs.readFileSync('server.key')) : process.env.CERT_PRIVATE_KEY;
     return Utilities.replacePipesWithLineFeeds(key);
 }

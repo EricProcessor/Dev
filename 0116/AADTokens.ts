@@ -19,7 +19,6 @@ export class AADIdentity {
     }
 
     static fromToken(identityToken: string): AADIdentity {
-
         let user = null;
 
         if (identityToken.startsWith('{\"test')) {
@@ -28,11 +27,13 @@ export class AADIdentity {
             user = _createUserForTests(identityToken);
         }
         else {
+            console.log("解码方法进来了");
             user = _createUser(identityToken);
         }
-
+        console.log("fromToken----user"+JSON.stringify(user));
         if (user) {
             if (user.profile) {
+                // console.log("解码方法进来了444");
                 return new AADIdentity(
                     user.profile.iss,
                     user.profile.iat,
@@ -172,7 +173,7 @@ function _createUser(idToken): AADUser {
             'parsedJson': JSON.stringify(parsedJson)
         }
     }
-
+    console.log("解码后user"+JSON.stringify(user))
     return user;
 }
 
@@ -192,6 +193,7 @@ function _extractIdToken(encodedIdToken) {
         }
 
         // ECMA script has JSON built-in support
+        console.log("base64Decoded========"+base64Decoded);//编码前的token
         return JSON.parse(base64Decoded);
     } catch (err) {
         _logstatus('The returned id_token could not be decoded: ' + err.stack);
@@ -205,6 +207,11 @@ function _decodeJwt(jwtToken): AADCrackedToken {
     const idTokenPartsRegex = /^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/;
 
     let matches = idTokenPartsRegex.exec(jwtToken);
+    // console.log(matches.length);
+    // console.log("第0位"+matches[0]);
+    // console.log("第1位"+matches[1]);
+    // console.log("第2位"+matches[2]);
+    // console.log("第3位"+matches[3]);
     if (!matches || matches.length < 4) {
         _logstatus('The returned id_token is not parseable.');
         return null;
@@ -221,7 +228,7 @@ function _decodeJwt(jwtToken): AADCrackedToken {
 
 function _base64DecodeStringUrlSafe(base64IdToken: string): string {
     base64IdToken = base64IdToken.replace(/-/g, '+').replace(/_/g, '/');
-
+    // console.log("加密前"+base64IdToken);
     if (_atob) {
         return decodeURIComponent(escape(_atob(base64IdToken)));
     }

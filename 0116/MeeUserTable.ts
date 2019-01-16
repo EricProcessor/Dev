@@ -1,11 +1,12 @@
-import {AzureTable, TableSetting, RetrievedEntity }from "./AzureTable"
-import {TableQuery, TableService, TableUtilities} from 'azure-storage'
-import {Guid} from './core/guid'
-import {UserID} from "./AAD"
-import {Config} from "./Config"
-import { logActivity,logActivityVerbose } from "./Logger";
-import { EntityConverter } from "./core/entityConverter";
-import { StorageConfig } from "./StorageConfig";
+import {MongodbTable, TableSetting, RetrievedEntity }from "./AzureTable";
+//import {TableQuery, TableService, TableUtilities} from 'azure-storage';
+import {Guid} from './core/guid';
+import {UserID} from "./AAD";
+import {Config} from "./Config";
+// import { callbackify } from "util";
+// import { logActivity,logActivityVerbose } from "./Logger";
+// import { EntityConverter } from "./core/entityConverter";
+// import { StorageConfig } from "./StorageConfig";
 
 /**
  * User Schema that is used to create the table.
@@ -49,7 +50,7 @@ export interface UserGuid {
 
 type setFunc = (User) => User;
 
-export class UserTable extends AzureTable<User> {
+export class UserTable extends MongodbTable<User> {
     private oidAsRowKey :boolean = false;
     private readonly defaultSkin: string = "EduSkins_Alex";
     private readonly defaultAcceptedEula = false;
@@ -63,25 +64,20 @@ export class UserTable extends AzureTable<User> {
 
 
     private set(userID: UserID, func: setFunc) {
-        if (!userID.tenantId || !userID.oid) {
-            throw new Error(`set: Incorrect userID passed, need to contain both tenantId and oid`);
-        }
-
         return this.get(userID).then((entity) => {
             if (entity.exists) {
-                let userToUpdate : User = {} as any;
+                let userToUpdate: User = {} as any;
                 userToUpdate.tenantId = userID.tenantId;
                 userToUpdate.oid = userID.oid;
                 userToUpdate.unique_name = userID.unique_name;
                 userToUpdate = func(userToUpdate);
                 return this.insertOrMerge(userToUpdate);
-            }
-            else {
+            }else {
                 // Write a log
                 throw new Error(`set: Unable to update skin, user does not exist. tenantId: '${userID.tenantId}', oid: '${userID.oid}'.`);
             }
         },
-        (reason) => { throw new Error(`set Failed: ${reason}`)});
+            (reason) => { throw new Error(`set Failed: ${reason}`) });
     }
 
     public setTrialCounts(userID: UserID, trialsAllowed: number, trialsUsed: number) {
@@ -106,15 +102,16 @@ export class UserTable extends AzureTable<User> {
         });
     }
 
-    public querybyUniqueName(unique_name: string) : Promise<User[]> {
-        let stringFilter = TableQuery.stringFilter('unique_name', TableUtilities.QueryComparisons.EQUAL, unique_name);
-        let query = (new TableQuery()).where(stringFilter);
-        return this.queryEntities(query);
+    public querybyUniqueName(unique_name: string){
+        // let stringFilter = TableQuery.stringFilter('unique_name', TableUtilities.QueryComparisons.EQUAL, unique_name);
+        // let query = (new TableQuery()).where(stringFilter);
+        // return this.findOne("Users",{'unique_name':unique_name});
+        return this.queryEntities({'unique_name':unique_name});
     }
  
     public queryAllUsers() : Promise<User[]> {
-        let query = new TableQuery();
-        return this.queryEntities(query);
+        //let query = new TableQuery();
+        return this.queryEntities({});
     }
 
     public get(userID: UserID) : Promise<RetrievedEntity<User>> {
@@ -122,7 +119,9 @@ export class UserTable extends AzureTable<User> {
         user.tenantId = userID.tenantId;
         user.oid = userID.oid;
         user.unique_name = userID.unique_name;
+        console.log("RetrievedEntity"+JSON.stringify(user) )
         return this.retrieve(user);
+        //return this.retrieveQuery(user);
     }
 
     public addNewUser(userID: UserID, role: string, isLicensed: boolean, licenseType: string, anonimizedOid: string) : Promise<UserInfo> {
@@ -153,7 +152,7 @@ export class UserTable extends AzureTable<User> {
             // It is possible that the user came in through the classroom mode signin, in which case we don't currently do a license check.
             userToUpdate.isLicensed = isLicensed;
             userToUpdate.licenseType = licenseType;
-
+            console.log(role);
             if (role === "teacher") {
                 userToUpdate.acceptedEula = cachedUser.acceptedEula || this.defaultAcceptedEula;
             }
@@ -163,7 +162,7 @@ export class UserTable extends AzureTable<User> {
                 userToUpdate.trialsAllowed = (role === "teacher" ? Config.startingTrialCountTeacher : Config.startingTrialCountStudent);
             }
         }
-
+        
         // If user is not licenced setup trials
         if (!isLicensed) {
             let numTrialsAllowed: number;
@@ -195,16 +194,16 @@ export class UserTable extends AzureTable<User> {
             trackDependency("azure-storage/meeservicesstorage", "updateEntity", duration, true);
             await logActivityVerbose('signin-azurehelper-updateentity', user.tenantId, user.unique_name, userEntity.azureResult);
         */
-
+        console.log("userToUpdate000"+JSON.stringify(userToUpdate));
         return this.insertOrMerge(userToUpdate).then( () => {
-            let userInfo: UserInfo = {} as any;
+            let userInfo = {} as any;
             {
                 userInfo.remainingTrialCount = remainingTrialCount;
 
                 // Merge both objects.
                 userInfo.user = Object.assign({}, cachedUser, userToUpdate);
             }
-          
+            console.log("userInfo-----------qqq"+JSON.stringify(userInfo))
             return userInfo;
         });
     }
@@ -330,9 +329,11 @@ export class MultiUserTable {
     // Get from original table
     public get(userID: UserID, useNewTable: boolean = false) : Promise<RetrievedEntity<User>> {
         if (this.readFromNewTable || useNewTable) {
+            console.log("newTable");
             return this.newTable.get(userID);
         }
         else {
+            console.log("originalTable");
             return this.originalTable.get(userID);
         }
     }
@@ -370,9 +371,11 @@ export class MultiUserTable {
     }
 
     public updateExistingUser(userID: UserID, cachedUser: User, role:string, lastRoleCheck: Date, isLicensed: boolean, licenseType: string, lastLicenseCheck: Date) : Promise<UserInfo> {
+        console.log("updateExistingUser1111");
         let orig = this.originalTable.updateExistingUser(userID, cachedUser, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck);
+        console.log("updateExistingUser2222");
         let newt = this.newTable.updateExistingUser(userID, cachedUser, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck);
-
+        console.log("updateExistingUser3333");
         return Promise.all([orig, newt]).then(
             (result) => {
                 if (this.readFromNewTable) {
