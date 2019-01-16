@@ -373,6 +373,7 @@ export async function registerUserGuid(res: Express.Response, user: UserID, ipAd
     try {
 
         let guid = uuid.v4();
+
         let role = await getUserRole(user);
 
         // let newEntry = {
@@ -393,9 +394,10 @@ export async function registerUserGuid(res: Express.Response, user: UserID, ipAd
             "ipAddress": ipAddress,
             "isUsed": false
         };
-
+        console.log("newEntry"+JSON.stringify(newEntry))
+        console.log("userGuid----------"+AzureHelper.Table.UserGuid);
+        //await AzureHelper.insertEntity(AzureHelper.Table.UserGuid, newEntry);
         await AzureHelper.insertEntity(AzureHelper.Table.UserGuid, newEntry);
-
         let returnPayload = {
             "guid": guid
         };
@@ -794,8 +796,7 @@ async function getUserRoleRisky(user: UserID): Promise<string> {
                             if (result.httpStatuscode === 200) {
                                 let role = roleFromPersona(result.userProperties.persona);
                                 resolve(role);
-                            }
-                            else {
+                            }else {
                                 reject(result.message);
                             }
                         }

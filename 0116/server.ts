@@ -183,7 +183,7 @@ app.post('/getuserguid', function getuserguid(req, res) {
         }
         
         let identity = AADIdentity.fromToken(req.body.identityToken);
-        console.log("getuserguid------identity----"+identity)
+        
         if (!identity) {
             throw Error("Invalid identity token");
         }
@@ -193,9 +193,8 @@ app.post('/getuserguid', function getuserguid(req, res) {
         }
 
         logActivity('getuserguid', identity.tenantId, identity.uniqueName, req.body);
-
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, req.body.accessToken);
-
+        console.log("registerUserGuid----"+JSON.stringify(req.body.ipAddress))
         MEEServices.registerUserGuid(res, user, req.body.ipAddress);
         logActivity('getuserguid-success', identity.tenantId, identity.uniqueName, req.body);
     } catch (error) {

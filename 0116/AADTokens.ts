@@ -27,7 +27,6 @@ export class AADIdentity {
             user = _createUserForTests(identityToken);
         }
         else {
-            console.log("解码方法进来了");
             user = _createUser(identityToken);
         }
         console.log("fromToken----user"+JSON.stringify(user));
