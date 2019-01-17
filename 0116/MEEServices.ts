@@ -31,6 +31,7 @@ import { async } from "./node_modules/@types/q";
 import { fromCallback } from "./node_modules/@types/bluebird";
 //定义azure实体
 //const entGen = azure.TableUtilities.entityGenerator;
+let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
 
 const privateTokenKey = getAuthPrivateKey();
 const publicTokenKey = getAuthPublicKey();
@@ -168,7 +169,6 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
         await userTable.delete(userEntity.entity);
         isExistingUser = false;
     }
-    console.log(2222222);
     let isLicensed: boolean = true;
     let licenseType: string;
     let lastLicenseCheck: Date;
@@ -208,18 +208,17 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
     let role: string;
     let lastRoleCheck: Date;
 
-    // if (isExistingUser && (user.lastRoleCheck !== undefined)) {
-    //     let currentTime = moment(new Date());
-    //     let lastCheck = moment(user.lastRoleCheck);
-    //     if (currentTime.diff(lastCheck, 'days') < Config.roleCheckCacheDuration) {
-    //         role = user.role;
-    //     }
-    // }
-
-    // if (!role) {
-    //     role = await getUserRole(userID);   
-    //     lastRoleCheck = new Date();
-    // }
+    if (isExistingUser && (user.lastRoleCheck !== undefined)) {
+        let currentTime = moment(new Date());
+        let lastCheck = moment(user.lastRoleCheck);
+        if (currentTime.diff(lastCheck, 'days') < Config.roleCheckCacheDuration) {
+            role = user.role;
+        }
+    }
+    if (!role) {
+        role = await getUserRole(userID);   
+        lastRoleCheck = new Date();
+    }
     let userInfo: UserInfo;
 
     if (isExistingUser) {
@@ -372,8 +371,9 @@ export async function registerUserGuid(res: Express.Response, user: UserID, ipAd
 
         let guid = uuid.v4();
         console.log('registerUserGuid------------'+JSON.stringify(user));
-        let role = await getUserRole(user);
-
+         //正常流程应调用接口去验证获得role值，暂时更改为创建新的数据库UserRole集合，插入假数据测试验证role流程
+        //let role = await getUserRole(user);
+        let role = await AzureHelper.queryUserRole(user);
         let newEntry = {
             "PartitionKey": guid,
             "RowKey": guid,
@@ -383,9 +383,6 @@ export async function registerUserGuid(res: Express.Response, user: UserID, ipAd
             "ipAddress": ipAddress,
             "isUsed": false
         };
-        console.log("newEntry"+JSON.stringify(newEntry))
-        console.log("userGuid----------"+AzureHelper.Table.UserGuid);
-        //await AzureHelper.insertEntity(AzureHelper.Table.UserGuid, newEntry);
         await AzureHelper.insertEntity(AzureHelper.Table.UserGuid, newEntry);
         let returnPayload = {
             "guid": guid
@@ -740,49 +737,63 @@ async function getUserRole(user: UserID): Promise<string> {
 }
 
 async function getUserRoleRisky(user: UserID): Promise<string> {
-    let endpoint = 'https://signup.microsoft.com/';
-    let accessToken = await getOnBehalfOfToken(user, endpoint);
-    let uri = `${endpoint}api/signupservice/userproperties?api-version=1`;
-    return new Promise<string>(function (resolve, reject) {
-        try {
-            request({
-                uri: uri,
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
-                    'CID': uuid.v4()
-                },
-                body: JSON.stringify(
-                    { "emailaddress": `${user.unique_name}` }
-                )
-            },
-                function (error, response, body) {
-                    try {
-                        if (error) {
-                            reject(error);
-                        }
-                        else {
-                            var result = JSON.parse(body);
-                            if (result.httpStatuscode === 200) {
-                                let role = roleFromPersona(result.userProperties.persona);
-                                resolve(role);
-                            }else {
-                                reject(result.message);
-                            }
-                        }
-                    }
-                    catch (err) {
-                        logActivity('role-check-failure', user.tenantId, user.unique_name, body);
-                        throw err;
-                    }
-                });
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+    let role = "";
+    return MongoClient.connect(dbUrl + "userInfo", options).then(client => {
+        return client.db("userInfo").collection("UserRole").findOne({ "unique_name": user["unique_name"] }).then(
+            final => {
+                if (final) {
+                    role = roleFromPersona("faculty1111123")
+                } else {
+                    role = roleFromPersona("qq112323232")
+                }
+                client.close();
+                return role;
+            }
+        )}
+    )
+    // let endpoint = 'https://signup.microsoft.com/';
+    // let accessToken = await getOnBehalfOfToken(user, endpoint);
+    // let uri = `${endpoint}api/signupservice/userproperties?api-version=1`;
+    // return new Promise<string>(function (resolve, reject) {
+    //     try {
+    //         request({
+    //             uri: uri,
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${accessToken}`,
+    //                 'CID': uuid.v4()
+    //             },
+    //             body: JSON.stringify(
+    //                 { "emailaddress": `${user.unique_name}` }
+    //             )
+    //         },
+    //             function (error, response, body) {
+    //                 try {
+    //                     if (error) {
+    //                         reject(error);
+    //                     }
+    //                     else {
+    //                         var result = JSON.parse(body);
+    //                         if (result.httpStatuscode === 200) {
+    //                             let role = roleFromPersona(result.userProperties.persona);
+    //                             resolve(role);
+    //                         }else {
+    //                             reject(result.message);
+    //                         }
+    //                     }
+    //                 }
+    //                 catch (err) {
+    //                     logActivity('role-check-failure', user.tenantId, user.unique_name, body);
+    //                     throw err;
+    //                 }
+    //             });
+    //     }
+    //     catch (e) {
+    //         reject(e);
+    //     }
+    // });
 }
 
 function roleFromPersona(persona: string): string {

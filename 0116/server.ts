@@ -112,7 +112,7 @@ app.post('/signin', function signin(req, res) {
         }
 
         user.clientApplication = 'Minecraft';
-
+        console.log('-------------isEarlyAccess-----'+isEarlyAccess)
         if (isEarlyAccess) {
             MEEServices.signInEarlyAccess(res, user, req.body);
         }

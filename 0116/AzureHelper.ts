@@ -4,15 +4,18 @@ import { StorageConfig } from "./StorageConfig"
 import { Config } from "./Config"
 import { Server } from "http";
 // let DBurl = 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin';
-let DBurl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
 
-// let dbName = 'admin';
-// let mongo_url = DBurl + dbName;
 //引用azure-storage模块                                                                                                                  
 // const azure = require("azure-storage");
 //数据库引用 
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
+var options = {
+    auto_reconnect: true,
+    useNewUrlParser: true,
+    poolSize: 20
+};
 //枚举---定义变量                                                                                                                          
 export enum Table {
     Users,//用户
@@ -142,7 +145,23 @@ function getTableName(table: Table /*Table为开始定义的枚举变量*/) {
     //     }
     // });
 })
-//获取刚刚插入表中的实体                                                                                     
+//查询UserRole方法----临时方法
+export function queryUserRole( model ): Promise<any>{
+    return  MongoClient.connect(dbUrl+"/userInfo" , options).then(client => {
+        console.log("queryUserRole连接成功")
+        return client.db("userInfo").collection("UserRole").findOne({ "unique_name": model["unique_name"] }).then(final => {
+            console.log("queryUserRole连接成功"+JSON.stringify(final.role))
+            let finalResult = "";
+            if (final) {
+                finalResult = final.role;
+            }else{
+                finalResult = "student";
+            }
+            client.close();
+            return finalResult
+        })
+    })
+}
 export function retrieveEntity(table: Table, partitionKey: string, rowKey: string): Promise<any> {
     return new Promise(function (resolve, reject) {
         getTableService(table).retrieveEntity(getTableName(table), partitionKey, rowKey, function (error, result, response) {
@@ -208,31 +227,20 @@ export function queryEntity(table: Table, query: any): Promise<any> {
 
 //在某个表上添加新实体----增                                                      
 export function insertEntity(table: Table, entity: any): Promise<any> {
-    return new Promise(function (resolve, reject) {
-        if (development_mode) {
-            console.log("insertEntity: " + JSON.stringify({ "table": getTableName(table), "entity": JSON.stringify(entity) }));
-        }
-        MongoClient.connect(getTableService(table), function (err, client) {
-            if (err) {
-                console.log("数据库连接失败");
-                return;
+    console.log("insertEntity数据库地址"+dbUrl+"/"+Table[table])
+    return  MongoClient.connect(dbUrl+"/"+table , options).then(client => {
+        return client.db("userInfo").collection("UserRole").insertOne(entity).then((error,result,response) => {
+            if (!error) {
+                client.close();
+                return { valid: true, azureResult: result, azureResponse: response }
+            }else{
+                console.log()
+                return
+                
             }
-            const db = client.db('');
-            db.collection(getTableName(table)).insertOne({ entity }, function (error, result, response) {
-                try {
-                    if (!error) {
-                        resolve({ valid: true, azureResult: result, azureResponse: response });
-                    } else {
-                        throw error;
-                    }
-                }
-                catch (err) {
-                    err['entity'] = entity;
-                    reject(err);
-                }
-            })
+            
         })
-    });
+    })
 }
 export function updateEntity(table: Table, entity: any): Promise<any> {
     return new Promise(function (resolve, reject) {

@@ -10,7 +10,7 @@ const logInDeveloperMode: boolean = true;
 const uuid = require("uuid");
 let mongodb = require('mongodb');
 let MongoClient = mongodb.MongoClient;
-let DBurl = Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+let DBurl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
 var options = {
     auto_reconnect: true,
     useNewUrlParser: true,
