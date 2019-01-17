@@ -89,7 +89,7 @@ export class UserID {
         return new PlatformInfo(this.platform != null ? this.platform : '');
     }
 
-    static fromUser(user: User) : UserID {
+    static fromUser(user) : UserID {
         console.log("进入user");
         let userID : UserID = {} as any;
         userID.tenantId = user.tenantId;

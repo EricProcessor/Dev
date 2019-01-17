@@ -457,7 +457,7 @@ export async function setSkin(res: Express.Response, user: UserID, newSkin: stri
     try {
         await newUserTable.setSkin(user, newSkin);
     } catch (error) {
-        trackException(error);
+        //trackException(error);
         await logActivity('setSkin-error', '#error', error.message, newSkin);
     } finally {
         res.send(JSON.stringify({ isValid: true }));
@@ -591,7 +591,6 @@ export async function setTrialCounts(res: Express.Response, unique_name: string,
         res.sendStatus(403);
         return;
     }
-
     try {
         let entity = await newUserTable.querybyUniqueName(unique_name);
         if (!entity) {
@@ -753,13 +752,13 @@ async function getUserRole(user: UserID): Promise<string> {
 
         let duration = Date.now() - startTime;
         success = true;
-        trackDependency("portal.office.com/getUserRole", "getUserRole", duration, success);
+        //trackDependency("portal.office.com/getUserRole", "getUserRole", duration, success);
         //await logActivityVerbose('signin-getuserrole', user.tenantId, user.unique_name, "");
         console.log("role" + result);
         return result;
     }
     catch (err) {
-        trackWarning("role check failed: " + err);
+        //trackWarning("role check failed: " + err);
         return await getUserRoleEarlyAccessHack(user);
     }
 }
