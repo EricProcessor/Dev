@@ -2,7 +2,7 @@ import { request } from "http";
 import * as Request from 'request-promise'
 import { UserID, getOnBehalfOfToken } from "./AAD";
 import { logActivityVerbose } from "./Logger";
-import { trackDependency } from "./MEEServices";
+// import { trackDependency } from "./MEEServices";
 import { RSA_PKCS1_OAEP_PADDING } from "constants";
 
 export interface TenancyInfo {
@@ -37,7 +37,7 @@ export class CheckTenancy {
             let startTime = Date.now();
             Request(options)
                 .then((data: GetAccountInfoForMinecraftResponse) => {
-                    trackDependency("businessstore.microsoft.com/AccountInfo/GetAccountInfoForMinecraft", "enableFreeMinecraftLicenses", Date.now() - startTime, true);
+                    // trackDependency("businessstore.microsoft.com/AccountInfo/GetAccountInfoForMinecraft", "enableFreeMinecraftLicenses", Date.now() - startTime, true);
                     resolve(data);
                 })
                 .catch((err) => {

@@ -270,17 +270,17 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         )       
     }
     //删除某个数据的方法
-    public delete(query: string): Promise<void> {
+    public delete(query: any): Promise<any> {
         console.log("")
         return MongoClient.connect(dbUrl + "userInfo", options).then(
             client =>{
-                return client.db("userInfo").collection("User").delete(query).then((error) => {
+                return client.db("userInfo").collection("User").delete(query).then((error ,result) => {
                     if (error) {
                         console.log("数据库删除失败")
                         return
                     }
                     client.close()
-                    return
+                    return result
                 })
             }
         )
@@ -366,23 +366,23 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     }
 
     //查询
-    public findOne(collection, whereObj) {
+    public findOne(collection, whereObj) :Promise<any> {
         console.log("进入findOne查询方法")
-        MongoClient.connect(dbUrl + "userInfo", options, function (err, client) {
-            console.log("进入数据库！")
-            if (err) {
-                console.log("失败");
-            } else {
-                var db = client.db("User");
-                console.log("连接数据库成功")
-                db.collection(collection).findOne(whereObj, function (err, results) {
-                    if (!err) {
-                        client.close();
-                        return results
-                    }
-                });
-            }
-        })
+       return  MongoClient.connect(dbUrl + "userInfo", options, ).then((err,result)=>{
+        console.log("进入数据库！")
+        if (err) {
+            console.log("失败");
+        } else {
+            var db = MongoClient.db("User");
+            console.log("连接数据库成功")
+            db.collection(collection).findOne(whereObj).then((err,results)=>{
+                if (!err) {
+                    MongoClient.close();
+                    return results
+                }
+            })
+        }
+       }) 
     }
 }
 //定义接口

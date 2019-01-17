@@ -341,7 +341,7 @@ export class MultiUserTable {
     public delete(model: User) : Promise<void>{
         let promises : Promise<void>[] = {} as any;
         promises.push(this.originalTable.delete(model));
-        promises.push(this.newTable.delete(model, model.oid));
+        //promises.push(this.newTable.delete(model, model.oid));
         return Promise.all(promises).then(
             (result) => {
                 if (this.readFromNewTable) {

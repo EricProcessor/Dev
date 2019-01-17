@@ -24,7 +24,7 @@ export class ReceiptsTable extends MongodbTable<Receipt> {
     }
 
     public getAllWithAnonimizedOid(anonimizedOid: string){
-        //return this.queryEntities(new TableQuery().where('PartitionKey eq ?', anonimizedOid));
+        // return this.queryEntities(new TableQuery().where('PartitionKey eq ?', anonimizedOid));
         return this.findOne("Users",{'PartitionKey':anonimizedOid});
     }
 }

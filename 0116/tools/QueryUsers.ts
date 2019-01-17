@@ -1,6 +1,6 @@
-import {AzureTable, TableSetting, RetrievedEntity }from "../AzureTable"
+// import {AzureTable, TableSetting, RetrievedEntity }from "../AzureTable"
 import {User, UserTable} from "../MeeUserTable"
-import {TableQuery, TableService} from 'azure-storage'
+// import {TableQuery, TableService} from 'azure-storage'
 import {Guid} from '../core/guid'
 import {Config} from "../Config"
 import { EntityConverter } from "../core/entityConverter";
@@ -42,8 +42,8 @@ let totalCount = 0;
 let Gen = new RandomGenerator();
 
 async function query() {
-    let query = new TableQuery();
-    return new Promise<void>((resolve, reject) => queryTillEnd(query, null, resolve, reject));
+    // let query = new TableQuery();
+    // return new Promise<void>((resolve, reject) => queryTillEnd(query, null, resolve, reject));
 }
 
 async function handleQuery(error, result, response, query, resolve, reject) {
@@ -65,16 +65,16 @@ async function handleQuery(error, result, response, query, resolve, reject) {
 
         });
         if (result.continuationToken) {
-            queryTillEnd(query, result.continuationToken, resolve, reject);
+            // queryTillEnd(query, result.continuationToken, resolve, reject);
         } else {
             resolve();
         }    
     }
 }
 
-async function queryTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, resolve, reject) {
+// async function queryTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, resolve, reject) {
     // Query will return 1000 entities at a time
-    table.query(query, currentToken, (error, result, response) =>  handleQuery(error, result, response, query, resolve, reject));
-}
+    // table.query(query, currentToken, (error, result, response) =>  handleQuery(error, result, response, query, resolve, reject));
+// }
 
 query().then(() => console.log('Completed: Total Users:' + totalCount + ' Current Query:' + currentQueryCount));
