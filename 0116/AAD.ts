@@ -177,7 +177,7 @@ export async function getOnBehalfOfToken(user: UserID, requestedAudience: string
                 function (error, response, body) {
                     let duration = Date.now() - startTime;
                     success = true;
-                    MEEServices.trackDependency("graph", "getOnBehalfOfToken", duration, success);
+                    // MEEServices.trackDependency("graph", "getOnBehalfOfToken", duration, success);
 
 
                     if (!error) {
@@ -195,7 +195,7 @@ export async function getOnBehalfOfToken(user: UserID, requestedAudience: string
                 });
         }
         catch(err) {
-            MEEServices.trackWarning("behalfof token get failure: " + err);
+            // MEEServices.trackWarning("behalfof token get failure: " + err);
             reject(err);
         }
     });

@@ -1,6 +1,6 @@
 //import * as AzureHelper from "./AzureHelper";
 import { UserID } from "./AAD";
-import * as Request from './node_modules/_@types_request-promise@4.1.42@@types/request-promise'
+// import * as Request from './node_modules/_@types_request-promise@4.1.42@@types/request-promise'
 import { getOnBehalfOfToken } from "./AAD";
 import { logActivity, logActivityVerbose } from "./Logger";
 import * as Utilities from "./utilities";
@@ -262,7 +262,7 @@ async function getIsUserCurrentlyLicensed(storeAccessToken: string, correlationV
 
                     let duration = Date.now() - startTime;
                     success = true;
-                    MEEServices.trackDependency("collections.mp.microsoft.com/query", "query", duration, success);
+                    // MEEServices.trackDependency("collections.mp.microsoft.com/query", "query", duration, success);
 
                     if (error) {
                         reject(error);
@@ -346,7 +346,7 @@ async function getSkuAvailabilities(storeAccessToken: string, correlationVector:
 
                     let duration = Date.now() - startTime;
                     success = true;
-                    MEEServices.trackDependency("displaycatalog.md.mp.microsoft.com/v7/products", "products", duration, success);
+                    // MEEServices.trackDependency("displaycatalog.md.mp.microsoft.com/v7/products", "products", duration, success);
 
                     if (error) {
                         reject(error);
@@ -425,7 +425,7 @@ async function attemptPurchaseForSkuAvailability(user: UserID, skuId: string, av
 
                 let duration = Date.now() - startTime;
                 success = true;
-                MEEServices.trackDependency("purchase.md.mp.microsoft.com/orders", skuId, duration, success);
+                // MEEServices.trackDependency("purchase.md.mp.microsoft.com/orders", skuId, duration, success);
 
                 if (error) {
                     reject(error);
@@ -596,7 +596,7 @@ async function EnsureUserHasM365AssignedPlan(user: UserID): Promise<any> {
                 function (error, response, body) {
                     let duration = Date.now() - startTime;
                     success = true;
-                    MEEServices.trackDependency("graph.microsoft.com/v1.0/users", "assignedPlans", duration, success);
+                    // MEEServices.trackDependency("graph.microsoft.com/v1.0/users", "assignedPlans", duration, success);
 
                     if (error) {
                         reject(error);

@@ -128,7 +128,7 @@ let receiptsTable = new ReceiptsTable(StorageConfig.getReceiptsTableSettings());
 // == 0.16+ version of signin ====================================================================
 
 export async function signIn(res: Express.Response, user: UserID, reqBody: any): Promise<void> {
-    // console.log("UserID是这样来的" + UserID.unique_name);
+    console.log("UserID是这样来的" + UserID.unique_name);
     try {
         console.log("成功了");
         await logActivity('server-signin', user.tenantId, user.unique_name, reqBody);
@@ -149,9 +149,9 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
     // let isWhiteListed: boolean = (isUserInWhitelistedDomain(userID) || await isUserOnIndividualWhitelist(userID));
     let isWhiteListed: boolean = true;
     let doLicenseCheck: boolean = !isWhiteListed;
-    // console.log("isWhiteListed----------------&&&&&&&&&&&&&&&&$%$%%%$#$#$#$##$$#$#$#$#$#####@$GGGGGGFGFFFFFFFFFFFFFFFFFFFFFFFFFFFF" + isWhiteListed);
+    console.log("isWhiteListed----------------&&&&&&&&&&&&&&&&$%$%%%$#$#$#$##$$#$#$#$#$#####@$GGGGGGFGFFFFFFFFFFFFFFFFFFFFFFFFFFFF" + isWhiteListed);
     let startTime = Date.now();
-    // console.log("userID**************************************************a大叔大婶大所大所***"+JSON.stringify(userID) );
+    console.log("userID**************************************************a大叔大婶大所大所***"+JSON.stringify(userID) );
     let userEntity = await userTable.get(userID);
     //let userEntity = queryUser(userID);
     console.log("userEntity------" + JSON.stringify(userEntity));
@@ -462,7 +462,7 @@ export async function setSkin(res: Express.Response, user: UserID, newSkin: stri
     try {
         await newUserTable.setSkin(user, newSkin);
     } catch (error) {
-        // trackException(error);
+        trackException(error);
         await logActivity('setSkin-error', '#error', error.message, newSkin);
     } finally {
         res.send(JSON.stringify({ isValid: true }));
@@ -603,7 +603,7 @@ export async function setTrialCounts(res: Express.Response, unique_name: string,
             throw new Error(`setTrialCounts: Found issues with entities, unsure what to update.`);
         }
         else {
-            let userId = UserID.fromUser(entity);//eula
+            let userId = UserID.fromUser(entity);
             await newUserTable.setTrialCounts(userId, trialsAllowed, trialsUsed);
             res.send(JSON.stringify(await newUserTable.get(userId)));
         }
@@ -758,13 +758,13 @@ async function getUserRole(user: UserID): Promise<string> {
 
         let duration = Date.now() - startTime;
         success = true;
-        // trackDependency("portal.office.com/getUserRole", "getUserRole", duration, success);
+        trackDependency("portal.office.com/getUserRole", "getUserRole", duration, success);
         //await logActivityVerbose('signin-getuserrole', user.tenantId, user.unique_name, "");
         console.log("role" + result);
         return result;
     }
     catch (err) {
-        // trackWarning("role check failed: " + err);
+        trackWarning("role check failed: " + err);
         return await getUserRoleEarlyAccessHack(user);
     }
 }

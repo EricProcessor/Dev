@@ -1,6 +1,6 @@
-import {AzureTable, TableSetting, RetrievedEntity }from "../AzureTable"
+// import {AzureTable, TableSetting, RetrievedEntity }from "../AzureTable"
 import {User, UserTable} from "../MeeUserTable"
-import {TableQuery, TableService} from 'azure-storage'
+// import {TableQuery, TableService} from 'azure-storage'
 import {Guid} from '../core/guid'
 import {Config} from "../Config"
 import { EntityConverter } from "../core/entityConverter";
@@ -43,10 +43,10 @@ export class UserCopy {
     private processedCount: number = 0;
     private writtenCount: number = 0;
 
-    constructor(orginalTableSetting: TableSetting, newTableSetting: TableSetting, readFromNewTable: boolean = false) {
-        this.originalTable = new UserTable(orginalTableSetting);
-        this.newTable = new UserTable(newTableSetting);
-    }
+    // constructor(orginalTableSetting: TableSetting, newTableSetting: TableSetting, readFromNewTable: boolean = false) {
+    //     this.originalTable = new UserTable(orginalTableSetting);
+    //     this.newTable = new UserTable(newTableSetting);
+    // }
     
     private async createBatchFromEntities(list) {
         // Process all entities from original table and map them to a User class

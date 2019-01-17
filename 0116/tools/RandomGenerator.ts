@@ -1,4 +1,4 @@
-import {UserWithoutAoid} from '../tests/MeeUserTable.spec'
+// import {UserWithoutAoid} from '../tests/MeeUserTable.spec'
 import {User} from '../MeeUserTable'
 import {Guid} from '../core/guid'
 import {UserID} from '../AAD'

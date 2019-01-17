@@ -1,7 +1,7 @@
-import {AzureTable, TableSetting, RetrievedEntity }from "../AzureTable"
+// import {AzureTable, TableSetting, RetrievedEntity }from "../AzureTable"
 import {User, UserTable} from "../MeeUserTable"
-import {TableQuery, TableService} from 'azure-storage'
-import * as az from 'azure-storage'
+// import {TableQuery, TableService} from 'azure-storage'
+// import * as az from 'azure-storage'
 import {Guid} from '../core/guid'
 import {Config} from "../Config"
 import { EntityConverter } from "../core/entityConverter";
