@@ -128,13 +128,10 @@ let receiptsTable = new ReceiptsTable(StorageConfig.getReceiptsTableSettings());
 // == 0.16+ version of signin ====================================================================
 
 export async function signIn(res: Express.Response, user: UserID, reqBody: any): Promise<void> {
-    console.log("UserID是这样来的" + UserID.unique_name);
+    console.log("UserID是这样来的" + user);
     try {
-        console.log("成功了");
         await logActivity('server-signin', user.tenantId, user.unique_name, reqBody);
-        console.log("23232131");
         await signTheUserIn(res, user);
-        console.log("23232qqqqqqqqqqqqq131");
     }
     catch (err) {
         // console.log("失敗");
@@ -149,11 +146,8 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
     // let isWhiteListed: boolean = (isUserInWhitelistedDomain(userID) || await isUserOnIndividualWhitelist(userID));
     let isWhiteListed: boolean = true;
     let doLicenseCheck: boolean = !isWhiteListed;
-    console.log("isWhiteListed----------------&&&&&&&&&&&&&&&&$%$%%%$#$#$#$##$$#$#$#$#$#####@$GGGGGGFGFFFFFFFFFFFFFFFFFFFFFFFFFFFF" + isWhiteListed);
     let startTime = Date.now();
-    console.log("userID**************************************************a大叔大婶大所大所***"+JSON.stringify(userID) );
     let userEntity = await userTable.get(userID);
-    //let userEntity = queryUser(userID);
     console.log("userEntity------" + JSON.stringify(userEntity));
     let duration = Date.now() - startTime;
     //trackDependency("azure-storage/meeservicesstorage", "retrieveEntity", duration, true);
@@ -162,6 +156,7 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
     console.log("isExistingUser-------"+isExistingUser)
     let user = userEntity.entity;
     // TODO: Move logging to blob storage
+    console.log(1111111);
     await logActivityVerbose('signin-azurehelper-retrieveentity', userID.tenantId, userID.unique_name, userEntity);
 
     // Early access users exist, but they don't have a isLicensed field. So in that case we delete them and let them get created afresh.
@@ -173,7 +168,7 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
         await userTable.delete(userEntity.entity);
         isExistingUser = false;
     }
-
+    console.log(2222222);
     let isLicensed: boolean = true;
     let licenseType: string;
     let lastLicenseCheck: Date;
