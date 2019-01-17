@@ -17,9 +17,8 @@ var mongodb = require('mongodb');
 //引入
 var MongoClient = mongodb.MongoClient;
 //jd---服务器连接地址
-//let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmo,17,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin':'mongodb://127.0.0.1:27017/';
-// let dbUrl = !Environment.isProduction()?'mongodb://mongodb:passw0rd@116.196.91.10:27017':'mongodb://127.0.0.1:27017';
-let dbUrl = "mongodb://127.0.0.1:27017/userInfo";
+let dbUrl = Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmo,17,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin':'mongodb://127.0.0.1:27017/userInfo';
+
 var options = {
     auto_reconnect: true,
     useNewUrlParser: true,
@@ -148,7 +147,6 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
 
     public retrieve(model: Model, rowKey: string = undefined): Promise<RetrievedEntity<Model>> {
         console.log("进入retrieve方法");
-        console.log("model+++++++++++++" +JSON.stringify(model) )
         console.log("AzureTabl数据库连接地址"+dbUrl)
         let retrievedEntity: RetrievedEntity<Model> = {} as any;
         return MongoClient.connect(dbUrl , options).then(
@@ -172,7 +170,6 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                 console.log("进入retrieve方法数据库err");
                 if (err.statusCode === 404) {
                     retrievedEntity.exists = false;
-                    return;
                 } else {
                     console.log("Retrieve User Error:" + err);
                     throw err;
@@ -196,26 +193,33 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     public insertOrMerge(model: Model): Promise<void> {
         console.log("进入insertOrMerge")
         console.log(model);
-        console.log("tableName" + this.setting.tableName);
         return MongoClient.connect(dbUrl + "userInfo", options).then(
             client => {
-                return client.db("userInfo").collection("User").findOne({ "unique_name": model["unique_name"] }).then(final => {
-                    if (final) {
-                        console.log("insertOrMerge更新数据");
-                        return client.db("userInfo").
-                            collection("User").updateOne({ "unique_name": model["unique_name"] }, {
-                                $set: model
-                            }).then(final => {
-                                client.close();
-                                return
-                            })
-                    } else {
-                        console.log("insertOrMerge插入数据");
-                        return client.db("userInfo").collection("User").insertOne(model).then(final => {
-                            client.close();
-                            return
-                        })
-                    }
+                return client.db("userInfo").collection("User")
+                        .findOne({ "unique_name": model["unique_name"] }).then(final => {
+                            if (final) {
+                                console.log("insertOrMerge更新数据");
+                                return client.db("userInfo").
+                                    collection("User").updateOne({ "unique_name": model["unique_name"] }, {
+                                        $set: model
+                                    }).then((error,result) => {
+                                        if(error){
+                                            console.log(error);
+                                        }
+                                        client.close();
+                                        return result
+                                    })
+                            } else {
+                                console.log("insertOrMerge插入数据");
+                                return client.db("userInfo").collection("User").
+                                        insertOne(model).then((error,result) => {
+                                            if(error){
+                                                console.log(error);
+                                            }
+                                            client.close();
+                                            return result
+                                })
+                            }
                 })
             })
             .catch(err => {
@@ -248,16 +252,22 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                         return client.db("userInfo").
                             collection("User").updateOne({ "unique_name": model["unique_name"] }, {
                                 $set: model
-                            }).then(final => {
+                            }).then((error,result) => {
+                                if(error){
+                                    console.log(error)
+                                }
                                 client.close();
-                                return
+                                return result
                             }
                         )
                     }else{
                         console.log("insertOrMerge插入数据");
-                        return client.db("userInfo").collection("User").insertOne(model).then(final => {
+                        return client.db("userInfo").collection("User").insertOne(model).then((error,result) => {
+                            if(error){
+                                console.log(error)
+                            }
                             client.close();
-                            return
+                            return result
                         })
                     }
                 })
@@ -277,7 +287,6 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                 return client.db("userInfo").collection("User").delete(query).then((error ,result) => {
                     if (error) {
                         console.log("数据库删除失败")
-                        return
                     }
                     client.close()
                     return result
@@ -293,7 +302,6 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                 return client.db("userInfo").dropCollection(query).then((error,result) => {
                     if (error) {
                         console.log("数据库删除失败")
-                        return
                     }
                     client.close()
                     return result
@@ -342,8 +350,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         MongoClient.connect(dbUrl + "userInfo", options, (err, client) => {
             const db = client.db("userInfo")
             if (err) {
-                console.log(err)
-                console.log("数据库连接失败")
+                console.log(err);
                 reject()
                 return
             }

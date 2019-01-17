@@ -371,18 +371,9 @@ export async function registerUserGuid(res: Express.Response, user: UserID, ipAd
     try {
 
         let guid = uuid.v4();
-
+        console.log('registerUserGuid------------'+JSON.stringify(user));
         let role = await getUserRole(user);
 
-        // let newEntry = {
-        //     "PartitionKey": entGen.String(guid),
-        //     "RowKey": entGen.String(guid),
-        //     "tenantId": entGen.String(user.tenantId),
-        //     "uniqueName": entGen.String(user.unique_name),
-        //     "role": entGen.String(role),
-        //     "ipAddress": entGen.String(ipAddress),
-        //     "isUsed": entGen.Boolean(false)
-        // };
         let newEntry = {
             "PartitionKey": guid,
             "RowKey": guid,
@@ -707,17 +698,6 @@ function encodeName(name: string): string {
 
 async function createNewUserEarlyAccess(role: string, user: UserID): Promise<SignInResultEarlyAccess> {
     const defaultSkinName = "EduSkins_Alex";
-    // let newUser = {
-    //     "PartitionKey": entGen.String(user.tenantId),
-    //     "RowKey": entGen.String(user.unique_name),
-    //     "role": entGen.String(role),
-    //     "trialsAllowed": entGen.Int32(Config.startingTrialCountStudent),
-    //     "trialsUsed": entGen.Int32(1),
-    //     "tenantId": entGen.String(user.tenantId),
-    //     "unique_name": entGen.String(user.unique_name),
-    //     "name": entGen.String(user.name),
-    //     "skin": entGen.String(defaultSkinName)
-    // };
     let newUser = {
         "PartitionKey": user.tenantId,
         "RowKey": user.unique_name,
@@ -731,8 +711,6 @@ async function createNewUserEarlyAccess(role: string, user: UserID): Promise<Sig
     };
 
     if (role === "teacher") {
-        // newUser["acceptedEula"] = entGen.Boolean(false);
-        // newUser["trialsAllowed"] = entGen.Int32(Config.startingTrialCountTeacher);
         newUser["acceptedEula"] = false;
         newUser["trialsAllowed"] = Config.startingTrialCountTeacher;
     }
@@ -747,9 +725,7 @@ async function getUserRole(user: UserID): Promise<string> {
     try {
         var success = false;
         let startTime = Date.now();
-
         var result = await getUserRoleRisky(user);
-
         let duration = Date.now() - startTime;
         success = true;
         //trackDependency("portal.office.com/getUserRole", "getUserRole", duration, success);
@@ -767,7 +743,6 @@ async function getUserRoleRisky(user: UserID): Promise<string> {
     let endpoint = 'https://signup.microsoft.com/';
     let accessToken = await getOnBehalfOfToken(user, endpoint);
     let uri = `${endpoint}api/signupservice/userproperties?api-version=1`;
-
     return new Promise<string>(function (resolve, reject) {
         try {
             request({

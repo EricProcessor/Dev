@@ -180,7 +180,6 @@ app.post('/getuserguid', function getuserguid(req, res) {
             true) || false)) {
             throw Error("Invalid post data");
         }
-        
         let identity = AADIdentity.fromToken(req.body.identityToken);
         
         if (!identity) {
@@ -190,10 +189,9 @@ app.post('/getuserguid', function getuserguid(req, res) {
         if (identity.expirationDate < new Date()) {
             throw Error(`Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`);
         }
-
         logActivity('getuserguid', identity.tenantId, identity.uniqueName, req.body);
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, req.body.accessToken);
-        console.log("registerUserGuid----"+JSON.stringify(req.body.ipAddress))
+        console.log("registerUserGuid----"+JSON.stringify(req.body))
         MEEServices.registerUserGuid(res, user, req.body.ipAddress);
         logActivity('getuserguid-success', identity.tenantId, identity.uniqueName, req.body);
     } catch (error) {

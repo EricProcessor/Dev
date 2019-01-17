@@ -1,11 +1,8 @@
 import { EnvironmentType, Environment } from './core/environment'
 import { Config } from './Config'
 import { TableSetting } from './AzureTable'
-// let DBurl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
-let dburl = 'mongodb://127.0.0.1:27017/'
-// let dbName = '/admin';
-// let mongo_url =dburl + dbName;
- 
+let dburl = Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+
 export class StorageConfig {
     public static readonly emulatorConnectionString = dburl;
     public static readonly defaultAccountName = "meeservicesstorage";
