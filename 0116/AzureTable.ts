@@ -48,7 +48,7 @@ export interface RetrievedEntity<T> {
 //定义TableService接口泛型
 export class AzureTableService<T> {
     settings: T;
-    service: TableServiceAsync;
+    //service: TableServiceAsync;
 }
 
 /**
@@ -87,7 +87,7 @@ function defaultEntityResolver(en: any) {
 */
 //模板有个小问题，因为typescript不支持多个继承
 export class MongodbTable<Model> { // Slight template hack as typescript doesn't support multiple inheritances.
-    protected service: TableServiceAsync;
+    //protected service: TableServiceAsync;
     protected readonly setting: TableSetting;    //table表接口设置
     protected entityResolver;
 
@@ -218,8 +218,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                 (error) => {
                     throw error;
                 }
-            }
-            )
+            })
     }
 
 
@@ -236,76 +235,67 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     *@param rowKey可选rowKey值，该值将覆盖默认值。
     */
     //插入或替换方法
-    public insertOrReplace(model: Model, rowKey: string = undefined): Promise<void> {
-        const _this = this
-        const entity = EntityConverter.convertToEntity(model[this.setting.partitionKeyName], this.getRowKey(rowKey, model), model, false);
-        MongoClient.connect(dbUrl + "userInfo", (err, client) => {
-            if (err) {
-                console.log(err)
-                console.log("数据库连接失败")
-                return
-            }
-            var db = client.db("userInfo");
-            db.connection("User").
-                insertOne(entity, (error, result) => {
-                    if (error) {
-                        console.log("添加数据失败")
-                        return
+    public insertOrReplace(model: Model) : Promise<void> {
+        return MongoClient.connect(dbUrl + "userInfo", options).then(
+            client => {
+                return client.db("userInfo").collection("User").findOne({ "unique_name": model["unique_name"] }).then(final => {
+                    if (final) {
+                        console.log("insertOrMerge更新数据");
+                        return client.db("userInfo").
+                            collection("User").updateOne({ "unique_name": model["unique_name"] }, {
+                                $set: model
+                            }).then(final => {
+                                client.close();
+                                return
+                            }
+                        )
+                    }else{
+                        console.log("insertOrMerge插入数据");
+                        return client.db("userInfo").collection("User").insertOne(model).then(final => {
+                            client.close();
+                            return
+                        })
                     }
-                    db.close()
-                    return result
                 })
-        })
+            })
+        .catch(err => {
+            (error) => {
+                throw error;
+            }
+            }
+        )       
     }
     //删除某个数据的方法
     public delete(query: string): Promise<void> {
-        // const entity = EntityConverter.convertToEntity(model[this.setting.partitionKeyName], this.getRowKey(rowKey, model), {}, true);
-        MongoClient.connect(dbUrl + "userInfo", { useNewUrlParser: true }, (err, client) => {
-            let db = client.db("userInfo")
-            if (err) {
-                console.log(err)
-                console.log("连接数据库失败")
-                return
-            }
-
-            db.collection("User").
-                deleteOne({
-                    "unique_name": query
-                }, (error, result) => {
+        console.log("")
+        return MongoClient.connect(dbUrl + "userInfo", options).then(
+            client =>{
+                return client.db("userInfo").collection("User").delete(query).then((error) => {
                     if (error) {
-                        console.log("删除数据失败")
+                        console.log("数据库删除失败")
                         return
                     }
-                    console.log("删除数据成功")
                     client.close()
-                    return result
-                }
-                )
-        })
+                    return
+                })
+            }
+        )
     }
 
     //删除某个表
-    public deleteTable(): Promise<boolean> {
-        MongoClient.connect(dbUrl + "userInfo", (err, client) => {
-            if (err) {
-                console.log(err)
-                console.log("连接数据库失败")
+    public deleteTable(query: string): Promise<void> {
+        return MongoClient.connect(dbUrl + "userInfo", options).then(
+            client =>{
+                return client.db("userInfo").dropCollection(query).then((error,result) => {
+                    if (error) {
+                        console.log("数据库删除失败")
+                        return
+                    }
+                    client.close()
+                    return result
+                })
             }
-            var db = client.db("User");
-            db.connection(this.setting.tableName).drop((error, result) => {
-                if (error) {
-                    console.log("数据库删除失败")
-                    return
-                }
-                client.close()
-                return result
-            })
-        })
-        // return this.ensureTable()
-        // .then((created) => {
-        //     //删除操作  表如果存在执行删除
-        //     return this.service.deleteTableIfExistsAsync(this.setting.tableName);
-        // });
+        )
     }
 
     /**
@@ -319,27 +309,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     *重试逻辑的形式。
     **/
     //批量数据插入
-    public batchInsertEntity(models: Model[], ignoreUndefined: boolean = false): Promise<any> {
-        MongoClient.connect(dbUrl + "userInfo", (err, client) => {
-            let db = client.db("User");
-            if (err) {
-                console.log(err);
-                return
-            }
-
-            models.forEach((model) => {
-                const entity = EntityConverter.convertToEntity(model[this.setting.partitionKeyName], model[this.setting.rowKeyName], model, ignoreUndefined);
-                db.connection("User")//this.setting.tableName)
-                    .insertOne(entity, (error, result) => {
-                        if (error) {
-                            console.log("数据添加失败")
-                            return
-                        }
-                        return result
-                    })
-            });
-
-        })
+    public batchInsertEntity(models :Model[], ignoreUndefined: boolean = false) : Promise< void > {
         // let tableBatch = new TableBatch();
         // return this.ensureTable()
         //         .then((created) => {
@@ -350,6 +320,8 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
 
         //             return this.service.executeBatchAsync(this.setting.tableName, tableBatch);
         //         });
+        console.log("批量数据插入");
+        return
     }
 
     //查询实体（内容）
@@ -371,7 +343,6 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                 reject()
                 return
             }
-
             //const result = db.collection(this.setting.tableName).find(query)
             const result = db.collection("User").find(query)
             if (result) { //如果查询到数据
@@ -387,21 +358,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
             else { //没有查询到数据
                 reject()
             }
-
-
         })
-        // this.service.queryEntities(this.setting.tableName, query, currentToken, (error, result, response) => {
-        // if (error) {
-        // reject(error);
-        // } else {
-        // const entities = result.entries.map(m => EntityConverter.map<Model>(m));
-        // if (result.continuationToken) {
-        // this.queryTillEnd(query, result.continuationToken, array.concat(entities), resolve, reject);
-        // } else {
-        // resolve(array.concat(entities));
-        // }
-        // }
-        // });
     }
 
     //查询
@@ -425,22 +382,22 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     }
 }
 //定义接口
-interface TableServiceAsync {
-    //检测表是否存在
-    createTableIfNotExistsAsync(table: string): Promise<any>;
-    //表如果存在执行删除
-    deleteTableIfExistsAsync(table: string): Promise<boolean>;
-    //获取刚刚插入的实体
-    retrieveEntityAsync<T>(table: string, partitionKey: string, rowKey: string, options: any): Promise<T>;
-    //更新操作
-    replaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<any>;
-    //插入操作
-    insertOrReplaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<any>;
-    //删除操作
-    deleteEntityAsync<T>(table: string, entityDescriptor: T): Promise<void>;
-    //执行批量处理
-    executeBatchAsync<T>(table: string, tableBatch: TableBatch): Promise<void>;
-    //插入合并操作
-    insertOrMergeAsync<T>(table: string, entityDescriptor: T): Promise<void>;
-}
+// interface TableServiceAsync {
+//     //检测表是否存在
+//     createTableIfNotExistsAsync(table: string): Promise<any>;
+//     //表如果存在执行删除
+//     deleteTableIfExistsAsync(table: string): Promise<boolean>;
+//     //获取刚刚插入的实体
+//     retrieveEntityAsync<T>(table: string, partitionKey: string, rowKey: string, options: any): Promise<T>;
+//     //更新操作
+//     replaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<any>;
+//     //插入操作
+//     insertOrReplaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<any>;
+//     //删除操作
+//     deleteEntityAsync<T>(table: string, entityDescriptor: T): Promise<void>;
+//     //执行批量处理
+//     executeBatchAsync<T>(table: string, tableBatch: TableBatch): Promise<void>;
+//     //插入合并操作
+//     insertOrMergeAsync<T>(table: string, entityDescriptor: T): Promise<void>;
+// }
 
