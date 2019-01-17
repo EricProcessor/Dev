@@ -266,17 +266,17 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         )       
     }
     //删除某个数据的方法
-    public delete(query: string): Promise<void> {
+    public delete(query: any): Promise<any> {
         console.log("")
         return MongoClient.connect(dbUrl + "userInfo", options).then(
             client =>{
-                return client.db("userInfo").collection("User").delete(query).then((error) => {
+                return client.db("userInfo").collection("User").delete(query).then((error ,result) => {
                     if (error) {
                         console.log("数据库删除失败")
                         return
                     }
                     client.close()
-                    return
+                    return result
                 })
             }
         )

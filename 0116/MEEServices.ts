@@ -603,9 +603,9 @@ export async function setTrialCounts(res: Express.Response, unique_name: string,
             throw new Error(`setTrialCounts: Found issues with entities, unsure what to update.`);
         }
         else {
-            let userId = UserID.fromUser(entity);//eula
-            await newUserTable.setTrialCounts(userId, trialsAllowed, trialsUsed);
-            res.send(JSON.stringify(await newUserTable.get(userId)));
+            // let userId = UserID.fromUser(entity);//eula
+            // await newUserTable.setTrialCounts(userId, trialsAllowed, trialsUsed);
+            // res.send(JSON.stringify(await newUserTable.get(userId)));
         }
     }
     catch (error) {

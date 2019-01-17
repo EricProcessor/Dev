@@ -100,8 +100,8 @@ export class UserCopy {
 
 
     public copy() {
-        let query = new TableQuery();
-        return new Promise<void>((resolve, reject) => this.copyTillEnd(query, null, resolve, reject));
+        // let query = new TableQuery();
+        // return new Promise<void>((resolve, reject) => this.copyTillEnd(query, null, resolve, reject));
     }
 
     private async handleQuery(error, result, response, query, resolve, reject) {
@@ -112,17 +112,17 @@ export class UserCopy {
             // Process all entities from original table and map them to a User class
             await this.createBatchFromEntities(result);
             if (result.continuationToken) {
-                this.copyTillEnd(query, result.continuationToken, resolve, reject);
+                // this.copyTillEnd(query, result.continuationToken, resolve, reject);
             } else {
                 resolve();
             }    
         }
     }
 
-    public async copyTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, resolve, reject) {
+    // public async copyTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, resolve, reject) {
         // Query will return 1000 entities at a time
-        this.originalTable.query(query, currentToken, (error, result, response) =>  this.handleQuery(error, result, response, query, resolve, reject));
-    }
+        // this.originalTable.query(query, currentToken, (error, result, response) =>  this.handleQuery(error, result, response, query, resolve, reject));
+    // }
 }
 
 if (process.argv.length === 3) {
@@ -135,8 +135,8 @@ if (process.argv.length === 3) {
         console.log('Starting Development');
         console.log('   orignaltable:' + origTableSetting.tableName + ' ConnectionString:' + origTableSetting.connectionString + ' AccountName:' + origTableSetting.accountName);
         console.log('   newtable:' + newTableSetting.tableName + ' ConnectionString:' + newTableSetting.connectionString + ' AccountName:' + newTableSetting.accountName);
-        let copy: UserCopy = new UserCopy(origTableSetting, newTableSetting);
-        copy.copy();
+        // let copy: UserCopy = new UserCopy(origTableSetting, newTableSetting);
+        // copy.copy();
     }
     else if (targetEnv.match('staging')) {
         Config.environmentOverride = EnvironmentType.Staging;
@@ -145,8 +145,8 @@ if (process.argv.length === 3) {
         console.log('Starting staging');
         console.log('   orignaltable:' + origTableSetting.tableName + ' ConnectionString:' + origTableSetting.connectionString + ' AccountName:' + origTableSetting.accountName);
         console.log('   newtable:' + newTableSetting.tableName + ' ConnectionString:' + newTableSetting.connectionString + ' AccountName:' + newTableSetting.accountName);
-        let copy: UserCopy = new UserCopy(origTableSetting, newTableSetting);
-        copy.copy();
+        // let copy: UserCopy = new UserCopy(origTableSetting, newTableSetting);
+        // copy.copy();
     }
     else if (targetEnv.match('production')) {
         Config.environmentOverride = EnvironmentType.Production;
@@ -155,7 +155,7 @@ if (process.argv.length === 3) {
         console.log('Starting staging');
         console.log('   orignaltable:' + origTableSetting.tableName + ' ConnectionString:' + origTableSetting.connectionString + ' AccountName:' + origTableSetting.accountName);
         console.log('   newtable:' + newTableSetting.tableName + ' ConnectionString:' + newTableSetting.connectionString + ' AccountName:' + newTableSetting.accountName);
-        let copy: UserCopy = new UserCopy(origTableSetting, newTableSetting);
-        copy.copy();
+        // let copy: UserCopy = new UserCopy(origTableSetting, newTableSetting);
+        // copy.copy();
     }
 }

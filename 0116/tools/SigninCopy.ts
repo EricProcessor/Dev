@@ -160,128 +160,128 @@ function duration(start) {
     return Math.round((end[0]*1000) + (end[1]/1000000));
 }
 
-export class SignInTelemetryCopy {
-    private originalTable: AzureTable<OldSignInTelemetry>;
-    private newTable: SignInTelemetryTable;
-    private userTable: UserTable;
+// export class SignInTelemetryCopy {
+//     private originalTable: AzureTable<OldSignInTelemetry>;
+//     private newTable: SignInTelemetryTable;
+//     private userTable: UserTable;
     
-    public processedCount: number = 0;
-    public writtenCount: number = 0;
+//     public processedCount: number = 0;
+//     public writtenCount: number = 0;
 
-    public timesCalledCustomGroupBy: number = 0;
-    public timeSpentCustomGroupBy: number = 0;
+//     public timesCalledCustomGroupBy: number = 0;
+//     public timeSpentCustomGroupBy: number = 0;
 
-    public timeCalledCreateBatchFromEntities: number = 0;
-    public timeSpentCreateBatchFromEntities: number = 0;
+//     public timeCalledCreateBatchFromEntities: number = 0;
+//     public timeSpentCreateBatchFromEntities: number = 0;
 
-    constructor(orginalTableSetting: TableSetting, newTableSetting: TableSetting, userTable: UserTable) {
-        this.originalTable = new AzureTable<OldSignInTelemetry>(orginalTableSetting);
-        this.newTable = new SignInTelemetryTable(newTableSetting);
-        this.userTable = userTable;
-    }
+//     constructor(orginalTableSetting: TableSetting, newTableSetting: TableSetting, userTable: UserTable) {
+//         this.originalTable = new AzureTable<OldSignInTelemetry>(orginalTableSetting);
+//         this.newTable = new SignInTelemetryTable(newTableSetting);
+//         this.userTable = userTable;
+//     }
 
-    public cmap(entity): OldSignInTelemetry {
-        var mapped = {} as OldSignInTelemetry;
-        Object.keys(entity).forEach((key) => {
-            var prop: IEntityProperty<any> = entity[key];
-            if (key == 'PartitionKey') {
-                mapped.Date = prop._;
-            }
-            else if (key == 'RowKey') {
-                mapped.RandomId = prop._;
-            }
-            else {
-                mapped[key] = prop ? prop._ : null;
-            }
-        });
+//     public cmap(entity): OldSignInTelemetry {
+//         var mapped = {} as OldSignInTelemetry;
+//         Object.keys(entity).forEach((key) => {
+//             var prop: IEntityProperty<any> = entity[key];
+//             if (key == 'PartitionKey') {
+//                 mapped.Date = prop._;
+//             }
+//             else if (key == 'RowKey') {
+//                 mapped.RandomId = prop._;
+//             }
+//             else {
+//                 mapped[key] = prop ? prop._ : null;
+//             }
+//         });
 
-        return mapped;
-    }    
+//         return mapped;
+//     }    
     
-    private async createBatchFromEntities(origTableList) {
-        // Process all entities from original table and map them to a User class
-        const entities : OldSignInTelemetry[] = origTableList.entries.map(m => this.cmap(m));
-        this.processedCount += entities.length;
+//     private async createBatchFromEntities(origTableList) {
+//         // Process all entities from original table and map them to a User class
+//         const entities : OldSignInTelemetry[] = origTableList.entries.map(m => this.cmap(m));
+//         this.processedCount += entities.length;
 
-        // Make sure we have entities to process
-        if (entities.length > 0){
-            this.timesCalledCustomGroupBy++;
-            let t0 = process.hrtime();
-            let convertedEntities :any = await CustomGroupBy(entities, this.userTable);
-            this.timeSpentCustomGroupBy += duration(t0);
+//         // Make sure we have entities to process
+//         if (entities.length > 0){
+//             this.timesCalledCustomGroupBy++;
+//             let t0 = process.hrtime();
+//             let convertedEntities :any = await CustomGroupBy(entities, this.userTable);
+//             this.timeSpentCustomGroupBy += duration(t0);
 
-            if (Gen.Integer(0, 100) > 80) {
-                this.displayStats();
-            }
+//             if (Gen.Integer(0, 100) > 80) {
+//                 this.displayStats();
+//             }
 
-            let asyncFuncs = [];
+//             let asyncFuncs = [];
 
-            convertedEntities.forEach((telm : SignInTelemetry[]) => {
-                let split : SignInTelemetry[][]= splitBy(100, telm);
-                split.forEach(val => {
+//             convertedEntities.forEach((telm : SignInTelemetry[]) => {
+//                 let split : SignInTelemetry[][]= splitBy(100, telm);
+//                 split.forEach(val => {
 
-                    // There are chances that the oid is duplicated. This happens when unique_names are used as the rowkey.
-                    val = val.filter((value, index, array) => 
-                            !array.filter((v, i) => v.RandomId == value.RandomId && (i < index)).length);
+//                     // There are chances that the oid is duplicated. This happens when unique_names are used as the rowkey.
+//                     val = val.filter((value, index, array) => 
+//                             !array.filter((v, i) => v.RandomId == value.RandomId && (i < index)).length);
 
-                    this.writtenCount += val.length;
+//                     this.writtenCount += val.length;
 
-                    asyncFuncs.push(() => this.newTable.batchInsertEntity(val).then(r => r, (reason) => {
-                        console.log('Batching issue with copy: ' + reason);
-                        val.forEach(out => console.log('PKEY:' + out.Date + '  RKEY:' + out.RandomId + 'Tenant:' + out.TenantId));
-                        throw reason;
-                    }));
-                });
-            });
+//                     asyncFuncs.push(() => this.newTable.batchInsertEntity(val).then(r => r, (reason) => {
+//                         console.log('Batching issue with copy: ' + reason);
+//                         val.forEach(out => console.log('PKEY:' + out.Date + '  RKEY:' + out.RandomId + 'Tenant:' + out.TenantId));
+//                         throw reason;
+//                     }));
+//                 });
+//             });
 
-            // Create a promise chain that will run synchronously. We don't want to cause a large impact to the table.
-            return asyncFuncs.reduce((prev, curr) => {
-                    return prev.then(curr, (reason) => { 
-                        console.log('Batching issue with copy: ' + reason);
-                        throw reason;
-                    });
-                }, Promise.resolve());
-        }
-    }
+//             // Create a promise chain that will run synchronously. We don't want to cause a large impact to the table.
+//             return asyncFuncs.reduce((prev, curr) => {
+//                     return prev.then(curr, (reason) => { 
+//                         console.log('Batching issue with copy: ' + reason);
+//                         throw reason;
+//                     });
+//                 }, Promise.resolve());
+//         }
+//     }
 
-    public displayStats() {
-        console.log('Read:' + this.processedCount);
-        console.log(' Write:' + this.writtenCount + ' Hits/Misses: ' + hits + '//' + misses + ' SizeOfCache: ' + sizeOfCache);
-        console.log(' TimeSpent:')
-        console.log('   Making gets:' + timeSpentMakingCalls + ' ms (Misses: ' + misses + ' Average: '+ timeSpentMakingCalls / misses);
-        console.log('   CustomGroupBy:' + this.timeSpentCustomGroupBy + ' ms (Calls: ' + this.timesCalledCustomGroupBy + ' Average: '+ this.timeSpentCustomGroupBy / this.timesCalledCustomGroupBy);
-        console.log('   CreateBatch:' + this.timeSpentCreateBatchFromEntities + ' ms (Calls: ' + this.timeCalledCreateBatchFromEntities + ' Average: '+ this.timeSpentCreateBatchFromEntities / this.timeCalledCreateBatchFromEntities);
-    }
+//     public displayStats() {
+//         console.log('Read:' + this.processedCount);
+//         console.log(' Write:' + this.writtenCount + ' Hits/Misses: ' + hits + '//' + misses + ' SizeOfCache: ' + sizeOfCache);
+//         console.log(' TimeSpent:')
+//         console.log('   Making gets:' + timeSpentMakingCalls + ' ms (Misses: ' + misses + ' Average: '+ timeSpentMakingCalls / misses);
+//         console.log('   CustomGroupBy:' + this.timeSpentCustomGroupBy + ' ms (Calls: ' + this.timesCalledCustomGroupBy + ' Average: '+ this.timeSpentCustomGroupBy / this.timesCalledCustomGroupBy);
+//         console.log('   CreateBatch:' + this.timeSpentCreateBatchFromEntities + ' ms (Calls: ' + this.timeCalledCreateBatchFromEntities + ' Average: '+ this.timeSpentCreateBatchFromEntities / this.timeCalledCreateBatchFromEntities);
+//     }
 
-    public copy() {
-        let query = new TableQuery();
-        return new Promise<void>((resolve, reject) => this.copyTillEnd(query, null, resolve, reject));
-    }
+//     public copy() {
+//         let query = new TableQuery();
+//         return new Promise<void>((resolve, reject) => this.copyTillEnd(query, null, resolve, reject));
+//     }
 
-    private async handleQuery(error, result, response, query, resolve, reject) {
-        if (error) {
-            reject(error)
-        }
-        else {
-            let t0 = process.hrtime();
-            // Process all entities from original table and map them to a User class
-            await this.createBatchFromEntities(result);
-            this.timeSpentCreateBatchFromEntities = duration(t0);
-            this.timeCalledCreateBatchFromEntities++;
+//     private async handleQuery(error, result, response, query, resolve, reject) {
+//         if (error) {
+//             reject(error)
+//         }
+//         else {
+//             let t0 = process.hrtime();
+//             // Process all entities from original table and map them to a User class
+//             await this.createBatchFromEntities(result);
+//             this.timeSpentCreateBatchFromEntities = duration(t0);
+//             this.timeCalledCreateBatchFromEntities++;
 
-            if (result.continuationToken) {
-                this.copyTillEnd(query, result.continuationToken, resolve, reject);
-            } else {
-                resolve();
-            }    
-        }
-    }
+//             if (result.continuationToken) {
+//                 this.copyTillEnd(query, result.continuationToken, resolve, reject);
+//             } else {
+//                 resolve();
+//             }    
+//         }
+//     }
 
-public async copyTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, resolve, reject) {
-        // Query will return 1000 entities at a time
-        this.originalTable.query(query, currentToken, (error, result, response) =>  this.handleQuery(error, result, response, query, resolve, reject));
-    }
-}
+// public async copyTillEnd(query: TableQuery, currentToken: TableService.TableContinuationToken, resolve, reject) {
+//         // Query will return 1000 entities at a time
+//         this.originalTable.query(query, currentToken, (error, result, response) =>  this.handleQuery(error, result, response, query, resolve, reject));
+//     }
+// }
 
 function entityResolver(en: any) {
     const r = {} as any;
@@ -299,54 +299,54 @@ function entityResolver(en: any) {
     return r;
 }
 
-if (process.argv.length === 3) {
-    let targetEnv = process.argv[2].toLowerCase();
-    let userTableSetting = StorageConfig.getNewUserTableSettings();
-    let origTableSetting = StorageConfig.getTelemetryTableSettings();
-    origTableSetting.entityResolver = entityResolver;
+// if (process.argv.length === 3) {
+//     let targetEnv = process.argv[2].toLowerCase();
+//     let userTableSetting = StorageConfig.getNewUserTableSettings();
+//     let origTableSetting = StorageConfig.getTelemetryTableSettings();
+//     origTableSetting.entityResolver = entityResolver;
 
-    let newTableSetting = StorageConfig.getTelemetryTableSettings();
+//     let newTableSetting = StorageConfig.getTelemetryTableSettings();
 
-    userTableSetting.retryPolicy = new az.LinearRetryPolicyFilter(5, 500);
-    origTableSetting.retryPolicy = new az.LinearRetryPolicyFilter(5, 500);
-    newTableSetting.retryPolicy = new az.LinearRetryPolicyFilter(5, 500);
+//     userTableSetting.retryPolicy = new az.LinearRetryPolicyFilter(5, 500);
+//     origTableSetting.retryPolicy = new az.LinearRetryPolicyFilter(5, 500);
+//     newTableSetting.retryPolicy = new az.LinearRetryPolicyFilter(5, 500);
 
-    if (targetEnv.match('development')) {
-        Config.environmentOverride = EnvironmentType.Development;
-        userTableSetting.tableName = "users";
-        userTableSetting.connectionString = undefined;
-        userTableSetting.accountName = StorageConfig.defaultAccountName;
-        userTableSetting.accessKey = StorageConfig.defaultAccessKey;
+//     if (targetEnv.match('development')) {
+//         Config.environmentOverride = EnvironmentType.Development;
+//         userTableSetting.tableName = "users";
+//         userTableSetting.connectionString = undefined;
+//         userTableSetting.accountName = StorageConfig.defaultAccountName;
+//         userTableSetting.accessKey = StorageConfig.defaultAccessKey;
 
-        origTableSetting.tableName = "signintelemetry";
-        origTableSetting.connectionString = undefined;
-        origTableSetting.accountName = StorageConfig.devAccountName;
-        origTableSetting.accessKey = StorageConfig.devAccessKey;
+//         origTableSetting.tableName = "signintelemetry";
+//         origTableSetting.connectionString = undefined;
+//         origTableSetting.accountName = StorageConfig.devAccountName;
+//         origTableSetting.accessKey = StorageConfig.devAccessKey;
 
-        newTableSetting.tableName = "developmenttelemetry";
-        newTableSetting.connectionString = undefined;
-        newTableSetting.accountName = StorageConfig.devAccountName;
-        newTableSetting.accessKey = StorageConfig.devAccessKey;
+//         newTableSetting.tableName = "developmenttelemetry";
+//         newTableSetting.connectionString = undefined;
+//         newTableSetting.accountName = StorageConfig.devAccountName;
+//         newTableSetting.accessKey = StorageConfig.devAccessKey;
 
-        console.log('Starting Development');
-        console.log('   orignaltable:' + origTableSetting.tableName + ' ConnectionString:' + origTableSetting.connectionString + ' AccountName:' + origTableSetting.accountName);
-        console.log('   newtable:' + newTableSetting.tableName + ' ConnectionString:' + newTableSetting.connectionString + ' AccountName:' + newTableSetting.accountName);
-        console.log('   usertable:' + userTableSetting.tableName + ' ConnectionString:' + userTableSetting.connectionString + ' AccountName:' + userTableSetting.accountName);
-        let copy: SignInTelemetryCopy = new SignInTelemetryCopy(origTableSetting, newTableSetting, new UserTable(userTableSetting));
-        let startTime = process.hrtime();
-        copy.copy().then(() => {
-            copy.displayStats();
-            console.log('Duration: ' + duration(startTime) + 'ms')
-        });
-    }
-    /*
-    else if (targetEnv.match('staging')) {
-        Config.environmentOverride = EnvironmentType.Staging;
-        console.log('Starting staging');
-        console.log('   orignaltable:' + origTableSetting.tableName + ' ConnectionString:' + origTableSetting.connectionString + ' AccountName:' + origTableSetting.accountName);
-        console.log('   newtable:' + newTableSetting.tableName + ' ConnectionString:' + newTableSetting.connectionString + ' AccountName:' + newTableSetting.accountName);
-        console.log('   usertable:' + userTableSetting.tableName + ' ConnectionString:' + userTableSetting.connectionString + ' AccountName:' + userTableSetting.accountName);
-        let copy: SignInTelemetryCopy = new SignInTelemetryCopy(origTableSetting, newTableSetting, new UserTable(userTableSetting));
-        copy.copy();
-    }*/
-}
+//         console.log('Starting Development');
+//         console.log('   orignaltable:' + origTableSetting.tableName + ' ConnectionString:' + origTableSetting.connectionString + ' AccountName:' + origTableSetting.accountName);
+//         console.log('   newtable:' + newTableSetting.tableName + ' ConnectionString:' + newTableSetting.connectionString + ' AccountName:' + newTableSetting.accountName);
+//         console.log('   usertable:' + userTableSetting.tableName + ' ConnectionString:' + userTableSetting.connectionString + ' AccountName:' + userTableSetting.accountName);
+//         let copy: SignInTelemetryCopy = new SignInTelemetryCopy(origTableSetting, newTableSetting, new UserTable(userTableSetting));
+//         let startTime = process.hrtime();
+//         copy.copy().then(() => {
+//             copy.displayStats();
+//             console.log('Duration: ' + duration(startTime) + 'ms')
+//         });
+//     }
+//     /*
+//     else if (targetEnv.match('staging')) {
+//         Config.environmentOverride = EnvironmentType.Staging;
+//         console.log('Starting staging');
+//         console.log('   orignaltable:' + origTableSetting.tableName + ' ConnectionString:' + origTableSetting.connectionString + ' AccountName:' + origTableSetting.accountName);
+//         console.log('   newtable:' + newTableSetting.tableName + ' ConnectionString:' + newTableSetting.connectionString + ' AccountName:' + newTableSetting.accountName);
+//         console.log('   usertable:' + userTableSetting.tableName + ' ConnectionString:' + userTableSetting.connectionString + ' AccountName:' + userTableSetting.accountName);
+//         let copy: SignInTelemetryCopy = new SignInTelemetryCopy(origTableSetting, newTableSetting, new UserTable(userTableSetting));
+//         copy.copy();
+//     }*/
+// }

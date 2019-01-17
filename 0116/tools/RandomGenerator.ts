@@ -51,32 +51,32 @@ export class RandomGenerator {
         return user;
     }
 
-    public GenerateUser(tenantId : string = undefined) : User {
-        let user : User =  {} as User;
-        user.anonimizedOid = Guid.newGuid();
-        return Object.assign( {}, user, this.GenerateuserWithoutAoid(tenantId));
-    }
+    // public GenerateUser(tenantId : string = undefined) : User {
+    //     let user : User =  {} as User;
+    //     user.anonimizedOid = Guid.newGuid();
+    //      return Object.assign( {}, user, this.GenerateuserWithoutAoid(tenantId));
+    // }
 
-    public GenerateuserWithoutAoid(tenantId : string = undefined) : UserWithoutAoid {
-        let user : UserWithoutAoid = {} as any;
-        user.name = this.GenerateName();
-        user.unique_name = this.GenerateEmailFromName(user.name);
-        user.isLicensed = Math.random() >= 0.5;
-        if (user.isLicensed) {
-            user.licenseType = this.GenerateRandomLicenseType();
-            user.lastLicenseCheck = this.GenerateRandomDate(10, 20);
-        }
+    // public GenerateuserWithoutAoid(tenantId : string = undefined) : UserWithoutAoid {
+    //     let user : UserWithoutAoid = {} as any;
+    //     user.name = this.GenerateName();
+    //     user.unique_name = this.GenerateEmailFromName(user.name);
+    //     user.isLicensed = Math.random() >= 0.5;
+    //     if (user.isLicensed) {
+    //         user.licenseType = this.GenerateRandomLicenseType();
+    //         user.lastLicenseCheck = this.GenerateRandomDate(10, 20);
+    //     }
 
-        user.role = this.rand(this.roles);
-        user.lastRoleCheck = this.GenerateRandomDate(1, 4);
-        user.nickname = user.name.split(' ', 1)[0] + 'N';
+    //     user.role = this.rand(this.roles);
+    //     user.lastRoleCheck = this.GenerateRandomDate(1, 4);
+    //     user.nickname = user.name.split(' ', 1)[0] + 'N';
 
-        user.tenantId = tenantId || Guid.newGuid();
-        user.oid = Guid.newGuid();
+    //     user.tenantId = tenantId || Guid.newGuid();
+    //     user.oid = Guid.newGuid();
 
-        user.skin = this.rand(this.names) + this.rand(this.names) + this.rand(this.names);
-        user.trailsUsed = this.Integer(0, 20);
-        user.trialsAllowed = this.Integer(20, 30);
-        return user;
-    }
+    //     user.skin = this.rand(this.names) + this.rand(this.names) + this.rand(this.names);
+    //     user.trailsUsed = this.Integer(0, 20);
+    //     user.trialsAllowed = this.Integer(20, 30);
+    //     return user;
+    // }
 }
