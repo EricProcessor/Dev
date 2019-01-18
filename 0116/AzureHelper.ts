@@ -4,8 +4,8 @@ import { StorageConfig } from "./StorageConfig"
 import { Config } from "./Config"
 import { Server } from "http";
 // let DBurl = 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin';
-let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
-
+let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+//let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmo,17,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin':'mongodb://127.0.0.1:27017/userInfo';
 //引用azure-storage模块                                                                                                                  
 // const azure = require("azure-storage");
 //数据库引用 
@@ -147,7 +147,8 @@ function getTableName(table: Table /*Table为开始定义的枚举变量*/) {
 })
 //查询UserRole方法----临时方法
 export function queryUserRole( model ): Promise<any>{
-    return  MongoClient.connect(dbUrl+"/userInfo" , options).then(client => {
+    console.log("=========================="+JSON.stringify(model)+"======================");
+    return  MongoClient.connect(dbUrl , options).then(client => {
         console.log("queryUserRole连接成功")
         return client.db("userInfo").collection("UserRole").findOne({ "unique_name": model["unique_name"] }).then(final => {
             console.log("queryUserRole连接成功"+JSON.stringify(final.role))
@@ -161,6 +162,31 @@ export function queryUserRole( model ): Promise<any>{
             return finalResult
         })
     })
+}
+export function queryUserRoleRisky( model ): Promise<any>{
+    return MongoClient.connect(dbUrl, options).then(client => {return client.db("userInfo").collection("UserRole").findOne({ "unique_name": model["unique_name"] }).then(final => {
+                let role = "";
+                if (final && final.role == "teacher") {
+                    console.log("-----getUserRoleRisky----111111")
+                    role = roleFromPersona("faculty1111123")
+                } else {
+                    console.log("-----getUserRoleRisky----2222222")
+                    role = roleFromPersona("qq112323232")
+                }
+                client.close();
+                return role;
+            
+        })
+    })
+}
+function roleFromPersona(persona: string): string {
+    persona = persona.toLowerCase();
+    if (persona.match('faculty')) {
+        return 'teacher';
+    }
+    else {
+        return 'student';
+    }
 }
 export function retrieveEntity(table: Table, partitionKey: string, rowKey: string): Promise<any> {
     return new Promise(function (resolve, reject) {

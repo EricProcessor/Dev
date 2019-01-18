@@ -31,7 +31,7 @@ import { async } from "./node_modules/@types/q";
 import { fromCallback } from "./node_modules/@types/bluebird";
 //定义azure实体
 //const entGen = azure.TableUtilities.entityGenerator;
-let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+//let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
 
 const privateTokenKey = getAuthPrivateKey();
 const publicTokenKey = getAuthPublicKey();
@@ -737,20 +737,8 @@ async function getUserRole(user: UserID): Promise<string> {
 }
 
 async function getUserRoleRisky(user: UserID): Promise<string> {
-    let role = "";
-    return MongoClient.connect(dbUrl + "userInfo", options).then(client => {
-        return client.db("userInfo").collection("UserRole").findOne({ "unique_name": user["unique_name"] }).then(
-            final => {
-                if (final) {
-                    role = roleFromPersona("faculty1111123")
-                } else {
-                    role = roleFromPersona("qq112323232")
-                }
-                client.close();
-                return role;
-            }
-        )}
-    )
+    return await AzureHelper.queryUserRoleRisky(user);
+}
     // let endpoint = 'https://signup.microsoft.com/';
     // let accessToken = await getOnBehalfOfToken(user, endpoint);
     // let uri = `${endpoint}api/signupservice/userproperties?api-version=1`;
@@ -794,7 +782,7 @@ async function getUserRoleRisky(user: UserID): Promise<string> {
     //         reject(e);
     //     }
     // });
-}
+
 
 function roleFromPersona(persona: string): string {
     /*
