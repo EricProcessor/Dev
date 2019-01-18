@@ -1,4 +1,4 @@
-import { EnvironmentType } from "./core/environment";
+import { EnvironmentType ,Environment } from "./core/environment";
 //配置环境文件
 export class Config {
     public static readonly startingTrialCountTeacher: number = 25;
@@ -29,10 +29,15 @@ export class Config {
 
     public static environmentOverride : EnvironmentType;
 
+
     public static useBlobForLogging = false;
 
     // Logs all info about the tenant.
     public static logVerboseEnabledForTenant: string[] = ["4a88a673-d0e3-45a7-a44c-1f03feb1df60"];
 
     environmentOverride = EnvironmentType.LocalDevelopment;
+    
+
+    public static dbUrl = false ? 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017/userInfo';
+    // public static  dbUrl = Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017/userInfo';
 }
