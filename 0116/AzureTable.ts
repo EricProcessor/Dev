@@ -17,7 +17,7 @@ var mongodb = require('mongodb');
 //引入
 var MongoClient = mongodb.MongoClient;
 //jd---服务器连接地址
-let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmo,17,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin':'mongodb://127.0.0.1:27017/userInfo';
+let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017/userInfo';
 
 var options = {
     auto_reconnect: true,
@@ -193,7 +193,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     public insertOrMerge(model: Model): Promise<void> {
         console.log("进入insertOrMerge")
         console.log(model);
-        return MongoClient.connect(dbUrl + "userInfo", options).then(
+        return MongoClient.connect(dbUrl, options).then(
             client => {
                 return client.db("userInfo").collection("User")
                         .findOne({ "unique_name": model["unique_name"] }).then(final => {
@@ -244,7 +244,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     */
     //插入或替换方法
     public insertOrReplace(model: Model) : Promise<void> {
-        return MongoClient.connect(dbUrl + "userInfo", options).then(
+        return MongoClient.connect(dbUrl, options).then(
             client => {
                 return client.db("userInfo").collection("User").findOne({ "unique_name": model["unique_name"] }).then(final => {
                     if (final) {
@@ -282,7 +282,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     //删除某个数据的方法
     public delete(query: any): Promise<any> {
         console.log("")
-        return MongoClient.connect(dbUrl + "userInfo", options).then(
+        return MongoClient.connect(dbUrl, options).then(
             client =>{
                 return client.db("userInfo").collection("User").delete(query).then((error ,result) => {
                     if (error) {
@@ -297,7 +297,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
 
     //删除某个表
     public deleteTable(query: string): Promise<void> {
-        return MongoClient.connect(dbUrl + "userInfo", options).then(
+        return MongoClient.connect(dbUrl, options).then(
             client =>{
                 return client.db("userInfo").dropCollection(query).then((error,result) => {
                     if (error) {
@@ -347,7 +347,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     private queryTillEnd(query, resolve, reject) {
         let msg //用于保存搜索到的信息
         //查询操作
-        MongoClient.connect(dbUrl + "userInfo", options, (err, client) => {
+        MongoClient.connect(dbUrl, options, (err, client) => {
             const db = client.db("userInfo")
             if (err) {
                 console.log(err);
@@ -375,7 +375,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     //查询
     public findOne(collection, whereObj) :Promise<any> {
         console.log("进入findOne查询方法")
-       return  MongoClient.connect(dbUrl + "userInfo", options, ).then((err,result)=>{
+       return  MongoClient.connect(dbUrl, options, ).then((err,result)=>{
         console.log("进入数据库！")
         if (err) {
             console.log("失败");

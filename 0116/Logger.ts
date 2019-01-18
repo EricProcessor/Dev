@@ -10,7 +10,10 @@ const logInDeveloperMode: boolean = true;
 const uuid = require("uuid");
 let mongodb = require('mongodb');
 let MongoClient = mongodb.MongoClient;
-let DBurl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+// let DBurl = 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin';
+let DBurl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+// let DBurl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+// let DBurl = !Environment.isProduction()?'mongodb://mongodb:passw0rd@116.196.91.10:27017':'mongodb://127.0.0.1:27017';
 var options = {
     auto_reconnect: true,
     useNewUrlParser: true,
@@ -94,18 +97,34 @@ export async function logActivity(action: string, tenantId: string, unique_name:
                 console.log(error);
                 return;
             }
-            console.log("Logger数据库连接成功")
+            console.log("连接数据库成功")
             let db = client.db(tableService);   /*获取db对象--表名*/
             db.collection(activityTableName).insertOne(newActivity, (err) => {
                 if (err) {
                     console.log(err);
                     return false;
                 } else {
-                    console.log("Logger数据写入成功")
                     resolve();
                 }
                 client.close();  /*关闭数据库*/
             });
         });
+        // let startTime = Date.now();
+        // tableService.insertEntity(activityTableName, newActivity, function (error, result, response) {
+        //     let duration = Date.now() - startTime;
+        //     MEEServices.trackDependency("azure-storage/meetelemetry", "insertEntity", duration, true);
+        //     try {
+        //         if (error) {
+        //             throw error;
+        //         }
+        //         else {
+        //             resolve();
+        //         }
+        //     }
+        //     catch (err) {
+        //         err['entity'] = newActivity;
+        //         reject(err);
+        //     }
+        // });
     });
 }
