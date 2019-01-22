@@ -17,7 +17,7 @@ var mongodb = require('mongodb');
 //引入
 var MongoClient = mongodb.MongoClient;
 //jd---服务器连接地址
-let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017/userInfo';
+let dbUrl = Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017/userInfo';
 
 var options = {
     auto_reconnect: true,
@@ -191,8 +191,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     *@param模型将被插入的实体。
     */
     public insertOrMerge(model: Model): Promise<void> {
-        console.log("进入insertOrMerge")
-        console.log(model);
+
         return MongoClient.connect(dbUrl, options).then(
             client => {
                 return client.db("userInfo").collection("User")
@@ -284,7 +283,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         console.log("")
         return MongoClient.connect(dbUrl, options).then(
             client =>{
-                return client.db("userInfo").collection("User").delete(query).then((error ,result) => {
+                return client.db("userInfo").collection("User").deleteOne({ "unique_name":query}).then((error ,result) => {
                     if (error) {
                         console.log("数据库删除失败")
                     }

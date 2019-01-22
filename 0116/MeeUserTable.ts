@@ -119,7 +119,6 @@ export class UserTable extends MongodbTable<User> {
         user.tenantId = userID.tenantId;
         user.oid = userID.oid;
         user.unique_name = userID.unique_name;
-        console.log("RetrievedEntity"+JSON.stringify(user) )
         return this.retrieve(user);
         //return this.retrieveQuery(user);
     }
@@ -152,7 +151,6 @@ export class UserTable extends MongodbTable<User> {
             // It is possible that the user came in through the classroom mode signin, in which case we don't currently do a license check.
             userToUpdate.isLicensed = isLicensed;
             userToUpdate.licenseType = licenseType;
-            console.log(role);
             if (role === "teacher") {
                 userToUpdate.acceptedEula = cachedUser.acceptedEula || this.defaultAcceptedEula;
             }
@@ -194,7 +192,6 @@ export class UserTable extends MongodbTable<User> {
             trackDependency("azure-storage/meeservicesstorage", "updateEntity", duration, true);
             await logActivityVerbose('signin-azurehelper-updateentity', user.tenantId, user.unique_name, userEntity.azureResult);
         */
-        console.log("userToUpdate000"+JSON.stringify(userToUpdate));
         return this.insertOrMerge(userToUpdate).then( () => {
             let userInfo = {} as any;
             {
@@ -203,7 +200,6 @@ export class UserTable extends MongodbTable<User> {
                 // Merge both objects.
                 userInfo.user = Object.assign({}, cachedUser, userToUpdate);
             }
-            console.log("userInfo-----------qqq"+JSON.stringify(userInfo))
             return userInfo;
         });
     }
@@ -355,27 +351,26 @@ export class MultiUserTable {
     }
 
     public addNewUser(userID: UserID, role: string, isLicensed: boolean, licenseType: string, anonimizedOid: string) : Promise<UserInfo> {
-        let orig = this.originalTable.addNewUser(userID, role, isLicensed, licenseType, anonimizedOid);
+        //let orig = this.originalTable.addNewUser(userID, role, isLicensed, licenseType, anonimizedOid);
+        //为了老版本兼容orig。。。后期修理；暂时改为调用同一个方法进行处理
         let newt = this.newTable.addNewUser(userID, role, isLicensed, licenseType, anonimizedOid);
 
-        return Promise.all([orig, newt]).then(
+        return Promise.all([newt]).then(
             (result) => {
-                if (this.readFromNewTable) {
-                    return result[1];
-                }
-                else {
-                    return result[0];
-                }
+                return result[0];
+                // if (this.readFromNewTable) {
+                //     return result[1];
+                // }
+                // else {
+                //     return result[0];
+                // }
             }
         );
     }
 
     public updateExistingUser(userID: UserID, cachedUser: User, role:string, lastRoleCheck: Date, isLicensed: boolean, licenseType: string, lastLicenseCheck: Date) : Promise<UserInfo> {
-        console.log("updateExistingUser1111");
         let orig = this.originalTable.updateExistingUser(userID, cachedUser, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck);
-        console.log("updateExistingUser2222");
         let newt = this.newTable.updateExistingUser(userID, cachedUser, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck);
-        console.log("updateExistingUser3333");
         return Promise.all([orig, newt]).then(
             (result) => {
                 if (this.readFromNewTable) {
