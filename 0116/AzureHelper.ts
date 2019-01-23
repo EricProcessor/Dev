@@ -3,11 +3,12 @@ import { Environment } from "./core/environment"
 import { StorageConfig } from "./StorageConfig"
 import { Config } from "./Config"
 import { Server } from "http";
-// let DBurl = 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin';
-let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
-//let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmo,17,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin':'mongodb://127.0.0.1:27017/userInfo';
-//引用azure-storage模块                                                                                                                  
-// const azure = require("azure-storage");
+//let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+let UserName = process.env.UserName;
+let Password = process.env.Password;
+let JdMongoUrl = process.env.JdMongoUrl;
+let dbUrl = !Environment.isProduction()?'mongodb://'+UserName+':'+Password+'@'+JdMongoUrl+'/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+
 //数据库引用 
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
@@ -254,7 +255,7 @@ export function queryEntity(table: Table, query: any): Promise<any> {
 //在某个表上添加新实体----增                                                      
 export function insertEntity(table: Table, entity: any): Promise<any> {
     console.log("insertEntity数据库地址"+dbUrl+"/"+Table[table])
-    return  MongoClient.connect(dbUrl+"/"+table , options).then(client => {
+    return  MongoClient.connect(dbUrl , options).then(client => {//+"/"+table
         return client.db("userInfo").collection("UserRole").insertOne(entity).then((error,result,response) => {
             if (!error) {
                 client.close();

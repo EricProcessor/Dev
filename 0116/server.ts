@@ -29,6 +29,9 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.set('port', process.env.PORT || 1337);
 app.use(express.static('public'));
 
+console.log("UserName"+process.env.UserName)
+console.log("Password"+process.env.Password)
+console.log("JdMongoUrl"+process.env.JdMongoUrl)
 
 // -------------------------------------------------
 app.get('/', function root(req, res) {
@@ -102,6 +105,7 @@ app.post('/signin', function signin(req, res) {
         if (identity.expirationDate < new Date()) {
             throw Error(`Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`);
         }
+        console.log("$$$$$$$$$$$$$$$$$$###########@@@@@@@@@@!!!!!!!!!!^identity.uniqueName++++++++++这个事++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++少时诵诗书所所所"+identity.uniqueName);
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, req.body.accessToken, undefined, undefined, undefined, undefined, req.body.platform, req.body.locale);
         
         if (user && user.unique_name.startsWith("live.com#")) {
@@ -112,7 +116,7 @@ app.post('/signin', function signin(req, res) {
         }
 
         user.clientApplication = 'Minecraft';
-        console.log('-------------isEarlyAccess-----'+isEarlyAccess)
+
         if (isEarlyAccess) {
             MEEServices.signInEarlyAccess(res, user, req.body);
         }
@@ -180,6 +184,7 @@ app.post('/getuserguid', function getuserguid(req, res) {
             true) || false)) {
             throw Error("Invalid post data");
         }
+        
         let identity = AADIdentity.fromToken(req.body.identityToken);
         
         if (!identity) {
@@ -189,9 +194,10 @@ app.post('/getuserguid', function getuserguid(req, res) {
         if (identity.expirationDate < new Date()) {
             throw Error(`Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`);
         }
+
         logActivity('getuserguid', identity.tenantId, identity.uniqueName, req.body);
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, req.body.accessToken);
-        console.log("registerUserGuid----"+JSON.stringify(req.body))
+        console.log("registerUserGuid----"+JSON.stringify(req.body.ipAddress))
         MEEServices.registerUserGuid(res, user, req.body.ipAddress);
         logActivity('getuserguid-success', identity.tenantId, identity.uniqueName, req.body);
     } catch (error) {

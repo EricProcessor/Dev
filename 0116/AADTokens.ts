@@ -172,6 +172,7 @@ function _createUser(idToken): AADUser {
             'parsedJson': JSON.stringify(parsedJson)
         }
     }
+    console.log("解码后user"+JSON.stringify(user))
     return user;
 }
 
@@ -191,6 +192,7 @@ function _extractIdToken(encodedIdToken) {
         }
 
         // ECMA script has JSON built-in support
+        console.log("base64Decoded========"+base64Decoded);//编码前的token
         return JSON.parse(base64Decoded);
     } catch (err) {
         _logstatus('The returned id_token could not be decoded: ' + err.stack);

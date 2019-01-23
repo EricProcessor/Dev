@@ -23,6 +23,7 @@
     "btoa": "^1.1.2",
     "chai": "^4.1.2",
     "express": "^4.16.4",
+    "forever-monitor": "^1.7.1",
     "in-app-purchase": "^1.9.16",
     "jsonwebtoken": "^7.1.9",
     "mocha": "^5.0.5",

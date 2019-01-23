@@ -10,10 +10,13 @@ const logInDeveloperMode: boolean = true;
 const uuid = require("uuid");
 let mongodb = require('mongodb');
 let MongoClient = mongodb.MongoClient;
-// let DBurl = 'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin';
-let DBurl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
-// let DBurl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
-// let DBurl = !Environment.isProduction()?'mongodb://mongodb:passw0rd@116.196.91.10:27017':'mongodb://127.0.0.1:27017';
+
+//let DBurl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+let UserName = process.env.UserName;
+let Password = process.env.Password;
+let JdMongoUrl = process.env.JdMongoUrl;
+let dbUrl = !Environment.isProduction()?'mongodb://'+UserName+':'+Password+'@'+JdMongoUrl+'/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+
 var options = {
     auto_reconnect: true,
     useNewUrlParser: true,
@@ -28,7 +31,7 @@ var options = {
         process.env.AZURE_STORAGE_ACCOUNT    || "meeservicesstorage",
         process.env.AZURE_STORAGE_ACCESS_KEY || "uGGiCXyOCwbFrYXQ4ga03X/C0TAQZTC/4vreChUEBtSDdbJI5FEHZAFlQUQJky6itOtZDMrjZ7FHkp6/D1hCZA==");
 */
-// const tableService = new mongodb.Server(DBurl, 27017, { auto_reconnect: true });//auto_reconnect: true 连接异常自动重连
+// const tableService = new mongodb.Server(dbUrl, 27017, { auto_reconnect: true });//auto_reconnect: true 连接异常自动重连
 const tableService = "Table" //设置数据库名称
 //Environment.isProduction()（枚举类型父类方法）通过这个方法返回的ture或false
 const activityTableName = Environment.isProduction() ? "diagnosticlogs" : "stagingdiagnosticlogs";
@@ -92,7 +95,7 @@ export async function logActivity(action: string, tenantId: string, unique_name:
             "unique_name": (unique_name).toString(),
             "details": (JSON.stringify(details)).toString()
         };
-        MongoClient.connect(DBurl, options, (error, client) => {//连接数据库
+        MongoClient.connect(dbUrl, options, (error, client) => {//连接数据库
             if (error) {//失败
                 console.log(error);
                 return;
