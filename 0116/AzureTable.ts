@@ -9,7 +9,7 @@
 //ErrorOrResult错误结果
 // import {TableQuery, TableService, TableUtilities, createTableService, TableBatch, RetryPolicyFilter, ErrorOrResult} from "azure-storage";
 import { EntityConverter } from "./core/entityConverter";   //实体转换
-import { StorageConfig } from "./StorageConfig"     //引入配置文件
+// import { StorageConfig } from "./StorageConfig"     //引入配置文件
 import { Environment } from "./core/environment"
 //import { Promise } from "./node_modules/@types/q";
 import { connect } from "net";
@@ -21,7 +21,8 @@ var MongoClient = mongodb.MongoClient;
 let UserName = process.env.UserName;
 let Password = process.env.Password;
 let JdMongoUrl = process.env.JdMongoUrl;
-let dbUrl = !Environment.isProduction()?'mongodb://'+UserName+':'+Password+'@'+JdMongoUrl+'/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+// let dbUrl = !Environment.isProduction()?'mongodb://'+UserName+':'+Password+'@'+JdMongoUrl+'/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+let dbUrl       //保存数据库连接 地址
 
 var options = {
     auto_reconnect: true,
@@ -108,6 +109,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
             // this.service = <TableServiceAsync>createTableService(setting.connectionString);
             dbUrl = setting.connectionString
         }
+        console.log("查看一下现在的表名称：" + setting.tableName)
         // Connection string takes precedence
         //优先处理  连接地址
 
@@ -157,7 +159,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
             client => {
                 console.log("进入retrieve方法数据库");
                 //{"tenantId":"38dd6634-1031-4c50-a9b4-d16cd9d97d57","oid":"d2bb1fae-fe7e-4473-a161-92aefee52a3d","unique_name":"stu15@usmie.com"}
-                return client.db("userInfo").collection("User").findOne(model).then(final => {
+                return client.db("userInfo").collection(this.setting.tableName).findOne(model).then(final => {
                     if(final){
                         retrievedEntity.entity = final as Model;
                         retrievedEntity.exists = true;
@@ -199,12 +201,12 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         console.log(model);
         return MongoClient.connect(dbUrl, options).then(
             client => {
-                return client.db("userInfo").collection("User")
+                return client.db("userInfo").collection(this.setting.tableName)
                         .findOne({ "unique_name": model["unique_name"] }).then(final => {
                             if (final) {
                                 console.log("insertOrMerge更新数据");
                                 return client.db("userInfo").
-                                    collection("User").updateOne({ "unique_name": model["unique_name"] }, {
+                                    collection(this.setting.tableName).updateOne({ "unique_name": model["unique_name"] }, {
                                         $set: model
                                     }).then((error,result) => {
                                         if(error){
@@ -215,7 +217,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                                     })
                             } else {
                                 console.log("insertOrMerge插入数据");
-                                return client.db("userInfo").collection("User").
+                                return client.db("userInfo").collection(this.setting.tableName).
                                         insertOne(model).then((error,result) => {
                                             if(error){
                                                 console.log(error);
@@ -250,11 +252,11 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     public insertOrReplace(model: Model) : Promise<void> {
         return MongoClient.connect(dbUrl, options).then(
             client => {
-                return client.db("userInfo").collection("User").findOne({ "unique_name": model["unique_name"] }).then(final => {
+                return client.db("userInfo").collection(this.setting.tableName).findOne({ "unique_name": model["unique_name"] }).then(final => {
                     if (final) {
                         console.log("insertOrMerge更新数据");
                         return client.db("userInfo").
-                            collection("User").updateOne({ "unique_name": model["unique_name"] }, {
+                            collection(this.setting.tableName).updateOne({ "unique_name": model["unique_name"] }, {
                                 $set: model
                             }).then((error,result) => {
                                 if(error){
@@ -266,7 +268,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                         )
                     }else{
                         console.log("insertOrMerge插入数据");
-                        return client.db("userInfo").collection("User").insertOne(model).then((error,result) => {
+                        return client.db("userInfo").collection(this.setting.tableName).insertOne(model).then((error,result) => {
                             if(error){
                                 console.log(error)
                             }
@@ -288,7 +290,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         console.log("")
         return MongoClient.connect(dbUrl, options).then(
             client =>{
-                return client.db("userInfo").collection("User").deleteOne({"unique_name":query}).then((error ,result) => {
+                return client.db("userInfo").collection(this.setting.tableName).deleteOne({"unique_name":query}).then((error ,result) => {
                     if (error) {
                         console.log("数据库删除失败")
                     }
@@ -359,11 +361,10 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                 return
             }
             //const result = db.collection(this.setting.tableName).find(query)
-            const result = db.collection("User").find(query)
+            const result = db.collection(this.setting.tableName).find(query)
             if (result) { //如果查询到数据
                 result.toArray((error, data) => {
-                    // console.log("看一下查到的数据：" + JSON.stringify(data))
-                    console.log("看一下这个data：" + JSON.stringify(data[0]))
+
                     if (data[0]) {
                         delete data[0]._id //删除不用的_id属性
                     }
@@ -380,7 +381,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     public findOne(collection, whereObj) :Promise<any> {
         console.log("进入findOne查询方法")
        return  MongoClient.connect(dbUrl, options, ).then((err,result)=>{
-        console.log("进入数据库！")
+
         if (err) {
             console.log("失败");
         } else {

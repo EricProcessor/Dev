@@ -6,7 +6,7 @@ import { TableSetting } from './AzureTable'
 let UserName = process.env.UserName;
 let Password = process.env.Password;
 let JdMongoUrl = process.env.JdMongoUrl;
-let dbUrl = !Environment.isProduction()?'mongodb://'+UserName+':'+Password+'@'+JdMongoUrl+'/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+let dbUrl = Environment.isProduction()?'mongodb://'+UserName+':'+Password+'@'+JdMongoUrl+'/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
 
  
 export class StorageConfig {
@@ -18,9 +18,11 @@ export class StorageConfig {
 
     //新用户表设置存储位置
     public static getNewUserTableSettings() {
-        let tablename = 'stagingmeeusers';
+        // let tablename = 'stagingmeeusers';      //本地开发环境、测试、开发环境  中的用的数据表名称
+        let tablename = "User"      //暂时改成 User
         if (Environment.getEnvironmentType() == EnvironmentType.Production) {
-            tablename = 'meeusers';
+            // tablename = 'meeusers';         //产出 - 线上环境 用的 数据库表名称
+            tablename = "User"      //暂时都改成User
         }
         return this.getUserTableSettings(tablename, 'oid');
     }
@@ -39,20 +41,21 @@ export class StorageConfig {
         }
         else {//存储位置
             /*开发环境的情况下设置*/
-            switch (environmentType) {
-                //生产
-                case EnvironmentType.Production:         //存储账户
-                    setting.tableName = overrideTableName || 'users';
-                    break;
-                //测试
-                case EnvironmentType.Staging:
-                    setting.tableName = overrideTableName || 'stagingusers'
-                    break;
-                default:
-                //开发
-                case EnvironmentType.Development:
-                    setting.tableName = overrideTableName || 'developmentusers'
-            }
+            // switch (environmentType) {
+            //     //生产
+            //     case EnvironmentType.Production:         //存储账户
+            //         setting.tableName = overrideTableName || 'users';
+            //         break;
+            //     //测试
+            //     case EnvironmentType.Staging:
+            //         setting.tableName = overrideTableName || 'stagingusers'
+            //         break;
+            //     default:
+            //     //开发
+            //     case EnvironmentType.Development:
+            //         setting.tableName = overrideTableName || 'developmentusers'
+            // }
+            setting.tableName = overrideTableName || 'User'
         }
 
         return setting;
