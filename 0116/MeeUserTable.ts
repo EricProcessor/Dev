@@ -33,6 +33,11 @@ export interface User {
     clientSettings: string;
     // Json string containing whatever state is needed to be stored to determine if and when Experiences should be shown for this user
     experienceState: string;
+    createtimestamp: Date;
+    updatetimestamp: Date;
+    rowkey: string;
+    partitionkey: string;
+
 }
 
 export interface UserInfo {
@@ -45,13 +50,13 @@ export interface UserGuid {
     uniqueName: string;
     role: string;
     ipAddress: string;
-    isUsed:boolean;
+    isUsed: boolean;
 }
 
 type setFunc = (User) => User;
 
 export class UserTable extends MongodbTable<User> {
-    private oidAsRowKey :boolean = false;
+    private oidAsRowKey: boolean = false;
     private readonly defaultSkin: string = "EduSkins_Alex";
     private readonly defaultAcceptedEula = false;
 
@@ -72,7 +77,7 @@ export class UserTable extends MongodbTable<User> {
                 userToUpdate.unique_name = userID.unique_name;
                 userToUpdate = func(userToUpdate);
                 return this.insertOrMerge(userToUpdate);
-            }else {
+            } else {
                 // Write a log
                 throw new Error(`set: Unable to update skin, user does not exist. tenantId: '${userID.tenantId}', oid: '${userID.oid}'.`);
             }
@@ -95,27 +100,27 @@ export class UserTable extends MongodbTable<User> {
         });
     }
 
-    public updateEula(userID: UserID, acceptedEula: boolean = true){
+    public updateEula(userID: UserID, acceptedEula: boolean = true) {
         return this.set(userID, (user: User) => {
             user.acceptedEula = acceptedEula;
             return user;
         });
     }
 
-    public querybyUniqueName(unique_name: string){
+    public querybyUniqueName(unique_name: string) {
         // let stringFilter = TableQuery.stringFilter('unique_name', TableUtilities.QueryComparisons.EQUAL, unique_name);
         // let query = (new TableQuery()).where(stringFilter);
         // return this.findOne("Users",{'unique_name':unique_name});
-        return this.queryEntities({'unique_name':unique_name});
+        return this.queryEntities({ 'unique_name': unique_name });
     }
- 
-    public queryAllUsers() : Promise<User[]> {
+
+    public queryAllUsers(): Promise<User[]> {
         //let query = new TableQuery();
         return this.queryEntities({});
     }
 
-    public get(userID: UserID) : Promise<RetrievedEntity<User>> {
-        let user : User = {} as any;
+    public get(userID: UserID): Promise<RetrievedEntity<User>> {
+        let user: User = {} as any;
         user.tenantId = userID.tenantId;
         user.oid = userID.oid;
         user.unique_name = userID.unique_name;
@@ -123,31 +128,38 @@ export class UserTable extends MongodbTable<User> {
         //return this.retrieveQuery(user);
     }
 
-    public addNewUser(userID: UserID, role: string, isLicensed: boolean, licenseType: string, anonimizedOid: string) : Promise<UserInfo> {
+    public addNewUser(userID: UserID, role: string, isLicensed: boolean, licenseType: string, anonimizedOid: string): Promise<UserInfo> {
         let date = new Date();
-        return this.updateExistingUser(userID, {} as any, role, date, isLicensed, licenseType, date, anonimizedOid);
+        let FormAddNewUser = 1;
+        return this.updateExistingUser(userID, {} as any, role, date, isLicensed, licenseType, date, anonimizedOid, FormAddNewUser);
     }
 
     // Design: I tried to use InsertAndMerge here, but it seems like we need to return the user object. Might be better to just construct the final object and call replace.
     //  Or merge the object together when we return.
-    public updateExistingUser(userID: UserID, cachedUser: User, role:string, lastRoleCheck: Date, isLicensed: boolean, licenseType: string, lastLicenseCheck: Date, anonimizedOid : string = undefined) : Promise<UserInfo> {
+
+    public updateExistingUser(userID: UserID, cachedUser: User, role: string, lastRoleCheck: Date, isLicensed: boolean, licenseType: string, lastLicenseCheck: Date, anonimizedOid: string = undefined, FormAddNewUser): Promise<UserInfo> {
         // sign in user, but don't bother with checking or decrementing trial counts if user is licensed
         let remainingTrialCount = 0;
 
-        let userToUpdate : User = {} as any;
+        let userToUpdate: User = {} as any;
         {
             // Due to multi user scenarios we will update everything.
             userToUpdate.tenantId = cachedUser.tenantId || userID.tenantId;
             userToUpdate.unique_name = cachedUser.unique_name || userID.unique_name;
-            userToUpdate.lastRoleCheck = lastRoleCheck;
-            userToUpdate.lastLicenseCheck = lastLicenseCheck;
+            // userToUpdate.lastRoleCheck = lastRoleCheck;
+            // userToUpdate.lastLicenseCheck = lastLicenseCheck;
+            userToUpdate.lastRoleCheck = new Date();
+            userToUpdate.lastLicenseCheck = new Date();
             userToUpdate.role = role;
             userToUpdate.name = userID.name;
             userToUpdate.oid = userID.oid;
             userToUpdate.anonimizedOid = cachedUser.anonimizedOid || anonimizedOid || Guid.newGuid();
             userToUpdate.skin = cachedUser.skin || this.defaultSkin;
             userToUpdate.nickname = this.GetUserNickname(userID.name, userID.userName);
-
+            FormAddNewUser ? userToUpdate.createtimestamp = new Date() : '';
+            userToUpdate.updatetimestamp = new Date();
+            userToUpdate.rowkey = '';
+            userToUpdate.partitionkey = '';
             // It is possible that the user came in through the classroom mode signin, in which case we don't currently do a license check.
             userToUpdate.isLicensed = isLicensed;
             userToUpdate.licenseType = licenseType;
@@ -160,7 +172,7 @@ export class UserTable extends MongodbTable<User> {
                 userToUpdate.trialsAllowed = (role === "teacher" ? Config.startingTrialCountTeacher : Config.startingTrialCountStudent);
             }
         }
-        
+
         // If user is not licenced setup trials
         if (!isLicensed) {
             let numTrialsAllowed: number;
@@ -179,20 +191,20 @@ export class UserTable extends MongodbTable<User> {
             else {
                 numTrialsUsed = 1;
             }
-    
+
             remainingTrialCount = numTrialsAllowed - numTrialsUsed;
             if (remainingTrialCount >= 0) {
                 userToUpdate.trialsUsed = numTrialsUsed;
             }
         }
 
-         /* Need to fix the logging
-            let startTime = Date.now();
-            let duration = Date.now() - startTime;
-            trackDependency("azure-storage/meeservicesstorage", "updateEntity", duration, true);
-            await logActivityVerbose('signin-azurehelper-updateentity', user.tenantId, user.unique_name, userEntity.azureResult);
-        */
-        return this.insertOrMerge(userToUpdate).then( () => {
+        /* Need to fix the logging
+           let startTime = Date.now();
+           let duration = Date.now() - startTime;
+           trackDependency("azure-storage/meeservicesstorage", "updateEntity", duration, true);
+           await logActivityVerbose('signin-azurehelper-updateentity', user.tenantId, user.unique_name, userEntity.azureResult);
+       */
+        return this.insertOrMerge(userToUpdate).then(() => {
             let userInfo = {} as any;
             {
                 userInfo.remainingTrialCount = remainingTrialCount;
@@ -204,44 +216,44 @@ export class UserTable extends MongodbTable<User> {
         });
     }
 
-    public storeExperienceState(user: User) : Promise<User> {
+    public storeExperienceState(user: User): Promise<User> {
         // Replace so that experience state can be reduced
         return this.insertOrReplace(user).then(() => {
             return user
         });
     }
 
-    public GetUserNickname(name:string, userName: string) {
+    public GetUserNickname(name: string, userName: string) {
 
         let minecraftName = this.getMinecraftName(name, userName);
-    
+
         let nameParts = minecraftName.split(' ');
         let playerName: string = nameParts[0];
         if (nameParts.length > 1 && nameParts[1].length > 0) {
             playerName += nameParts[1][0];
         }
-    
+
         return playerName.substring(0, 16);
     }
 
     // Return the user's name based on their "human name", if it contains ASCII characters,
     // otherwise use the player's "userName" (which is either upn or email) and guaranteed to be
     // made up of ASCII characters.
-    private getMinecraftName(name:string, userName: string): string {
+    private getMinecraftName(name: string, userName: string): string {
         const re = /^[_ ]+$/;
         const encodedName = this.encodeName(name);
-    
+
         if (encodedName.match(re)) {
             return this.encodeName(userName);
         } else {
             return encodedName;
         }
     }
-    
+
     private encodeName(name: string): string {
         const legalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_ ";
         let encodedName = "";
-    
+
         for (let i = 0; i < name.length; ++i) {
             if (legalChars.indexOf(name[i]) >= 0) {
                 encodedName += name[i];
@@ -249,30 +261,27 @@ export class UserTable extends MongodbTable<User> {
                 encodedName += name[i] === '@' ? " " : "_";
             }
         }
-    
+
         return encodedName;
     }
 
-    private groupBy<T>( array ,condition, modifier, selector)
-    {
+    private groupBy<T>(array, condition, modifier, selector) {
         var groups = {};
-        array.forEach( function( o )
-        {
+        array.forEach(function (o) {
             if (condition(o)) {
-                var group = JSON.stringify( selector(o) );
+                var group = JSON.stringify(selector(o));
                 groups[group] = groups[group] || [];
                 o = modifier(o);
-                groups[group].push(o);  
+                groups[group].push(o);
             }
         });
 
-        return Object.keys(groups).map( function( group )
-        {
-            return groups[group]; 
+        return Object.keys(groups).map(function (group) {
+            return groups[group];
         })
     }
 
-    private splitBy(size:number, list : any[]) {
+    private splitBy(size: number, list: any[]) {
         return list.reduce((acc, curr, index, arr) => {
             if (!(index % size)) {
                 return [...acc, arr.slice(index, index + size)];
@@ -282,79 +291,100 @@ export class UserTable extends MongodbTable<User> {
         }, []);
     }
 
-    public generateAnonimizedOid() : Promise<void> {
+    public generateAnonimizedOid(): Promise<void> {
         var promises: Promise<void>[] = [];
         return this.queryAllUsers().then((result) => {
-                let group = this.groupBy(
-                    result,
-                    (cond: User) => !cond.anonimizedOid, 
-                    (mod: User) => {
-                        mod.anonimizedOid = Guid.newGuid();
-                        return mod;
-                    },
-                    (selector) => selector.tenantId);
-                
-                let asyncFuncs = [];
+            let group = this.groupBy(
+                result,
+                (cond: User) => !cond.anonimizedOid,
+                (mod: User) => {
+                    mod.anonimizedOid = Guid.newGuid();
+                    return mod;
+                },
+                (selector) => selector.tenantId);
 
-                group.forEach((tenant : User[]) => {
-                    let split = this.splitBy(100, tenant);
-                    split.forEach(list => {
-                        asyncFuncs.push(() => this.batchInsertEntity(list));
-                    });
+            let asyncFuncs = [];
+
+            group.forEach((tenant: User[]) => {
+                let split = this.splitBy(100, tenant);
+                split.forEach(list => {
+                    asyncFuncs.push(() => this.batchInsertEntity(list));
                 });
-                
-                return asyncFuncs.reduce((prev, curr) => {
-                    return prev.then(curr, (reason) => console.log('Batching issue with anon:' + reason));
-                }, Promise.resolve());
-            }).then((result) => {});
+            });
+
+            return asyncFuncs.reduce((prev, curr) => {
+                return prev.then(curr, (reason) => console.log('Batching issue with anon:' + reason));
+            }, Promise.resolve());
+        }).then((result) => { });
     }
 }
 
 // The plan is to remove the MultiUserTable when everything has switched over.
 export class MultiUserTable {
-    private originalTable: UserTable;
+    // private originalTable: UserTable;
     private newTable: UserTable;
-    private readFromNewTable: boolean;
+    // private readFromNewTable: boolean;
 
     constructor(orginalTableSetting: TableSetting, newTableSetting: TableSetting, readFromNewTable: boolean = false) {
-        this.originalTable = new UserTable(orginalTableSetting);
+        // this.originalTable = new UserTable(orginalTableSetting);
         this.newTable = new UserTable(newTableSetting);
-        this.readFromNewTable = readFromNewTable;
+        // this.readFromNewTable = readFromNewTable;  // 读取来自新表：false
     }
 
     // Get from original table
-    public get(userID: UserID, useNewTable: boolean = false) : Promise<RetrievedEntity<User>> {
-        if (this.readFromNewTable || useNewTable) {
-            console.log("newTable");
-            return this.newTable.get(userID);
-        }
-        else {
-            console.log("originalTable");
-            return this.originalTable.get(userID);
-        }
+    public get(userID: UserID, useNewTable: boolean = false): Promise<RetrievedEntity<User>> {
+
+        // if (this.readFromNewTable || useNewTable) {
+        console.log("newTable");
+        return this.newTable.get(userID);
+        // }
+        // else {
+        //     console.log("originalTable");
+        //     return this.originalTable.get(userID);
+        // }
     }
 
-    public delete(model: User) : Promise<void>{
-        let promises : Promise<void>[] = {} as any;
-        promises.push(this.originalTable.delete(model));
-        //promises.push(this.newTable.delete(model, model.oid));
+    public delete(model: User): Promise<void> {
+        let promises: Promise<void>[] = {} as any;
+        // promises.push(this.originalTable.delete(model));
+        // promises.push(this.newTable.delete(model, model.oid));
+        promises.push(this.newTable.delete(model))
         return Promise.all(promises).then(
             (result) => {
-                if (this.readFromNewTable) {
-                    return result[1];
-                }
-                else {
-                    return result[0];
-                }
+                return result[0];
+                // if (this.readFromNewTable) {
+                //     return result[1];
+                // }
+                // else {
+                //     return result[0];
+                // }
             }
         );
     }
 
-    public addNewUser(userID: UserID, role: string, isLicensed: boolean, licenseType: string, anonimizedOid: string) : Promise<UserInfo> {
+    public addNewUser(userID: UserID, role: string, isLicensed: boolean, licenseType: string, anonimizedOid: string): Promise<UserInfo> {
         //let orig = this.originalTable.addNewUser(userID, role, isLicensed, licenseType, anonimizedOid);
         //为了老版本兼容orig。。。后期修理；暂时改为调用同一个方法进行处理
         let newt = this.newTable.addNewUser(userID, role, isLicensed, licenseType, anonimizedOid);
 
+        return Promise.all([newt]).then(
+            (result) => {
+
+                return result[0];
+                // if (this.readFromNewTable) {
+                //     return result[1];
+                // }
+                // else {
+                //     return result[0];
+                // }
+            }
+        );
+    }
+
+    public updateExistingUser(userID: UserID, cachedUser: User, role: string, lastRoleCheck: Date, isLicensed: boolean, licenseType: string, lastLicenseCheck: Date, anonimizedOid, FormAddNewUser): Promise<UserInfo> {
+        // let orig = this.originalTable.updateExistingUser(userID, cachedUser, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck);
+        // updateExistingUser(userID, cachedUser, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck, anonimizedOid, FormAddNewUser);
+        let newt = this.newTable.updateExistingUser(userID, cachedUser, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck, anonimizedOid, FormAddNewUser);
         return Promise.all([newt]).then(
             (result) => {
                 return result[0];
@@ -368,33 +398,19 @@ export class MultiUserTable {
         );
     }
 
-    public updateExistingUser(userID: UserID, cachedUser: User, role:string, lastRoleCheck: Date, isLicensed: boolean, licenseType: string, lastLicenseCheck: Date) : Promise<UserInfo> {
-        let orig = this.originalTable.updateExistingUser(userID, cachedUser, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck);
-        let newt = this.newTable.updateExistingUser(userID, cachedUser, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck);
-        return Promise.all([orig, newt]).then(
-            (result) => {
-                if (this.readFromNewTable) {
-                    return result[1];
-                }
-                else {
-                    return result[0];
-                }
-            }
-        );
-    }
-
-    public storeExperienceState(user: User) : Promise<User> {
-        let orig = this.originalTable.storeExperienceState(user);
+    public storeExperienceState(user: User): Promise<User> {
+        // let orig = this.originalTable.storeExperienceState(user);
         let newt = this.newTable.storeExperienceState(user);
 
-        return Promise.all([orig, newt]).then(
+        return Promise.all([newt]).then(
             (result) => {
-                if (this.readFromNewTable) {
-                    return result[1];
-                }
-                else {
-                    return result[0];
-                }
+                return result[0];
+                // if (this.readFromNewTable) {
+                //     return result[1];
+                // }
+                // else {
+                //     return result[0];
+                // }
             }
         );
     }

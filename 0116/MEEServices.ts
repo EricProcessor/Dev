@@ -223,7 +223,8 @@ async function signTheUserIn(res: Express.Response, userID: UserID) {
 
     if (isExistingUser) {
         console.log("isExistingUser111")
-        userInfo = await userTable.updateExistingUser(userID, user, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck);
+        let FormAddNewUser = 0;
+        userInfo = await userTable.updateExistingUser(userID, user, role, lastRoleCheck, isLicensed, licenseType, lastLicenseCheck, Guid.newGuid(), FormAddNewUser);
     }
     else {
         console.log("isExistingUser222")

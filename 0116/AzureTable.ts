@@ -13,11 +13,12 @@ import { EntityConverter } from "./core/entityConverter";   //实体转换
 import { Environment } from "./core/environment"
 //import { Promise } from "./node_modules/@types/q";
 import { connect } from "net";
+
 var mongodb = require('mongodb');
 //引入
 var MongoClient = mongodb.MongoClient;
 //jd---服务器连接地址
-//let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017/userInfo';
+// let dbUrl = !Environment.isProduction()?'mongodb://root:Eq9RQ80J@jmongo-hb1-prod-mongo-t392nvqc111.jmiss.jdcloud.com:27017,jmongo-hb1-prod-mongo-t392nvqc112.jmiss.jdcloud.com:27017/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017/userInfo';
 let UserName = process.env.UserName;
 let Password = process.env.Password;
 let JdMongoUrl = process.env.JdMongoUrl;
@@ -29,7 +30,8 @@ var options = {
     useNewUrlParser: true,
     poolSize: 20
 };
-
+const mongoose = require("mongoose")		//引入
+const Person = require("../models/person")    //引入mongoose模型
 //定义  存储账户设置接口参数
 export interface StorageAccountSettings {
     accessKey: string;       //访问密钥
@@ -109,8 +111,13 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
             // this.service = <TableServiceAsync>createTableService(setting.connectionString);
             dbUrl = setting.connectionString
         }
-        console.log("查看一下现在的表名称：" + setting.tableName)
-        // Connection string takes precedence
+        // mongoose连接数据库
+        console.log(dbUrl)
+        mongoose.connect(dbUrl + '/userInfo', {
+            useNewUrlParser: true
+        })
+        // console.log("查看一下现在的表名称：" + setting.tableName)
+        // // Connection string takes precedence
         //优先处理  连接地址
 
         // else {
@@ -153,36 +160,28 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
 
     public retrieve(model: Model, rowKey: string = undefined): Promise<RetrievedEntity<Model>> {
         console.log("进入retrieve方法");
-        console.log("AzureTabl数据库连接地址"+dbUrl)
+        console.log("AzureTabl数据库连接地址" + dbUrl)
         let retrievedEntity: RetrievedEntity<Model> = {} as any;
-        return MongoClient.connect(dbUrl , options).then(
-            client => {
-                console.log("进入retrieve方法数据库");
-                //{"tenantId":"38dd6634-1031-4c50-a9b4-d16cd9d97d57","oid":"d2bb1fae-fe7e-4473-a161-92aefee52a3d","unique_name":"stu15@usmie.com"}
-                return client.db("userInfo").collection(this.setting.tableName).findOne(model).then(final => {
-                    if(final){
-                        retrievedEntity.entity = final as Model;
-                        retrievedEntity.exists = true;
-                    }else{
-                        retrievedEntity.entity = final as Model;
-                        retrievedEntity.exists = false;
-                    }
-                    console.log("final+"+JSON.stringify(final));
-                    client.close();
-                    return retrievedEntity
-                })
-            })
-            .catch(err => {
-                console.log("进入retrieve方法数据库err");
-                if (err.statusCode === 404) {
-                    retrievedEntity.exists = false;
-                } else {
-                    console.log("Retrieve User Error:" + err);
-                    throw err;
-                }
-                return retrievedEntity;
+        return Person.findOne(model).then(final => {
+            if (final) {
+                retrievedEntity.entity = final as Model;
+                retrievedEntity.exists = true;
+            } else {
+                retrievedEntity.entity = final as Model;
+                retrievedEntity.exists = false;
             }
-            )
+            console.log("final+" + JSON.stringify(final));
+            return retrievedEntity
+        }).catch(err => {
+            console.log("进入retrieve方法数据库err");
+            if (err.statusCode === 404) {
+                retrievedEntity.exists = false;
+            } else {
+                console.log("Retrieve User Error:" + err);
+                throw err;
+            }
+            return retrievedEntity;
+        })
     }
 
 
@@ -196,43 +195,39 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     *注意：所有数字值都将设置为Int32
     *@param模型将被插入的实体。
     */
-    public insertOrMerge(model: Model): Promise<void> {
+    public async insertOrMerge(model: Model): Promise<void> {
         console.log("进入insertOrMerge")
-        console.log(model);
-        return MongoClient.connect(dbUrl, options).then(
-            client => {
-                return client.db("userInfo").collection(this.setting.tableName)
-                        .findOne({ "unique_name": model["unique_name"] }).then(final => {
-                            if (final) {
-                                console.log("insertOrMerge更新数据");
-                                return client.db("userInfo").
-                                    collection(this.setting.tableName).updateOne({ "unique_name": model["unique_name"] }, {
-                                        $set: model
-                                    }).then((error,result) => {
-                                        if(error){
-                                            console.log(error);
-                                        }
-                                        client.close();
-                                        return result
-                                    })
-                            } else {
-                                console.log("insertOrMerge插入数据");
-                                return client.db("userInfo").collection(this.setting.tableName).
-                                        insertOne(model).then((error,result) => {
-                                            if(error){
-                                                console.log(error);
-                                            }
-                                            client.close();
-                                            return result
-                                })
-                            }
+        return Person.findOne({
+            "unique_name": model["unique_name"]
+        }).then(final => {
+            if (final) {
+                console.log("insertOrMerge更新数据");
+                return Person.where({
+                    "unique_name": model["unique_name"]
+                }).update({
+                    $set: model
+                }).then((error, result) => {
+                    if (error) {
+                        console.log(error);
+                    }
+                    return result
                 })
-            })
-            .catch(err => {
-                (error) => {
-                    throw error;
-                }
-            })
+            } else {
+                console.log("insertOrMerge插入数据");
+                return Person.create(
+                    model
+                    , (err, docs) => {
+                        if (err) { console.log(err) }
+                        else {
+                            console.log("数据添加成功")
+                        }
+                    })
+            }
+        }).catch(err => {
+            (error) => {
+                throw error;
+            }
+        })
     }
 
 
@@ -249,48 +244,46 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     *@param rowKey可选rowKey值，该值将覆盖默认值。
     */
     //插入或替换方法
-    public insertOrReplace(model: Model) : Promise<void> {
-        return MongoClient.connect(dbUrl, options).then(
-            client => {
-                return client.db("userInfo").collection(this.setting.tableName).findOne({ "unique_name": model["unique_name"] }).then(final => {
-                    if (final) {
-                        console.log("insertOrMerge更新数据");
-                        return client.db("userInfo").
-                            collection(this.setting.tableName).updateOne({ "unique_name": model["unique_name"] }, {
-                                $set: model
-                            }).then((error,result) => {
-                                if(error){
-                                    console.log(error)
-                                }
-                                client.close();
-                                return result
-                            }
-                        )
-                    }else{
-                        console.log("insertOrMerge插入数据");
-                        return client.db("userInfo").collection(this.setting.tableName).insertOne(model).then((error,result) => {
-                            if(error){
-                                console.log(error)
-                            }
-                            client.close();
-                            return result
-                        })
+    public insertOrReplace(model: Model): Promise<void> {
+        return Person.findOne({
+            "unique_name": model["unique_name"]
+        }).then(final => {
+            if (final) {
+                console.log("insertOrMerge更新数据");
+                return Person.where({
+                    "unique_name": model["unique_name"]
+                }).update({
+                    $set: model
+                }).then((error, result) => {
+                    if (error) {
+                        console.log(error);
                     }
+                    return result
                 })
-            })
-        .catch(err => {
+            } else {
+                console.log("insertOrMerge插入数据");
+                return Person.create(
+                    model
+                    , (err, docs) => {
+                        if (err) { console.log(err) }
+                        else {
+                            console.log("数据添加成功")
+                        }
+                        return docs
+                    })
+            }
+        }).catch(err => {
             (error) => {
                 throw error;
             }
-            }
-        )       
+        })
     }
     //删除某个数据的方法
     public delete(query: any): Promise<any> {
         console.log("")
         return MongoClient.connect(dbUrl, options).then(
-            client =>{
-                return client.db("userInfo").collection(this.setting.tableName).deleteOne({"unique_name":query}).then((error ,result) => {
+            client => {
+                return client.db("userInfo").collection(this.setting.tableName).deleteOne({ "unique_name": query }).then((error, result) => {
                     if (error) {
                         console.log("数据库删除失败")
                     }
@@ -304,8 +297,8 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     //删除某个表
     public deleteTable(query: string): Promise<void> {
         return MongoClient.connect(dbUrl, options).then(
-            client =>{
-                return client.db("userInfo").dropCollection(query).then((error,result) => {
+            client => {
+                return client.db("userInfo").dropCollection(query).then((error, result) => {
                     if (error) {
                         console.log("数据库删除失败")
                     }
@@ -327,7 +320,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     *重试逻辑的形式。
     **/
     //批量数据插入
-    public batchInsertEntity(models :Model[], ignoreUndefined: boolean = false) : Promise< void > {
+    public batchInsertEntity(models: Model[], ignoreUndefined: boolean = false): Promise<void> {
         // let tableBatch = new TableBatch();
         // return this.ensureTable()
         //         .then((created) => {
@@ -378,23 +371,23 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     }
 
     //查询
-    public findOne(collection, whereObj) :Promise<any> {
+    public findOne(collection, whereObj): Promise<any> {
         console.log("进入findOne查询方法")
-       return  MongoClient.connect(dbUrl, options, ).then((err,result)=>{
+        return MongoClient.connect(dbUrl, options).then((err, result) => {
 
-        if (err) {
-            console.log("失败");
-        } else {
-            var db = MongoClient.db("User");
-            console.log("连接数据库成功")
-            db.collection(collection).findOne(whereObj).then((err,results)=>{
-                if (!err) {
-                    MongoClient.close();
-                    return results
-                }
-            })
-        }
-       }) 
+            if (err) {
+                console.log("失败");
+            } else {
+                var db = MongoClient.db("User");
+                console.log("连接数据库成功")
+                db.collection(collection).findOne(whereObj).then((err, results) => {
+                    if (!err) {
+                        MongoClient.close();
+                        return results
+                    }
+                })
+            }
+        })
     }
 }
 //定义接口
