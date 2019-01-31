@@ -17,6 +17,8 @@ var options = {
     useNewUrlParser: true,
     poolSize: 20
 };
+const mongoose = require("mongoose")		//引入
+const userRole = require("../models/userRole")    //引入mongoose模型
 //枚举---定义变量                                                                                                                          
 export enum Table {
     Users,//用户
@@ -147,36 +149,35 @@ function getTableName(table: Table /*Table为开始定义的枚举变量*/) {
     // });
 })
 //查询UserRole方法----临时方法
-export function queryUserRole( model ): Promise<any>{
-    console.log("=========================="+JSON.stringify(model)+"======================");
-    return  MongoClient.connect(dbUrl , options).then(client => {
-        console.log("queryUserRole连接成功")
-        return client.db("userInfo").collection("UserRole").findOne({ "unique_name": model["unique_name"] }).then(final => {
-            console.log("queryUserRole连接成功"+JSON.stringify(final.role))
-            let finalResult = "";
-            if (final) {
-                finalResult = final.role;
-            }else{
-                finalResult = "student";
-            }
-            client.close();
-            return finalResult
-        })
+export async function queryUserRole(model): Promise<any> {
+    console.log("==========================" + JSON.stringify(model) + "======================");
+    return userRole.findOne({
+        "unique_name": model["unique_name"]
+    }).then(final => {
+        console.log("queryUserRole连接成功" + JSON.stringify(final.role))
+        let finalResult = "";
+        if (final) {
+            finalResult = final.role;
+        } else {
+            finalResult = "student";
+        }
+        return finalResult
     })
 }
-export function queryUserRoleRisky( model ): Promise<any>{
-    return MongoClient.connect(dbUrl, options).then(client => {return client.db("userInfo").collection("UserRole").findOne({ "unique_name": model["unique_name"] }).then(final => {
-                let role = "";
-                if (final && final.role == "teacher") {
-                    console.log("-----getUserRoleRisky----111111")
-                    role = roleFromPersona("faculty1111123")
-                } else {
-                    console.log("-----getUserRoleRisky----2222222")
-                    role = roleFromPersona("qq112323232")
-                }
-                client.close();
-                return role;
-            
+export function queryUserRoleRisky(model): Promise<any> {
+    return MongoClient.connect(dbUrl, options).then(client => {
+        return client.db("userInfo").collection("UserRole").findOne({ "unique_name": model["unique_name"] }).then(final => {
+            let role = "";
+            if (final && final.role == "teacher") {
+                console.log("-----getUserRoleRisky----111111")
+                role = roleFromPersona("faculty1111123")
+            } else {
+                console.log("-----getUserRoleRisky----2222222")
+                role = roleFromPersona("qq112323232")
+            }
+            client.close();
+            return role;
+
         })
     })
 }
@@ -254,19 +255,14 @@ export function queryEntity(table: Table, query: any): Promise<any> {
 
 //在某个表上添加新实体----增                                                      
 export function insertEntity(table: Table, entity: any): Promise<any> {
-    console.log("insertEntity数据库地址"+dbUrl+"/"+Table[table])
-    return  MongoClient.connect(dbUrl , options).then(client => {//+"/"+table
-        return client.db("userInfo").collection("UserRole").insertOne(entity).then((error,result,response) => {
-            if (!error) {
-                client.close();
-                return { valid: true, azureResult: result, azureResponse: response }
-            }else{
-                console.log()
-                return
-                
-            }
-            
-        })
+    console.log("insertEntity数据库地址" + dbUrl + "/" + Table[table])
+    return userRole.create(entity, (error, result, response) => {
+        if (!error) {
+            return { valid: true, azureResult: result, azureResponse: response }
+        } else {
+            console.log()
+            return
+        }
     })
 }
 export function updateEntity(table: Table, entity: any): Promise<any> {

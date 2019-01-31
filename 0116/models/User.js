@@ -27,4 +27,4 @@ let personSchema = new mongoose.Schema({ //建立schema概要，指明要存储�
 })
 
 //第一个参数是 标识model的标识符，第二个参数是 schema。  第三个参数是要连接的collection（表）的名称
-module.exports = mongoose.model('Person', personSchema, "User") //通过schema概要，来生成可以操作数据库的模型。
+module.exports = mongoose.model('User', personSchema, "User") //通过schema概要，来生成可以操作数据库的模型。
