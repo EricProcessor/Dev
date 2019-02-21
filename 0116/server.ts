@@ -26,6 +26,12 @@ const useFiddler = false;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 
+app.set("view engine", "ejs")
+// app.set("views", '/views')        //指定模板位置，设置模板位置为views
+
+app.use(express.static("assets"))       //设置静态资源托管
+app.use("/download", express.static("download"))
+
 app.set('port', process.env.PORT || 1337);
 app.use(express.static('public'));
 
@@ -394,6 +400,24 @@ app.post('/setReceipt', function setReceipt(req, res) {
         res.send(JSON.stringify({ "isValid": false }));
     }
 });
+
+/*以下是教师、学生登录暂时写的接口。后边会删去 */
+app.get('/login', function(req, res) {
+    res.render("login")
+})
+app.get('/teacher', function(req, res) {
+    res.render('teacher')
+})
+app.get('/student', function(req, res) {
+    res.render('student')
+})
+app.get('/content', function(req, res) {
+    res.send({
+        status: 200,
+        msg: "this content is OK"
+    })
+})
+/*以上是教师、学生登录暂时写的接口。后边会删去*/
 
 
 //================================ DO NOT ADD NEW HANDLERS BELOW HERE ==================================
