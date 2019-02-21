@@ -7,7 +7,8 @@ import { Server } from "http";
 let UserName = process.env.UserName;
 let Password = process.env.Password;
 let JdMongoUrl = process.env.JdMongoUrl;
-let dbUrl = !Environment.isProduction()?'mongodb://'+UserName+':'+Password+'@'+JdMongoUrl+'/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+let dbUrl = !Environment.isProduction() ? 'mongodb://' + UserName + ':' + Password + '@' + JdMongoUrl + '/userInfo?replicaSet=mgset-2242988359&authSource=admin' : 'mongodb://127.0.0.1:27017';
+// let dbUrl = !Environment.isProduction() ? 'mongodb://' + UserName + ':' + Password + '@' + JdMongoUrl + '/admin?replicaSet=mgset-2242988359' : 'mongodb://127.0.0.1:27017';
 
 //数据库引用 
 var mongodb = require('mongodb');
@@ -19,6 +20,9 @@ var options = {
 };
 const mongoose = require("mongoose")		//引入
 const userRole = require("../models/userRole")    //引入mongoose模型
+mongoose.connect(dbUrl, {
+    useNewUrlParser: true
+})
 //枚举---定义变量                                                                                                                          
 export enum Table {
     Users,//用户
@@ -165,21 +169,20 @@ export async function queryUserRole(model): Promise<any> {
     })
 }
 export function queryUserRoleRisky(model): Promise<any> {
-    return MongoClient.connect(dbUrl, options).then(client => {
-        return client.db("userInfo").collection("UserRole").findOne({ "unique_name": model["unique_name"] }).then(final => {
-            let role = "";
-            if (final && final.role == "teacher") {
-                console.log("-----getUserRoleRisky----111111")
-                role = roleFromPersona("faculty1111123")
-            } else {
-                console.log("-----getUserRoleRisky----2222222")
-                role = roleFromPersona("qq112323232")
-            }
-            client.close();
-            return role;
-
-        })
+    return userRole.findOne({
+        "unique_name": model["unique_name"]
+    }).then(final => {
+        let role = "";
+        if (final && final.role == "teacher") {
+            console.log("-----getUserRoleRisky----111111")
+            role = roleFromPersona("faculty1111123")
+        } else {
+            console.log("-----getUserRoleRisky----2222222")
+            role = roleFromPersona("qq112323232")
+        }
+        return role;
     })
+
 }
 function roleFromPersona(persona: string): string {
     persona = persona.toLowerCase();

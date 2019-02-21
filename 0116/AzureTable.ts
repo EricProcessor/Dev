@@ -31,7 +31,7 @@ var options = {
     poolSize: 20
 };
 const mongoose = require("mongoose")		//引入
-let AccountName   //引入mongoose模型    //引入mongoose模型
+// let AccountName = require("../models/User")   //引入mongoose模型    //引入mongoose模型
 //定义  存储账户设置接口参数
 export interface StorageAccountSettings {
     accessKey: string;       //访问密钥
@@ -96,6 +96,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     //protected service: TableServiceAsync;
     protected readonly setting: TableSetting;    //table表接口设置
     protected entityResolver;
+    protected AccountName: any;
 
     protected checkedTables: { [name: string]: Promise<any>; } = {};   //检查表是否存在
 
@@ -106,7 +107,8 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         }*/
 
         this.setting = setting;
-        AccountName = require("../models/" + this.setting.tableName)    //引入mongoose模型
+        // this.AccountName = require("../models/User")
+        this.AccountName = require("../models/" + this.setting.tableName)   //引入mongoose模型
         //设置数据库连接地址
         if (setting.connectionString) {
             // this.service = <TableServiceAsync>createTableService(setting.connectionString);
@@ -114,9 +116,12 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         }
         // mongoose连接数据库
         console.log(dbUrl)
-        mongoose.connect(dbUrl + '/userInfo', {
+        // mongoose.connect(dbUrl + '/userInfo', {
+        mongoose.connect(dbUrl, {
             useNewUrlParser: true
         })
+
+
         // console.log("查看一下现在的表名称：" + setting.tableName)
         // // Connection string takes precedence
         //优先处理  连接地址
@@ -154,6 +159,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     //     console.log("---------ensureTable-------------"+this.checkedTables[tableName])
     //     return this.checkedTables[tableName];
     // }
+
     //获取行key值
     protected getRowKey(rowKey: string, model: Model): string {
         return Object.is(rowKey, undefined) ? model[this.setting.rowKeyName] : rowKey;
@@ -163,7 +169,8 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
         console.log("进入retrieve方法");
         console.log("AzureTabl数据库连接地址" + dbUrl)
         let retrievedEntity: RetrievedEntity<Model> = {} as any;
-        return AccountName.findOne(model).then(final => {
+
+        return this.AccountName.findOne(model).then(final => {
             if (final) {
                 retrievedEntity.entity = final as Model;
                 retrievedEntity.exists = true;
@@ -198,14 +205,15 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     */
     public async insertOrMerge(model: Model): Promise<void> {
         console.log("进入insertOrMerge")
-        return AccountName.findOne({
+
+        return this.AccountName.findOne({
             "unique_name": model["unique_name"]
         }).then(final => {
             if (final) {
                 console.log("insertOrMerge更新数据");
-                return AccountName.where({
+                return this.AccountName.where({
                     "unique_name": model["unique_name"]
-                }).update({
+                }).updateOne({
                     $set: model
                 }).then((error, result) => {
                     if (error) {
@@ -215,7 +223,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                 })
             } else {
                 console.log("insertOrMerge插入数据");
-                return AccountName.create(
+                return this.AccountName.create(
                     model
                     , (err, docs) => {
                         if (err) { console.log(err) }
@@ -246,12 +254,12 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     */
     //插入或替换方法
     public async insertOrReplace(model: Model): Promise<void> {
-        return AccountName.findOne({
+        return this.AccountName.findOne({
             "unique_name": model["unique_name"]
         }).then(final => {
             if (final) {
                 console.log("insertOrMerge更新数据");
-                return AccountName.where({
+                return this.AccountName.where({
                     "unique_name": model["unique_name"]
                 }).update({
                     $set: model
@@ -263,7 +271,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
                 })
             } else {
                 console.log("insertOrMerge插入数据");
-                return AccountName.create(
+                return this.AccountName.create(
                     model
                     , (err, docs) => {
                         if (err) { console.log(err) }
@@ -282,7 +290,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     //删除某个数据的方法
     public async delete(query: any): Promise<any> {
         console.log("")
-        return AccountName.where({
+        return this.AccountName.where({
             "unique_name": query
         }).remove().then((error, result) => {
             if (error) {
@@ -344,7 +352,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     private async queryTillEnd(query, resolve, reject) {
         let msg //用于保存搜索到的信息
         //查询操作
-        AccountName.find(query, { _id: 0 }).then((result) => {
+        this.AccountName.find(query, { _id: 0 }).then((result) => {
             if (result) {
                 console.log("111" + JSON.stringify(result))
                 resolve(result[0]) //在这里返回数据
@@ -360,7 +368,7 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     //查询
     public async findOne(collection, whereObj): Promise<any> {
         console.log("进入findOne查询方法")
-        return AccountName.findOne(whereObj).then((err, results) => {
+        return this.AccountName.findOne(whereObj).then((err, results) => {
             if (!err) {
                 MongoClient.close();
                 return results

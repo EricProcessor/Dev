@@ -1,8 +1,8 @@
-import {MongodbTable, TableSetting, RetrievedEntity }from "./AzureTable";
+import { MongodbTable, TableSetting, RetrievedEntity } from "./AzureTable";
 //import {TableQuery, TableService, TableUtilities} from 'azure-storage';
-import {Guid} from './core/guid';
-import {UserID} from "./AAD";
-import {Config} from "./Config";
+import { Guid } from './core/guid';
+import { UserID } from "./AAD";
+import { Config } from "./Config";
 // import { callbackify } from "util";
 // import { logActivity,logActivityVerbose } from "./Logger";
 // import { EntityConverter } from "./core/entityConverter";
@@ -157,6 +157,7 @@ export class UserTable extends MongodbTable<User> {
             userToUpdate.skin = cachedUser.skin || this.defaultSkin;
             userToUpdate.nickname = this.GetUserNickname(userID.name, userID.userName);
             FormAddNewUser ? userToUpdate.createtimestamp = new Date() : '';
+            console.log('袁娜-------------------' + JSON.stringify(userToUpdate))
             userToUpdate.updatetimestamp = new Date();
             userToUpdate.rowkey = '';
             userToUpdate.partitionkey = '';

@@ -15,7 +15,8 @@ let MongoClient = mongodb.MongoClient;
 let UserName = process.env.UserName;
 let Password = process.env.Password;
 let JdMongoUrl = process.env.JdMongoUrl;
-let dbUrl = !Environment.isProduction()?'mongodb://'+UserName+':'+Password+'@'+JdMongoUrl+'/admin?replicaSet=mgset-2242988359':'mongodb://127.0.0.1:27017';
+let dbUrl = !Environment.isProduction() ? 'mongodb://' + UserName + ':' + Password + '@' + JdMongoUrl + '/userInfo?replicaSet=mgset-2242988359&authSource=admin' : 'mongodb://127.0.0.1:27017';
+// let dbUrl = Environment.isProduction() ? 'mongodb://' + UserName + ':' + Password + '@' + JdMongoUrl + '/admin?replicaSet=mgset-2242988359' : 'mongodb://127.0.0.1:27017';
 
 var options = {
     auto_reconnect: true,
