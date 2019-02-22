@@ -54,13 +54,11 @@
         var account = $('#account').val();
         var passWord = $('#passWord').val();
         // console.log(account + '-----' + passWord)
-        if (account == 'teacher' && passWord == "123456") {
+        if (account == 'lancer88888') {
             $('#loginLink').attr('href', '/teacher');
-        } else if (account == 'student' && passWord == "123456") {
-            $('#loginLink').attr('href', '/student');
         } else {
-            alert('账户或密码错误！')
-        }
+            $('#loginLink').attr('href', '/student');
+        } 
     })
 </script>
 
