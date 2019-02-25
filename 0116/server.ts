@@ -22,15 +22,16 @@ const app = express();
 
 const useFiddler = false;
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.set("view engine", "ejs")
-// app.set("views", '/views')        //指定模板位置，设置模板位置为views
+
+app.set("view engine", "ejs")       //然后再将模板引擎换为html
+// app.set("views", __dirname + '/../public')        //指定模板位置，设置模板位置为views
+
+
 
 app.use(express.static("assets"))       //设置静态资源托管
-app.use("/download", express.static("download"))
 
 app.set('port', process.env.PORT || 1337);
 app.use(express.static('public'));

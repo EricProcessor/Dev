@@ -49,7 +49,7 @@ body .login .loginAccount h6 {
   color: #333333;
   padding-top: 28px;
 }
-body .login .loginPassword input[type="text"],
+body .login .loginPassword input[type="password"],
 body .login .loginAccount input[type="text"] {
   width: 580px;
   border: none;
