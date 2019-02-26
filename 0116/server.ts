@@ -418,6 +418,9 @@ app.get('/content', function(req, res) {
         msg: "this content is OK"
     })
 })
+app.get('/content/v7.0/products/productFamilies/applicationextensions/products', function(req, res) {
+    res.redirect('https://meedownloads.blob.core.windows.net/test/MinecraftEducationEdition_china_x86_1.8.0.0.msi')
+})
 /*以上是教师、学生登录暂时写的接口。后边会删去*/
 
 
