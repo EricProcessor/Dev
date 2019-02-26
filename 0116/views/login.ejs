@@ -53,13 +53,13 @@
     $('#login').click(function () {
         var account = $('#account').val();
         var passWord = $('#passWord').val();
-        // console.log(account + '-----' + passWord)
+        console.log(account + '-----' + passWord)
         if (account == 'lancer88888') {
             $('#loginLink').attr('href', '/teacher');
+            localStorage.setItem("isLogin",1)
         } else {
             $('#loginLink').attr('href', '/student');
-        } 
+        }
     })
 </script>
-
 </html>
