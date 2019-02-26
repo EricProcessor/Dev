@@ -418,8 +418,274 @@ app.get('/content', function(req, res) {
         msg: "this content is OK"
     })
 })
+// app.get('/content/v7.0/products/productFamilies/applicationextensions/products', function(req, res) {
+//     res.redirect('https://meedownloads.blob.core.windows.net/test/MinecraftEducationEdition_china_x86_1.8.0.0.msi')
+// })
 app.get('/content/v7.0/products/productFamilies/applicationextensions/products', function(req, res) {
-    res.redirect('https://meedownloads.blob.core.windows.net/test/MinecraftEducationEdition_china_x86_1.8.0.0.msi')
+    res.send({
+        "ProductIds":[
+           "G009SVP9FH15"
+        ],
+        "Aggregations":[
+     
+        ],
+        "HasMorePages":false,
+        "Products":[
+           {
+              "LastModifiedDate":"2018-11-05T19:05:44.898Z",
+              "ProductBSchema":"ProductApplicationExtensions;3",
+              "ProductFamily":"ApplicationExtensions",
+              "PreferredSkuId":"0001",
+              "SchemaVersion":"3",
+              "MerchandizingTags":null,
+              "ProductType":"MinecraftEduAddIn",
+              "ProductId":"G009SVP9FH15",
+              "Properties":{
+                 "PerformanceCriteria":[
+     
+                 ],
+                 "ProductGroupId":null,
+                 "StudentActivities":[
+     
+                 ],
+                 "ContentType":"World",
+                 "FormattedLearningObjectives":[
+     
+                 ],
+                 "ExternalReferences":[
+     
+                 ],
+                 "ProductGroupName":null,
+                 "RevisionId":"2018-11-05T19:05:44.898Z",
+                 "StudentAgeRanges":[
+     
+                 ],
+                 "Skills":[
+     
+                 ],
+                 "HasAddOns":null,
+                 "RevisionVector":"4",
+                 "EntitlementProperties":null,
+                 "GuidingIdeasAndQuestions":[
+     
+                 ],
+                 "Subjects":[
+     
+                 ]
+              },
+              "MarketProperties":[
+                 {
+                    "RelatedProducts":[
+     
+                    ],
+                    "UsageData":[
+                       {
+                          "TrialCount":"0",
+                          "PurchaseCount":"0",
+                          "RatingCount":0,
+                          "AverageRating":0,
+                          "PlayCount":0,
+                          "AggregateTimeSpan":"AllTime",
+                          "RentalCount":"0"
+                       },
+                       {
+                          "TrialCount":"0",
+                          "PurchaseCount":"0",
+                          "RatingCount":0,
+                          "AverageRating":0,
+                          "PlayCount":0,
+                          "AggregateTimeSpan":"7Days",
+                          "RentalCount":"0"
+                       },
+                       {
+                          "TrialCount":"0",
+                          "PurchaseCount":"0",
+                          "RatingCount":0,
+                          "AverageRating":0,
+                          "PlayCount":0,
+                          "AggregateTimeSpan":"30Days",
+                          "RentalCount":"0"
+                       }
+                    ],
+                    "Markets":[
+                       "US"
+                    ]
+                 }
+              ],
+              "ValidationData":null,
+              "DomainDataVersion":null,
+              "AlternateIds":[
+     
+              ],
+              "DisplaySkuAvailabilities":[
+                 {
+                    "Sku":{
+                       "LastModifiedDate":"2018-11-05T19:05:44.898Z",
+                       "SkuBSchema":null,
+                       "SkuType":"FULL",
+                       "RecurrencePolicy":null,
+                       "ProductId":"G009SVP9FH15",
+                       "SkuASchema":null,
+                       "Properties":{
+                          "VisibleToB2BServiceIds":[
+     
+                          ],
+                          "SkuDisplayRank":0,
+                          "IsTrial":false,
+                          "IsBundle":false,
+                          "IsPreOrder":false,
+                          "LastUpdateDate":"2018-11-05T19:05:44.898Z",
+                          "AdditionalIdentifiers":[
+     
+                          ],
+                          "IsRepurchasable":null,
+                          "BundledSkus":null
+                       },
+                       "SkuId":"0001",
+                       "SubscriptionPolicyId":null,
+                       "MarketProperties":[
+                          {
+                             "SupportedLanguages":[
+                                "en",
+                                "neutral"
+                             ],
+                             "FulFillmentServiceData":[
+                                {
+                                   "ResourceHash":null,
+                                   "ResourceSizeInKB":null,
+                                   "ResourceDownloadUri":"https://ugcorigin.s-microsoft.com/102/443dd1b9-8363-476a-a7f3-5ba764aaf262/001/v2/content.bin",
+                                   "ResourceId":"1ff4d325-752b-46ff-bb6f-7c2f8e94b996",
+                                   "SupportedClients":null,
+                                   "ResourceType":null,
+                                   "ResourceFormat":"mctemplate"
+                                }
+                             ],
+                             "Markets":[
+                                "US"
+                             ]
+                          }
+                       ],
+                       "LocalizedProperties":[
+                          {
+                             "Language":"neutral",
+                             "SkuDescription":"This world serves as an introduction to the Code Builder feature. Learn to code the Agent to complete a series of challenges. ",
+                             "Markets":[
+                                "US",
+                                "NEUTRAL"
+                             ],
+                             "SkuTitle":"Code Builder Tutorial"
+                          }
+                       ]
+                    },
+                    "Availabilities":[
+                       {
+                          "LastModifiedDate":"2018-11-05T19:05:44.898Z",
+                          "OrderManagementData":null,
+                          "AffirmationId":null,
+                          "DisplayGroup":null,
+                          "LicensingData":null,
+                          "Actions":[
+                             "Details",
+                             "Fulfill",
+                             "Browse",
+                             "Curate",
+                             "Purchase"
+                          ],
+                          "Markets":[
+                             "US"
+                          ],
+                          "PricingRuleIds":null,
+                          "Properties":{
+                             "MerchandisingTags":null,
+                             "MeterType":null,
+                             "PreOrderReleaseDate":null,
+                             "OriginalReleaseDate":null
+                          },
+                          "Conditions":{
+                             "ClientConditions":{
+                                "AllowedPlatforms":[
+     
+                                ]
+                             },
+                             "StartDate":"2018-09-26T00:00:00.000Z",
+                             "EligibilityFilteringPolicyId":null,
+                             "ResourceSetIds":[
+                                "1"
+                             ],
+                             "IsPermanent":null,
+                             "EndDate":"2100-09-26T00:00:00.000Z"
+                          },
+                          "AvailabilityId":"FSRFM1L114MP",
+                          "TermIds":null,
+                          "RenewalBigId":null,
+                          "AvailabilityBSchema":"AvailabilityApplicationExtensions",
+                          "AlternateIds":null,
+                          "PromotionalDuration":null,
+                          "DisplayRank":0,
+                          "BundleTag":null,
+                          "LineageTag":null,
+                          "SkuId":"0001",
+                          "AvailabilityASchema":"Availability3"
+                       }
+                    ]
+                 }
+              ],
+              "IngestionSource":"MediaIngestionPlatform",
+              "IsMicrosoftProduct":false,
+              "ProductASchema":"Product;3",
+              "ProductKind":"MinecraftEduAddIn",
+              "LocalizedProperties":[
+                 {
+                    "Language":"neutral",
+                    "ProductSubtitle":"Learn the basics of coding in Minecraft. ",
+                    "Images":[
+                       {
+                          "UnscaledImageSHA256Hash":null,
+                          "ImagePurpose":"logo",
+                          "ImagePositionInfo":null,
+                          "FileSizeInBytes":123574,
+                          "Height":270,
+                          "ForegroundColor":null,
+                          "CropSafeZone":null,
+                          "Uri":"https://ugcorigin.s-microsoft.com/102/55bd6626-9edf-4f56-955f-03709af0dc84/202/v2/image.jpg",
+                          "Width":480,
+                          "Caption":null,
+                          "BackgroundColor":"#79A3E5"
+                       }
+                    ],
+                    "DisplayAvailableResources":[
+                       {
+                          "ResourceHash":null,
+                          "ResourceSizeInKB":null,
+                          "ResourceId":"1ff4d325-752b-46ff-bb6f-7c2f8e94b996",
+                          "SupportedClients":null,
+                          "ResourceType":null,
+                          "ResourceFormat":"mctemplate"
+                       }
+                    ],
+                    "Contributors":[
+                       {
+                          "Order":0,
+                          "ContributorId":"00d6de7e-6429-4da6-887a-9d66ab7ccb2e",
+                          "RoleType":"creator",
+                          "Name":"Minecraft Education"
+                       }
+                    ],
+                    "Markets":[
+                       "US",
+                       "NEUTRAL"
+                    ],
+                    "ProductDescription":"This world serves as an introduction to the Code Builder feature. Learn to code the Agent to complete a series of challenges. ",
+                    "SearchKeywords":[
+                       "MustHave"
+                    ],
+                    "ProductTitle":"Code Builder Tutorial"
+                 }
+              ]
+           }
+        ],
+        "TotalResultCount":1
+     })
 })
 /*以上是教师、学生登录暂时写的接口。后边会删去*/
 
