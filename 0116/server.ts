@@ -421,7 +421,8 @@ app.get('/content', function(req, res) {
 // app.get('/content/v7.0/products/productFamilies/applicationextensions/products', function(req, res) {
 //     res.redirect('https://meedownloads.blob.core.windows.net/test/MinecraftEducationEdition_china_x86_1.8.0.0.msi')
 // })
-app.get('/content/v7.0/products/productFamilies/applicationextensions/products', function(req, res) {
+
+app.get('/content/v7.0/productFamilies/applicationextensions/products', function(req, res) {
     res.send({
         "ProductIds":[
            "G009SVP9FH15"
