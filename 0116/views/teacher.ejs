@@ -200,10 +200,15 @@
         </div>
     </section>
     <footer class="mee-footer">
-        <p>语言：简体中文 京东教育网-我的世界专区 联系我们   <a href=" https://meedownloads.blob.core.windows.net/test/MinecraftEducationEdition_x86_china_1-8.msi" style="color: blue; padding-left:20px">点击下载软件</a></p>
+        <p>语言：简体中文 京东教育网-我的世界专区 联系我们   <a href="/software/MinecraftEducationEdition_china_x86_1.8.0.0.msi" style="color: blue; padding-left:20px">点击下载软件</a></p>
     </footer>
 </body>
 <script>
+   var isLogin = localStorage.getItem("isLogin")
+   console.log(isLogin)
+    if (isLogin != 1) {
+         window.location.replace("/login");
+    }
     var allMethods = {
         videoElem: $("#video")[0],
         tab: function () {
