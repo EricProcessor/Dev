@@ -91,14 +91,14 @@
                     </div>
                     <div class="content-list clearfix">
                         <div class="list-left fl">
-                            <video id="video" style="border: 1px solid green; border-radius: 5px;" src="./video/1.mp4"
+                            <video id="video" poster="./img/recommend.png" controlslist="nodownload" style="border: 1px solid green; border-radius: 5px;" src="./video/1.mp4"
                                 width="640" height="352" controls preload="none">
                                 您的浏览器不支持H5视频播放，请升级
                             </video>
                         </div>
                         <div class="list-right fr">
-                            <h3>课程索引</h3>
-                            <ul class="SelectLesson">
+                            <h3>视频索引</h3>
+                            <ul class="Selectvideo">
                                 <li class="selected" name="1"><input type="button" value="第1课" name="1"></li>
                                 <li name="2"><input type="button" value="第2课" name="2"></li>
                                 <li name="3"><input type="button" value="第3课" name="3"></li>
@@ -227,8 +227,11 @@
             })
 
         },
-        videoStop: function () {
+        videoStop: function () {        //视频暂停
             allMethods.videoElem.pause()
+        },
+        videoPlay: function() {         //视频播放
+            allMethods.videoElem.play()
         }
     }
     $(function () {
@@ -244,6 +247,14 @@
             './pdfjs/web/viewer.html?file=/pdf/Lesson ' + LessonNum +
             '/Presentation.pdf');
         $('#CatalogOne').html(' > ' + $(this).children("input").val())
+    })
+
+    //切换视频
+    $(".Selectvideo li").click(function() {
+        var videoNum = $(this).index()
+        $(this).addClass('selected').siblings().removeClass('selected')
+
+        allMethods.videoElem.src = './video/' + (videoNum - 0 + 1) + '.mp4'
     })
 </script>
 
