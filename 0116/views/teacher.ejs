@@ -80,7 +80,7 @@
                         </div>
                         <div class="list-right fr">
                             <h3>课程索引</h3>
-                            <ul class="SelectLesson">
+                            <ul class="SelectLesson teaching-plan">
                                 <li class="selected" name="1"><input type="button" value="第1课" name="1"></li>
                                 <li name="2"><input type="button" value="第2课" name="2"></li>
                                 <li name="3"><input type="button" value="第3课" name="3"></li>
@@ -91,7 +91,7 @@
                     </div>
                     <div class="content-list clearfix">
                         <div class="list-left fl">
-                            <video id="video" poster="./img/recommend.png" controlslist="nodownload" style="border: 1px solid green; border-radius: 5px;" src="./video/1.mp4"
+                            <video id="video" poster="./img/recommend.png" controlslist="nodownload" style="border: 1px solid green; border-radius: 5px;" src="./pdf/Lesson 1/teachingVideo.mp4"
                                 width="640" height="352" controls preload="none">
                                 您的浏览器不支持H5视频播放，请升级
                             </video>
@@ -108,7 +108,7 @@
                     <div class="content-list clearfix">
                         <div class="list-right fr">
                             <h3>课程索引</h3>
-                            <ul class="SelectLesson">
+                            <ul class="SelectLesson teaching-ppt">
                                 <li class="selected" name="1"><input type="button" value="第1课" name="1"></li>
                                 <li name="2"><input type="button" value="第2课" name="2"></li>
                                 <li name="3"><input type="button" value="第3课" name="3"></li>
@@ -237,15 +237,21 @@
     $(function () {
         allMethods.tab()
     })
-    $(".SelectLesson li").click(function () {
+    $(".teaching-ppt li").click(function () {
+        var LessonNum = $(this).children("input").attr('name');
+        $(this).addClass('selected').siblings().removeClass('selected')
+        $('#TeachPptPDF').attr('src',
+            './pdfjs/web/viewer.html?file=/pdf/Lesson ' + LessonNum +
+            '/Presentation.pdf');
+        $('#CatalogOne').html(' > ' + $(this).children("input").val())
+    })
+
+    $(".teaching-plan li").click(function() {
         var LessonNum = $(this).children("input").attr('name');
         $(this).addClass('selected').siblings().removeClass('selected')
         $('#TeachPlanPDF').attr('src',
             './pdfjs/web/viewer.html?file=/pdf/Lesson ' + LessonNum +
             '/Teacher Workbook.pdf');
-        $('#TeachPptPDF').attr('src',
-            './pdfjs/web/viewer.html?file=/pdf/Lesson ' + LessonNum +
-            '/Presentation.pdf');
         $('#CatalogOne').html(' > ' + $(this).children("input").val())
     })
 
@@ -254,7 +260,7 @@
         var videoNum = $(this).index()
         $(this).addClass('selected').siblings().removeClass('selected')
 
-        allMethods.videoElem.src = './video/' + (videoNum - 0 + 1) + '.mp4'
+        allMethods.videoElem.src = './pdf/Lesson ' + (videoNum - 0 + 1) + '/teachingVideo.mp4'
     })
 </script>
 
