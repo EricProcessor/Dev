@@ -70,6 +70,7 @@
                         <li class="fl selected">教案</li>
                         <li class="fl">视频</li>
                         <li class="fl">PPT</li>
+                        <li class="fl">World</li>
                     </ul>
                 </div>
                 <div class="category-cont">
@@ -91,10 +92,42 @@
                     </div>
                     <div class="content-list clearfix">
                         <div class="list-left fl">
-                            <video id="video" poster="./img/recommend.png" controlslist="nodownload" style="border: 1px solid green; border-radius: 5px;" src="./pdf/Lesson 1/teachingVideo.mp4"
-                                width="640" height="352" controls preload="none">
-                                您的浏览器不支持H5视频播放，请升级
-                            </video>
+                            <div class="video-list">
+                                <div class="video-con">
+                                    <h3>第一课视频教程：</h3>
+                                    <video id="video" poster="./img/lesson1.jpg" controlslist="nodownload" src="./pdf/Lesson 1/World walkthrough video.mp4"
+                                        width="640" height="352" controls preload="none">
+                                        您的浏览器不支持H5视频播放，请升级
+                                    </video>
+
+                                    <h3>Minecraft登录视频：</h3>
+                                    <video id="video" poster="./img/signin.jpg" controlslist="nodownload" src="./pdf/Lesson 1/Minecraft Sign-in video.mp4"
+                                        width="640" height="352" controls preload="none">
+                                        您的浏览器不支持H5视频播放，请升级
+                                    </video>
+
+                                    <h3>代码生成器简介视频：</h3>
+                                    <video id="video" poster="./img/makecode.jpg" controlslist="nodownload" src="./pdf/Lesson 1/Code Builder Introduction video.mp4"
+                                        width="640" height="352" controls preload="none">
+                                        您的浏览器不支持H5视频播放，请升级
+                                    </video>
+                                </div>
+                                <div class="video-con">
+                                    <h3>第二课视频教程：</h3>
+                                    <video id="video" poster="./img/lesson2.jpg" controlslist="nodownload" src="./pdf/Lesson 2/World walkthrough video.mp4"
+                                        width="640" height="352" controls preload="none">
+                                        您的浏览器不支持H5视频播放，请升级
+                                    </video>
+                                </div>
+                                <div class="video-con">
+                                    <h3>第三课视频教程：</h3>
+                                    <video id="video" poster="./img/lesson3.jpg" controlslist="nodownload" src="./pdf/Lesson 3/World walkthrough video.mp4"
+                                        width="640" height="352" controls preload="none">
+                                        您的浏览器不支持H5视频播放，请升级
+                                    </video>
+                                </div>
+                            </div>
+                            
                         </div>
                         <div class="list-right fr">
                             <h3>视频索引</h3>
@@ -116,6 +149,19 @@
                         </div>
                         <iframe id="TeachPptPDF" src="./pdfjs/web/viewer.html?file=/pdf/Lesson 1/Presentation.pdf"
                             width="950" height="1200" frameborder="0"></iframe>
+                    </div>
+                    <div class="content-list clearfix">
+                        <div class="list-left fl">
+                             <a id="map-download-link" href="/pdf/Lesson 1/Lesson1_CN.mcworld" download="Lesson1_CN.mcworld" style="color: blue;">World1点击下载</a>
+                        </div>
+                        <div class="list-right fr">
+                            <h3>课程索引</h3>
+                            <ul class="SelectLesson map-download">
+                                <li class="selected" name="1"><input type="button" value="第1课" name="1"></li>
+                                <li name="2"><input type="button" value="第2课" name="2"></li>
+                                <li name="3"><input type="button" value="第3课" name="3"></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -199,6 +245,12 @@
             </div>
         </div>
     </section>
+    <div class="popup-box">
+        <div class="popup-content">
+            <i class="popup-close"><img src="./img/close.png" /></i>
+            <iframe id="TeachPlanPDF" src="./pdfjs/web/viewer.html?file=/pdf/Lesson 1/Teacher Note-CN.pdf" width="800" height="500" frameborder="0"></iframe>
+        </div>
+    </div>
     <footer class="mee-footer">
         <p>语言：简体中文 京东教育网-我的世界专区 联系我们   <a href="/software/MinecraftEducationEdition_china_x86_1.8.0.0.msi" style="color: blue; padding-left:20px">点击下载软件</a></p>
     </footer>
@@ -210,7 +262,7 @@
          window.location.replace("/login");
     }
     var allMethods = {
-        videoElem: $("#video")[0],
+        // videoElem: $("#video")[0],
         tab: function () {
             var $categoryType = $(".category ul li"),
                 $categoryCont = $(".category-cont .content-list")
@@ -228,14 +280,29 @@
 
         },
         videoStop: function () {        //视频暂停
-            allMethods.videoElem.pause()
+            // allMethods.videoElem.pause()
+            $("video").each(function(i, elem) {     //所有视频暂停播放
+                elem.pause()
+            })
         },
-        videoPlay: function() {         //视频播放
-            allMethods.videoElem.play()
+        // videoPlay: function() {         //视频播放
+        //     allMethods.videoElem.play()
+        // },
+        popup: function() {         //弹窗
+            $(".popup-box").click(function() {
+                $(this).hide()
+            })
+            $(".popup-content").click(function(e) {
+                e.stopPropagation()
+            })
+            $(".popup-content .popup-close").click(function() {
+                $(".popup-box").hide()
+            })
         }
     }
     $(function () {
         allMethods.tab()
+        allMethods.popup()
     })
     $(".teaching-ppt li").click(function () {
         var LessonNum = $(this).children("input").attr('name');
@@ -255,12 +322,26 @@
         $('#CatalogOne').html(' > ' + $(this).children("input").val())
     })
 
+    $(".map-download li").click(function() {
+        var LessonNum = $(this).children("input").attr('name');
+        $(this).addClass('selected').siblings().removeClass('selected')
+        $('#map-download-link')
+        .attr('href',
+            './pdf/Lesson ' + LessonNum +
+            '/Lesson'+ LessonNum +'_CN.mcworld')
+            .attr("download", "Lesson_CN"+ LessonNum +".mcworld")
+            .text("World" + LessonNum  + "点击下载")
+    })
+
     //切换视频
     $(".Selectvideo li").click(function() {
         var videoNum = $(this).index()
         $(this).addClass('selected').siblings().removeClass('selected')
 
-        allMethods.videoElem.src = './pdf/Lesson ' + (videoNum - 0 + 1) + '/teachingVideo.mp4'
+        $(".video-list .video-con").eq(videoNum).show().siblings().hide()
+
+        allMethods.videoStop()      //所有视频暂停播放
+        // allMethods.videoElem.src = './pdf/Lesson ' + (videoNum - 0 + 1) + '/World walkthrough video.mp4'
     })
 </script>
 
