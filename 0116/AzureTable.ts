@@ -301,19 +301,19 @@ export class MongodbTable<Model> { // Slight template hack as typescript doesn't
     }
 
     //删除某个表
-    public async deleteTable(query: string): Promise<void> {
-        return MongoClient.connect(dbUrl, options).then(
-            client => {
-                return client.db("userInfo").dropCollection(query).then((error, result) => {
-                    if (error) {
-                        console.log("数据库删除失败")
-                    }
-                    client.close()
-                    return result
-                })
-            }
-        )
-    }
+    // public async deleteTable(query: string): Promise<void> {
+    //     return MongoClient.connect(dbUrl, options).then(
+    //         client => {
+    //             return client.db("userInfo").dropCollection(query).then((error, result) => {
+    //                 if (error) {
+    //                     console.log("数据库删除失败")
+    //                 }
+    //                 client.close()
+    //                 return result
+    //             })
+    //         }
+    //     )
+    // }
 
     /**
      * BatchInsertEntity Must have the same partition key and limited to 100 entities. During parallellization, make sure to limit

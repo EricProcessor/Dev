@@ -13,6 +13,7 @@ import { Config } from "./Config"
 // const easyMonitor = require('easy-monitor');
 // easyMonitor('你的项目名称');
 const moment = require('moment');
+const User = require('../models/User')      //引入user表mongoose模型
 
 const version_edu_evaluation = 65596;
 const version_edu_earlyaccess = 65598;
@@ -401,6 +402,28 @@ app.post('/setReceipt', function setReceipt(req, res) {
         res.send(JSON.stringify({ "isValid": false }));
     }
 });
+
+
+//修改用户昵称nickname接口
+app.post('/modifyNickname', async function(req, res) {
+    let {id, nickname} = req.body       //获取 用户id（也就是unique_name） 和 要修改为的昵称nickname
+
+    try {
+        //更新昵称
+        let newUser = await User.update({unique_name: id}, {
+            nickname
+        })
+
+        newUser.nModified ?         //如果nModified不为0，表示有记录被修改了。则修改成功
+            res.send({code: 0, msg: "修改成功！"}) 
+            : 
+            res.send({code: -1, msg: "修改失败！"})
+    }
+    catch(err) {
+        res.send(err)
+    }
+    
+})
 
 /*以下是教师、学生登录暂时写的接口。后边会删去 */
 app.get('/login', function(req, res) {
