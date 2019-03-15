@@ -1,14 +1,16 @@
 import express = require('express')
 //import * as express from "express";
+var axios = require('axios')
 import * as bodyParser from "body-parser";
 import { AADIdentity } from "./AADTokens";
 import { UserID } from "./AAD";
 import { getOnBehalfOfToken } from "./AAD";
 import { logActivity, logActivityVerbose } from "./Logger";
 import * as MEEServices from "./MEEServices";
+import * as CataLog from "./CataLog";
 import * as Utilities from "./utilities";
-import {Environment, EnvironmentType} from "./core/environment"
-import {UserTable} from "./MeeUserTable"
+import { Environment, EnvironmentType } from "./core/environment"
+import { UserTable } from "./MeeUserTable"
 import { Config } from "./Config"
 // const easyMonitor = require('easy-monitor');
 // easyMonitor('你的项目名称');
@@ -24,7 +26,7 @@ const app = express();
 const useFiddler = false;
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({ extended: false }))
 
 
 app.set("view engine", "ejs")       //然后再将模板引擎换为html
@@ -37,9 +39,9 @@ app.use(express.static("assets"))       //设置静态资源托管
 app.set('port', process.env.PORT || 1337);
 app.use(express.static('public'));
 
-console.log("UserName"+process.env.UserName)
-console.log("Password"+process.env.Password)
-console.log("JdMongoUrl"+process.env.JdMongoUrl)
+console.log("UserName" + process.env.UserName)
+console.log("Password" + process.env.Password)
+console.log("JdMongoUrl" + process.env.JdMongoUrl)
 
 // -------------------------------------------------
 app.get('/', function root(req, res) {
@@ -113,9 +115,9 @@ app.post('/signin', function signin(req, res) {
         if (identity.expirationDate < new Date()) {
             throw Error(`Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`);
         }
-        console.log("$$$$$$$$$$$$$$$$$$###########@@@@@@@@@@!!!!!!!!!!^identity.uniqueName++++++++++这个事++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++少时诵诗书所所所"+identity.uniqueName);
+        console.log("$$$$$$$$$$$$$$$$$$###########@@@@@@@@@@!!!!!!!!!!^identity.uniqueName++++++++++这个事++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++少时诵诗书所所所" + identity.uniqueName);
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, req.body.accessToken, undefined, undefined, undefined, undefined, req.body.platform, req.body.locale);
-        
+
         if (user && user.unique_name.startsWith("live.com#")) {
             let reason = 'Invalid token type: MSA';
             logActivity('server-signin-invalid', reason, user.unique_name, req.body);
@@ -192,9 +194,9 @@ app.post('/getuserguid', function getuserguid(req, res) {
             true) || false)) {
             throw Error("Invalid post data");
         }
-        
+
         let identity = AADIdentity.fromToken(req.body.identityToken);
-        
+
         if (!identity) {
             throw Error("Invalid identity token");
         }
@@ -205,7 +207,7 @@ app.post('/getuserguid', function getuserguid(req, res) {
 
         logActivity('getuserguid', identity.tenantId, identity.uniqueName, req.body);
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, req.body.accessToken);
-        console.log("registerUserGuid----"+JSON.stringify(req.body.ipAddress))
+        console.log("registerUserGuid----" + JSON.stringify(req.body.ipAddress))
         MEEServices.registerUserGuid(res, user, req.body.ipAddress);
         logActivity('getuserguid-success', identity.tenantId, identity.uniqueName, req.body);
     } catch (error) {
@@ -244,7 +246,7 @@ app.post('/skin', function skin(req, res) {
     res.type('application/json');
     // let idinfo =AADIdentity.fromToken(req.body.identityToken)
     // res.send(idinfo);
-    
+
     try {
         if (!((
             req.body &&
@@ -257,7 +259,7 @@ app.post('/skin', function skin(req, res) {
         }
 
         let identity = AADIdentity.fromToken(req.body.identityToken);
-        console.log("identity-----"+JSON.stringify(identity));
+        console.log("identity-----" + JSON.stringify(identity));
         if (!identity) {
             throw Error("Invalid identity token");
         }
@@ -299,7 +301,7 @@ app.post('/eula', function eula(req, res) {
         }
 
         let identity = AADIdentity.fromToken(req.body.identityToken);
-        
+
         if (!identity) {
             throw Error("Invalid identity token");
         }
@@ -309,7 +311,7 @@ app.post('/eula', function eula(req, res) {
         }
 
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, "");
-        console.log("identity-----user"+JSON.stringify(user))
+        console.log("identity-----user" + JSON.stringify(user))
         logActivity('eula', user.tenantId, user.unique_name, req.body);
 
         MEEServices.acceptEula(res, user);
@@ -386,7 +388,7 @@ app.post('/setReceipt', function setReceipt(req, res) {
         if (identity.expirationDate < new Date()) {
             throw Error(`Expired identity token. Issued: ${identity.issuedAtTime.toISOString()} Expires: ${identity.expirationDate.toISOString()}`);
         }
-        
+
         let user = new UserID(identity.tenantId, identity.uniqueName, identity.userName, identity.name, identity.oid, "");
 
         let receipt = req.body.receipt;
@@ -405,311 +407,338 @@ app.post('/setReceipt', function setReceipt(req, res) {
 
 
 //修改用户昵称nickname接口
-app.post('/modifyNickname', async function(req, res) {
-    let {id, nickname} = req.body       //获取 用户id（也就是unique_name） 和 要修改为的昵称nickname
+app.post('/modifyNickname', async function (req, res) {
+    let { id, nickname } = req.body       //获取 用户id（也就是unique_name） 和 要修改为的昵称nickname
 
     try {
         //更新昵称
-        let newUser = await User.update({unique_name: id}, {
+        let newUser = await User.update({ unique_name: id }, {
             nickname
         })
 
         newUser.nModified ?         //如果nModified不为0，表示有记录被修改了。则修改成功
-            res.send({code: 0, msg: "修改成功！"}) 
-            : 
-            res.send({code: -1, msg: "修改失败！"})
+            res.send({ code: 0, msg: "修改成功！" })
+            :
+            res.send({ code: -1, msg: "修改失败！" })
     }
-    catch(err) {
+    catch (err) {
         res.send(err)
     }
-    
+
 })
 
 /*以下是教师、学生登录暂时写的接口。后边会删去 */
-app.get('/login', function(req, res) {
+app.get('/login', function (req, res) {
     res.render("login")
 })
-app.get('/teacher', function(req, res) {
+app.get('/teacher', function (req, res) {
     res.render('teacher')
 })
-app.get('/student', function(req, res) {
+app.get('/student', function (req, res) {
     res.render('student')
 })
-app.get('/content', function(req, res) {
+app.get('/content', function (req, res) {
     res.send({
         status: 200,
         msg: "this content is OK"
     })
 })
+// 下面是CataLog的接口
+// 查询商品列表
+app.get('/catalog/query', function (req, res) {
+    res.type('application/json');
+    try {
+        CataLog.InterfaceQuery(req, res)
+    } catch (error) {
+        console.log("出现了问题")
+        res.send(JSON.stringify({
+            "isValid": false
+        }));
+    }
+})
+// 查询商品详情
+app.get('/catalog/hydrate/', function (req, res) {
+    res.type('application/json');
+    try {
+        // InterfaceHydrate()
+        CataLog.InterfaceHydrate(req, res)
+
+
+    } catch (error) {
+        res.send(JSON.stringify({
+            "isValid": false
+        }));
+    }
+})
 // app.get('/content/v7.0/products/productFamilies/applicationextensions/products', function(req, res) {
 //     res.redirect('https://meedownloads.blob.core.windows.net/test/MinecraftEducationEdition_china_x86_1.8.0.0.msi')
 // })
 
-app.get('/content/v7.0/productFamilies/applicationextensions/products', function(req, res) {
+app.get('/content/v7.0/productFamilies/applicationextensions/products', function (req, res) {
     res.send({
-        "ProductIds":[
-           "G009SVP9FH15"
+        "ProductIds": [
+            "G009SVP9FH15"
         ],
-        "Aggregations":[
-     
+        "Aggregations": [
+
         ],
-        "HasMorePages":false,
-        "Products":[
-           {
-              "LastModifiedDate":"2018-11-05T19:05:44.898Z",
-              "ProductBSchema":"ProductApplicationExtensions;3",
-              "ProductFamily":"ApplicationExtensions",
-              "PreferredSkuId":"0001",
-              "SchemaVersion":"3",
-              "MerchandizingTags":null,
-              "ProductType":"MinecraftEduAddIn",
-              "ProductId":"G009SVP9FH15",
-              "Properties":{
-                 "PerformanceCriteria":[
-     
-                 ],
-                 "ProductGroupId":null,
-                 "StudentActivities":[
-     
-                 ],
-                 "ContentType":"World",
-                 "FormattedLearningObjectives":[
-     
-                 ],
-                 "ExternalReferences":[
-     
-                 ],
-                 "ProductGroupName":null,
-                 "RevisionId":"2018-11-05T19:05:44.898Z",
-                 "StudentAgeRanges":[
-     
-                 ],
-                 "Skills":[
-     
-                 ],
-                 "HasAddOns":null,
-                 "RevisionVector":"4",
-                 "EntitlementProperties":null,
-                 "GuidingIdeasAndQuestions":[
-     
-                 ],
-                 "Subjects":[
-     
-                 ]
-              },
-              "MarketProperties":[
-                 {
-                    "RelatedProducts":[
-     
+        "HasMorePages": false,
+        "Products": [
+            {
+                "LastModifiedDate": "2018-11-05T19:05:44.898Z",
+                "ProductBSchema": "ProductApplicationExtensions;3",
+                "ProductFamily": "ApplicationExtensions",
+                "PreferredSkuId": "0001",
+                "SchemaVersion": "3",
+                "MerchandizingTags": null,
+                "ProductType": "MinecraftEduAddIn",
+                "ProductId": "G009SVP9FH15",
+                "Properties": {
+                    "PerformanceCriteria": [
+
                     ],
-                    "UsageData":[
-                       {
-                          "TrialCount":"0",
-                          "PurchaseCount":"0",
-                          "RatingCount":0,
-                          "AverageRating":0,
-                          "PlayCount":0,
-                          "AggregateTimeSpan":"AllTime",
-                          "RentalCount":"0"
-                       },
-                       {
-                          "TrialCount":"0",
-                          "PurchaseCount":"0",
-                          "RatingCount":0,
-                          "AverageRating":0,
-                          "PlayCount":0,
-                          "AggregateTimeSpan":"7Days",
-                          "RentalCount":"0"
-                       },
-                       {
-                          "TrialCount":"0",
-                          "PurchaseCount":"0",
-                          "RatingCount":0,
-                          "AverageRating":0,
-                          "PlayCount":0,
-                          "AggregateTimeSpan":"30Days",
-                          "RentalCount":"0"
-                       }
+                    "ProductGroupId": null,
+                    "StudentActivities": [
+
                     ],
-                    "Markets":[
-                       "US"
+                    "ContentType": "World",
+                    "FormattedLearningObjectives": [
+
+                    ],
+                    "ExternalReferences": [
+
+                    ],
+                    "ProductGroupName": null,
+                    "RevisionId": "2018-11-05T19:05:44.898Z",
+                    "StudentAgeRanges": [
+
+                    ],
+                    "Skills": [
+
+                    ],
+                    "HasAddOns": null,
+                    "RevisionVector": "4",
+                    "EntitlementProperties": null,
+                    "GuidingIdeasAndQuestions": [
+
+                    ],
+                    "Subjects": [
+
                     ]
-                 }
-              ],
-              "ValidationData":null,
-              "DomainDataVersion":null,
-              "AlternateIds":[
-     
-              ],
-              "DisplaySkuAvailabilities":[
-                 {
-                    "Sku":{
-                       "LastModifiedDate":"2018-11-05T19:05:44.898Z",
-                       "SkuBSchema":null,
-                       "SkuType":"FULL",
-                       "RecurrencePolicy":null,
-                       "ProductId":"G009SVP9FH15",
-                       "SkuASchema":null,
-                       "Properties":{
-                          "VisibleToB2BServiceIds":[
-     
-                          ],
-                          "SkuDisplayRank":0,
-                          "IsTrial":false,
-                          "IsBundle":false,
-                          "IsPreOrder":false,
-                          "LastUpdateDate":"2018-11-05T19:05:44.898Z",
-                          "AdditionalIdentifiers":[
-     
-                          ],
-                          "IsRepurchasable":null,
-                          "BundledSkus":null
-                       },
-                       "SkuId":"0001",
-                       "SubscriptionPolicyId":null,
-                       "MarketProperties":[
-                          {
-                             "SupportedLanguages":[
-                                "en",
-                                "neutral"
-                             ],
-                             "FulFillmentServiceData":[
+                },
+                "MarketProperties": [
+                    {
+                        "RelatedProducts": [
+
+                        ],
+                        "UsageData": [
+                            {
+                                "TrialCount": "0",
+                                "PurchaseCount": "0",
+                                "RatingCount": 0,
+                                "AverageRating": 0,
+                                "PlayCount": 0,
+                                "AggregateTimeSpan": "AllTime",
+                                "RentalCount": "0"
+                            },
+                            {
+                                "TrialCount": "0",
+                                "PurchaseCount": "0",
+                                "RatingCount": 0,
+                                "AverageRating": 0,
+                                "PlayCount": 0,
+                                "AggregateTimeSpan": "7Days",
+                                "RentalCount": "0"
+                            },
+                            {
+                                "TrialCount": "0",
+                                "PurchaseCount": "0",
+                                "RatingCount": 0,
+                                "AverageRating": 0,
+                                "PlayCount": 0,
+                                "AggregateTimeSpan": "30Days",
+                                "RentalCount": "0"
+                            }
+                        ],
+                        "Markets": [
+                            "US"
+                        ]
+                    }
+                ],
+                "ValidationData": null,
+                "DomainDataVersion": null,
+                "AlternateIds": [
+
+                ],
+                "DisplaySkuAvailabilities": [
+                    {
+                        "Sku": {
+                            "LastModifiedDate": "2018-11-05T19:05:44.898Z",
+                            "SkuBSchema": null,
+                            "SkuType": "FULL",
+                            "RecurrencePolicy": null,
+                            "ProductId": "G009SVP9FH15",
+                            "SkuASchema": null,
+                            "Properties": {
+                                "VisibleToB2BServiceIds": [
+
+                                ],
+                                "SkuDisplayRank": 0,
+                                "IsTrial": false,
+                                "IsBundle": false,
+                                "IsPreOrder": false,
+                                "LastUpdateDate": "2018-11-05T19:05:44.898Z",
+                                "AdditionalIdentifiers": [
+
+                                ],
+                                "IsRepurchasable": null,
+                                "BundledSkus": null
+                            },
+                            "SkuId": "0001",
+                            "SubscriptionPolicyId": null,
+                            "MarketProperties": [
                                 {
-                                   "ResourceHash":null,
-                                   "ResourceSizeInKB":null,
-                                   "ResourceDownloadUri":"https://ugcorigin.s-microsoft.com/102/443dd1b9-8363-476a-a7f3-5ba764aaf262/001/v2/content.bin",
-                                   "ResourceId":"1ff4d325-752b-46ff-bb6f-7c2f8e94b996",
-                                   "SupportedClients":null,
-                                   "ResourceType":null,
-                                   "ResourceFormat":"mctemplate"
+                                    "SupportedLanguages": [
+                                        "en",
+                                        "neutral"
+                                    ],
+                                    "FulFillmentServiceData": [
+                                        {
+                                            "ResourceHash": null,
+                                            "ResourceSizeInKB": null,
+                                            "ResourceDownloadUri": "https://ugcorigin.s-microsoft.com/102/443dd1b9-8363-476a-a7f3-5ba764aaf262/001/v2/content.bin",
+                                            "ResourceId": "1ff4d325-752b-46ff-bb6f-7c2f8e94b996",
+                                            "SupportedClients": null,
+                                            "ResourceType": null,
+                                            "ResourceFormat": "mctemplate"
+                                        }
+                                    ],
+                                    "Markets": [
+                                        "US"
+                                    ]
                                 }
-                             ],
-                             "Markets":[
-                                "US"
-                             ]
-                          }
-                       ],
-                       "LocalizedProperties":[
-                          {
-                             "Language":"neutral",
-                             "SkuDescription":"This world serves as an introduction to the Code Builder feature. Learn to code the Agent to complete a series of challenges. ",
-                             "Markets":[
-                                "US",
-                                "NEUTRAL"
-                             ],
-                             "SkuTitle":"Code Builder Tutorial"
-                          }
-                       ]
-                    },
-                    "Availabilities":[
-                       {
-                          "LastModifiedDate":"2018-11-05T19:05:44.898Z",
-                          "OrderManagementData":null,
-                          "AffirmationId":null,
-                          "DisplayGroup":null,
-                          "LicensingData":null,
-                          "Actions":[
-                             "Details",
-                             "Fulfill",
-                             "Browse",
-                             "Curate",
-                             "Purchase"
-                          ],
-                          "Markets":[
-                             "US"
-                          ],
-                          "PricingRuleIds":null,
-                          "Properties":{
-                             "MerchandisingTags":null,
-                             "MeterType":null,
-                             "PreOrderReleaseDate":null,
-                             "OriginalReleaseDate":null
-                          },
-                          "Conditions":{
-                             "ClientConditions":{
-                                "AllowedPlatforms":[
-     
-                                ]
-                             },
-                             "StartDate":"2018-09-26T00:00:00.000Z",
-                             "EligibilityFilteringPolicyId":null,
-                             "ResourceSetIds":[
-                                "1"
-                             ],
-                             "IsPermanent":null,
-                             "EndDate":"2100-09-26T00:00:00.000Z"
-                          },
-                          "AvailabilityId":"FSRFM1L114MP",
-                          "TermIds":null,
-                          "RenewalBigId":null,
-                          "AvailabilityBSchema":"AvailabilityApplicationExtensions",
-                          "AlternateIds":null,
-                          "PromotionalDuration":null,
-                          "DisplayRank":0,
-                          "BundleTag":null,
-                          "LineageTag":null,
-                          "SkuId":"0001",
-                          "AvailabilityASchema":"Availability3"
-                       }
-                    ]
-                 }
-              ],
-              "IngestionSource":"MediaIngestionPlatform",
-              "IsMicrosoftProduct":false,
-              "ProductASchema":"Product;3",
-              "ProductKind":"MinecraftEduAddIn",
-              "LocalizedProperties":[
-                 {
-                    "Language":"neutral",
-                    "ProductSubtitle":"Learn the basics of coding in Minecraft. ",
-                    "Images":[
-                       {
-                          "UnscaledImageSHA256Hash":null,
-                          "ImagePurpose":"logo",
-                          "ImagePositionInfo":null,
-                          "FileSizeInBytes":123574,
-                          "Height":270,
-                          "ForegroundColor":null,
-                          "CropSafeZone":null,
-                          "Uri":"https://ugcorigin.s-microsoft.com/102/55bd6626-9edf-4f56-955f-03709af0dc84/202/v2/image.jpg",
-                          "Width":480,
-                          "Caption":null,
-                          "BackgroundColor":"#79A3E5"
-                       }
-                    ],
-                    "DisplayAvailableResources":[
-                       {
-                          "ResourceHash":null,
-                          "ResourceSizeInKB":null,
-                          "ResourceId":"1ff4d325-752b-46ff-bb6f-7c2f8e94b996",
-                          "SupportedClients":null,
-                          "ResourceType":null,
-                          "ResourceFormat":"mctemplate"
-                       }
-                    ],
-                    "Contributors":[
-                       {
-                          "Order":0,
-                          "ContributorId":"00d6de7e-6429-4da6-887a-9d66ab7ccb2e",
-                          "RoleType":"creator",
-                          "Name":"Minecraft Education"
-                       }
-                    ],
-                    "Markets":[
-                       "US",
-                       "NEUTRAL"
-                    ],
-                    "ProductDescription":"This world serves as an introduction to the Code Builder feature. Learn to code the Agent to complete a series of challenges. ",
-                    "SearchKeywords":[
-                       "MustHave"
-                    ],
-                    "ProductTitle":"Code Builder Tutorial"
-                 }
-              ]
-           }
+                            ],
+                            "LocalizedProperties": [
+                                {
+                                    "Language": "neutral",
+                                    "SkuDescription": "This world serves as an introduction to the Code Builder feature. Learn to code the Agent to complete a series of challenges. ",
+                                    "Markets": [
+                                        "US",
+                                        "NEUTRAL"
+                                    ],
+                                    "SkuTitle": "Code Builder Tutorial"
+                                }
+                            ]
+                        },
+                        "Availabilities": [
+                            {
+                                "LastModifiedDate": "2018-11-05T19:05:44.898Z",
+                                "OrderManagementData": null,
+                                "AffirmationId": null,
+                                "DisplayGroup": null,
+                                "LicensingData": null,
+                                "Actions": [
+                                    "Details",
+                                    "Fulfill",
+                                    "Browse",
+                                    "Curate",
+                                    "Purchase"
+                                ],
+                                "Markets": [
+                                    "US"
+                                ],
+                                "PricingRuleIds": null,
+                                "Properties": {
+                                    "MerchandisingTags": null,
+                                    "MeterType": null,
+                                    "PreOrderReleaseDate": null,
+                                    "OriginalReleaseDate": null
+                                },
+                                "Conditions": {
+                                    "ClientConditions": {
+                                        "AllowedPlatforms": [
+
+                                        ]
+                                    },
+                                    "StartDate": "2018-09-26T00:00:00.000Z",
+                                    "EligibilityFilteringPolicyId": null,
+                                    "ResourceSetIds": [
+                                        "1"
+                                    ],
+                                    "IsPermanent": null,
+                                    "EndDate": "2100-09-26T00:00:00.000Z"
+                                },
+                                "AvailabilityId": "FSRFM1L114MP",
+                                "TermIds": null,
+                                "RenewalBigId": null,
+                                "AvailabilityBSchema": "AvailabilityApplicationExtensions",
+                                "AlternateIds": null,
+                                "PromotionalDuration": null,
+                                "DisplayRank": 0,
+                                "BundleTag": null,
+                                "LineageTag": null,
+                                "SkuId": "0001",
+                                "AvailabilityASchema": "Availability3"
+                            }
+                        ]
+                    }
+                ],
+                "IngestionSource": "MediaIngestionPlatform",
+                "IsMicrosoftProduct": false,
+                "ProductASchema": "Product;3",
+                "ProductKind": "MinecraftEduAddIn",
+                "LocalizedProperties": [
+                    {
+                        "Language": "neutral",
+                        "ProductSubtitle": "Learn the basics of coding in Minecraft. ",
+                        "Images": [
+                            {
+                                "UnscaledImageSHA256Hash": null,
+                                "ImagePurpose": "logo",
+                                "ImagePositionInfo": null,
+                                "FileSizeInBytes": 123574,
+                                "Height": 270,
+                                "ForegroundColor": null,
+                                "CropSafeZone": null,
+                                "Uri": "https://ugcorigin.s-microsoft.com/102/55bd6626-9edf-4f56-955f-03709af0dc84/202/v2/image.jpg",
+                                "Width": 480,
+                                "Caption": null,
+                                "BackgroundColor": "#79A3E5"
+                            }
+                        ],
+                        "DisplayAvailableResources": [
+                            {
+                                "ResourceHash": null,
+                                "ResourceSizeInKB": null,
+                                "ResourceId": "1ff4d325-752b-46ff-bb6f-7c2f8e94b996",
+                                "SupportedClients": null,
+                                "ResourceType": null,
+                                "ResourceFormat": "mctemplate"
+                            }
+                        ],
+                        "Contributors": [
+                            {
+                                "Order": 0,
+                                "ContributorId": "00d6de7e-6429-4da6-887a-9d66ab7ccb2e",
+                                "RoleType": "creator",
+                                "Name": "Minecraft Education"
+                            }
+                        ],
+                        "Markets": [
+                            "US",
+                            "NEUTRAL"
+                        ],
+                        "ProductDescription": "This world serves as an introduction to the Code Builder feature. Learn to code the Agent to complete a series of challenges. ",
+                        "SearchKeywords": [
+                            "MustHave"
+                        ],
+                        "ProductTitle": "Code Builder Tutorial"
+                    }
+                ]
+            }
         ],
-        "TotalResultCount":1
-     })
+        "TotalResultCount": 1
+    })
 })
 /*以上是教师、学生登录暂时写的接口。后边会删去*/
 

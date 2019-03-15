@@ -47,6 +47,7 @@
     "@types/odata": "^0.3.3",
     "@types/request-promise": "^4.1.42",
     "@types/serve-static": "^1.13.1",
+    "axios": "^0.18.0",
     "ejs": "^2.6.1",
     "mongodb": "^3.1.10",
     "request-promise": "^4.2.2"

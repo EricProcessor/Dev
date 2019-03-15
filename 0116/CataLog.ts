@@ -23,7 +23,7 @@ var queryLessons = {
             "thumbnail": "https://minecraft-oss.oss.cn-north-1.jcloudcs.com/demo/lesson1.png",
             "title": "第1课:编程实现对话和传送代理机器人",
             "trial": 0,
-            "updateTime": 1552544614000
+            "updateTime": "2018-10-22T17:06:02.228Z"
         },
         {
             "attaches": [
@@ -45,7 +45,7 @@ var queryLessons = {
             "thumbnail": "https://minecraft-oss.oss.cn-north-1.jcloudcs.com/demo/lesson2.png",
             "title": "第2课:编程实现代理转向和移动",
             "trial": 0,
-            "updateTime": 1552544620000
+            "updateTime": "2018-10-23T17:06:02.228Z"
         },
         {
             "attaches": [
@@ -67,7 +67,7 @@ var queryLessons = {
             "thumbnail": "https://minecraft-oss.oss.cn-north-1.jcloudcs.com/demo/lesson3.png",
             "title": "第3课:多人模式挑战",
             "trial": 0,
-            "updateTime": 1552544624000
+            "updateTime": "2018-10-24T17:06:02.228Z"
         }
     ]
 }
@@ -93,7 +93,7 @@ var drateLessons1 = {
         "thumbnail": "https://minecraft-oss.oss.cn-north-1.jcloudcs.com/demo/lesson1.png",
         "title": "第1课:编程实现对话和传送代理机器人",
         "trial": 0,
-        "updateTime": 1552544614000
+        "updateTime": "2018-10-22T17:06:02.228Z"
     }
 }
 // 第二课数据
@@ -118,7 +118,7 @@ var drateLessons2 = {
         "thumbnail": "https://minecraft-oss.oss.cn-north-1.jcloudcs.com/demo/lesson2.png",
         "title": "第2课:编程实现代理转向和移动",
         "trial": 0,
-        "updateTime": 1552544620000
+        "updateTime": "2018-10-23T17:06:02.228Z"
     }
 }
 // 第三课数据
@@ -143,7 +143,7 @@ var drateLessons3 = {
         "thumbnail": "https://minecraft-oss.oss.cn-north-1.jcloudcs.com/demo/lesson3.png",
         "title": "第3课:多人模式挑战",
         "trial": 0,
-        "updateTime": 1552544624000
+        "updateTime": "2018-10-24T17:06:02.228Z"
     }
 }
 // 课程列表请求java接口
