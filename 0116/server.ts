@@ -457,7 +457,7 @@ app.get('/catalog/query', function (req, res) {
     }
 })
 // 查询商品详情
-app.get('/catalog/hydrate', function (req, res) {
+app.get('/catalog/hydrate/:id', function (req, res) {
     res.type('application/json');
     try {
         // InterfaceHydrate()
