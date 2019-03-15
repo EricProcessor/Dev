@@ -84,7 +84,7 @@ export async function InterfaceQuery(req, res) {
 }
 // 商品详情请求java接口
 export async function InterfaceHydrate(req, res) {
-    var aid = req.query.id;
+    var aid = req.params.id;
     axios.get('http://127.0.0.1:8080/mee/hydrate', { params: { lessonId: aid } })
         .then(function (response) {
             let data = response.data.lesson
