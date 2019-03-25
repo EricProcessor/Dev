@@ -14,7 +14,7 @@ export async function InterfaceQuery(req, res) {
             for (var i in data) {
                 // ProductIds.push(data[i].id)
                 ProductIds[i] = data[i].id;
-                attaches = data[i].attaches;
+                attaches = data[i].attaches[0];
                 Products[i] = {
                     "LastModifiedDate": data[i].updateTime,
                     "LocalizedProperties": [
