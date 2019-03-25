@@ -45,8 +45,14 @@ console.log("JdMongoUrl" + process.env.JdMongoUrl)
 
 // -------------------------------------------------
 app.get('/', function root(req, res) {
-    res.type('text/plain');
-    res.send("Hello, This is a License Server for MEE!");
+    // res.type('text/plain');
+    // res.send("Hello, This is a License Server for MEE!");
+    res.render('index')
+});
+app.get('/cn', function root(req, res) {
+    // res.type('text/plain');
+    // res.send("Hello, This is a License Server for MEE!");
+    res.render('index')
 });
 
 app.post('/signin', function signin(req, res) {
