@@ -49,6 +49,7 @@
     "@types/serve-static": "^1.13.1",
     "axios": "^0.18.0",
     "ejs": "^2.6.1",
+    "express-to-https": "^1.0.3",
     "mongodb": "^3.1.10",
     "request-promise": "^4.2.2"
   }

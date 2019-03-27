@@ -44,6 +44,7 @@ console.log("Password" + process.env.Password)
 console.log("JdMongoUrl" + process.env.JdMongoUrl)
 
 // -------------------------------------------------
+
 app.get('/', function root(req, res) {
     // res.type('text/plain');
     // res.send("Hello, This is a License Server for MEE!");
@@ -54,6 +55,10 @@ app.get('/cn', function root(req, res) {
     // res.send("Hello, This is a License Server for MEE!");
     res.render('index')
 });
+
+app.get('/en', function root(req, res) {
+    res.render('index')
+})
 
 app.post('/signin', function signin(req, res) {
     res.type('application/json');
@@ -753,7 +758,8 @@ app.get('/content/v7.0/productFamilies/applicationextensions/products', function
 
 // custom 404 page
 app.use(function (req, res) {
-    MEEServices.send404(req, res);
+    // MEEServices.send404(req, res);
+    res.render('index')
 });
 
 // custom 500 page
