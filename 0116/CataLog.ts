@@ -3,6 +3,11 @@ var axios = require('axios')
 // 课程列表请求java接口
 export async function InterfaceQuery(req, res) {
     // axios.get('https://minecraft.education.jdcloud.com/getUserInfo', { 
+        
+    //接收参数
+    let {query, market, languages, fieldsTemplate, catalogId, productType, skip} = req.query
+
+
     axios.get('http://127.0.0.1:8080/mee/query')
         .then(function (resData) {
             // res.send(JSON.stringify(res1.data) + '====res1.lessons====')
