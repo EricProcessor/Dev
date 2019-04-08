@@ -1,0 +1,1 @@
+<template name="bc56c3ea"><view class="_view data-v-22e523ce m-header"><view class="_view data-v-22e523ce m-back" wx:if="{{showBack}}" bindtap="handleProxy" data-eventid="{{'bc56c3ea-0'}}" data-comkey="{{$k}}"></view><view class="_h3 data-v-22e523ce">{{ mTitle }}</view></view></template>

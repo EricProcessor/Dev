@@ -1,0 +1,43 @@
+@font-face {
+  font-family: 'tlw-iconfont';  /* project id 1125852 */
+  /* src: url('https://at.alicdn.com/t/font_1125852_2lxuxlv6mcc.eot'); */
+  src: url('https://at.alicdn.com/t/font_1125852_2lxuxlv6mcc.eot?#iefix') format('embedded-opentype'),
+ /* url('https://at.alicdn.com/t/font_1125852_2lxuxlv6mcc.woff2') format('woff2'), */
+  url('https://at.alicdn.com/t/font_1125852_2lxuxlv6mcc.woff') format('woff'),
+  url('https://at.alicdn.com/t/font_1125852_2lxuxlv6mcc.ttf') format('truetype'),
+  url('https://at.alicdn.com/t/font_1125852_2lxuxlv6mcc.svg#tlw-iconfont') format('svg');
+}
+
+.tlw-iconfont {
+  font-family: "tlw-iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+	color: #333333;
+}
+
+.tlwclose:before {
+  content: "\e69a";
+}
+
+.tlwcomments:before {
+  content: "\e69b";
+}
+
+.tlwcry:before {
+  content: "\e69c";
+}
+
+.tlwhome:before {
+  content: "\e60a";
+}
+
+.tlwdingdan:before {
+  content: "\e618";
+}
+
+.tlwshouye:before {
+  content: "\e608";
+}
+

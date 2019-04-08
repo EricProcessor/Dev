@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "pages/index/mine/mine",
+    "pages/index/index",
+    "pages/index/home/home",
+    "pages/index/mine/mine",
+    "pages/index/coupon/coupon",
+    "pages/index/supplier/supplier",
+    "pages/index/cart/cart",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/index/mine/order/order",
+    "pages/index/mine/user/user",
+    "pages/index/mine/otherItem/otherItem",
+    "pages/order/order",
+    "pages/favorite/favorite"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationStyle": "black",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {},
+  "splashscreen": {
+    "alwaysShowBeforeRender": true,
+    "autoclose": false
+  },
+  "appname": "tlwapp",
+  "compilerVersion": "1.8.2"
+}
