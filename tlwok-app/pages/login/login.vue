@@ -55,5 +55,5 @@
 </script>
 
 <style scoped lang="scss">
-	@import '@/static/css/pages/login.scss'
+	@import '@/common/css/pages/login.scss'
 </style>

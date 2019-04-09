@@ -47,5 +47,5 @@
 </script>
 
 <style scoped lang="scss">
-	@import '@/static/css/pages/register.scss'
+	@import '@/common/css/pages/register.scss'
 </style>
