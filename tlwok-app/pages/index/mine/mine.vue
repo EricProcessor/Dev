@@ -7,7 +7,7 @@
 			</view>
 			<view class="userHead">
 				<image src="../../../static/image/head.jpg" mode=""></image>
-				<text>usdh17712xxx</text>
+				<text>usdh17712xqwqwxx</text>
 			</view>
 		</view>
 	</view>
