@@ -1070,8 +1070,8 @@ function gz$gwx_2(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_2)return __WXML_GLOBAL__.ops_cached.$gwx_2
 __WXML_GLOBAL__.ops_cached.$gwx_2=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'30af4f5b'])
-Z([3,'_view 30af4f5b Content'])
+Z([3,'0dda83f6'])
+Z([3,'_view 0dda83f6 Content'])
 Z([3,'找回密码'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_2);return __WXML_GLOBAL__.ops_cached.$gwx_2
 }
@@ -1080,16 +1080,16 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_3)return __WXML_GLOBAL__.ops_cached.$gwx_3
 __WXML_GLOBAL__.ops_cached.$gwx_3=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'30af4f5b'])
+Z([3,'0dda83f6'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_3);return __WXML_GLOBAL__.ops_cached.$gwx_3
 }
 function gz$gwx_4(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_4)return __WXML_GLOBAL__.ops_cached.$gwx_4
 __WXML_GLOBAL__.ops_cached.$gwx_4=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'371817f1'])
-Z([3,'_view 371817f1 content'])
-Z([3,'_view 371817f1'])
+Z([3,'fdfd28ca'])
+Z([3,'_view fdfd28ca content'])
+Z([3,'_view fdfd28ca'])
 Z([3,'111'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_4);return __WXML_GLOBAL__.ops_cached.$gwx_4
 }
@@ -1098,31 +1098,31 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_5)return __WXML_GLOBAL__.ops_cached.$gwx_5
 __WXML_GLOBAL__.ops_cached.$gwx_5=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'371817f1'])
+Z([3,'fdfd28ca'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_5);return __WXML_GLOBAL__.ops_cached.$gwx_5
 }
 function gz$gwx_6(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_6)return __WXML_GLOBAL__.ops_cached.$gwx_6
 __WXML_GLOBAL__.ops_cached.$gwx_6=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'d95d57a4'])
-Z([3,'_view d95d57a4 mine'])
-Z([3,'_view d95d57a4 topCon'])
-Z([3,'_view d95d57a4 settings'])
+Z([3,'5bb4c2d8'])
+Z([3,'_view 5bb4c2d8 mine'])
+Z([3,'_view 5bb4c2d8 topCon'])
+Z([3,'_view 5bb4c2d8 settings'])
 Z([3,'handleProxy'])
-Z([3,'_a d95d57a4'])
+Z([3,'_a 5bb4c2d8'])
 Z([[7],[3,'$k']])
-Z([1,'d95d57a4-0'])
+Z([1,'5bb4c2d8-0'])
 Z([3,'切换为卖家'])
 Z(z[4])
-Z([3,'_text d95d57a4 tlwok-icon'])
+Z([3,'_text 5bb4c2d8 tlwok-icon'])
 Z(z[6])
-Z([1,'d95d57a4-1'])
+Z([1,'5bb4c2d8-1'])
 Z([3,''])
-Z([3,'_view d95d57a4 userHead'])
-Z([3,'_image d95d57a4'])
+Z([3,'_view 5bb4c2d8 userHead'])
+Z([3,'_image 5bb4c2d8'])
 Z([3,'../../../static/image/head.jpg'])
-Z([3,'_text d95d57a4'])
+Z([3,'_text 5bb4c2d8'])
 Z([3,'usdh17712xqwqwxx'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_6);return __WXML_GLOBAL__.ops_cached.$gwx_6
 }
@@ -1131,22 +1131,22 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_7)return __WXML_GLOBAL__.ops_cached.$gwx_7
 __WXML_GLOBAL__.ops_cached.$gwx_7=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'d95d57a4'])
+Z([3,'5bb4c2d8'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_7);return __WXML_GLOBAL__.ops_cached.$gwx_7
 }
 function gz$gwx_8(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_8)return __WXML_GLOBAL__.ops_cached.$gwx_8
 __WXML_GLOBAL__.ops_cached.$gwx_8=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'358e17df'])
-Z([3,'_view data-v-f9c0ea7a Content'])
-Z([3,'_view data-v-f9c0ea7a loginForm'])
-Z([3,'_view data-v-f9c0ea7a loginItem'])
-Z([3,'_input data-v-f9c0ea7a'])
+Z([3,'7f776b89'])
+Z([3,'_view data-v-8fbfd25e Content'])
+Z([3,'_view data-v-8fbfd25e loginForm'])
+Z([3,'_view data-v-8fbfd25e loginItem'])
+Z([3,'_input data-v-8fbfd25e'])
 Z([3,'用户名/手机号'])
 Z([3,'text'])
 Z([3,''])
-Z([3,'_i data-v-f9c0ea7a tlwok-icon'])
+Z([3,'_i data-v-8fbfd25e tlwok-icon'])
 Z([3,''])
 Z(z[3])
 Z(z[4])
@@ -1155,28 +1155,28 @@ Z(z[6])
 Z(z[7])
 Z(z[8])
 Z([3,''])
-Z([3,'_view data-v-f9c0ea7a loginItem forgetPwd'])
+Z([3,'_view data-v-8fbfd25e loginItem forgetPwd'])
 Z([3,'handleProxy'])
-Z([3,'_span data-v-f9c0ea7a'])
+Z([3,'_span data-v-8fbfd25e'])
 Z([[7],[3,'$k']])
-Z([1,'358e17df-0'])
+Z([1,'7f776b89-0'])
 Z([3,'忘记密码？'])
 Z(z[3])
-Z([3,'_button data-v-f9c0ea7a'])
+Z([3,'_button data-v-8fbfd25e'])
 Z([3,'primary'])
 Z([3,'登录'])
-Z([3,'_view data-v-f9c0ea7a otherLogin'])
+Z([3,'_view data-v-8fbfd25e otherLogin'])
 Z(z[19])
 Z([3,'其他方式登录'])
-Z([3,'_view data-v-f9c0ea7a wxLogin'])
+Z([3,'_view data-v-8fbfd25e wxLogin'])
 Z(z[8])
 Z([3,''])
-Z([3,'_view data-v-f9c0ea7a toRegister'])
+Z([3,'_view data-v-8fbfd25e toRegister'])
 Z([3,'还没有账号？'])
 Z(z[18])
 Z(z[19])
 Z(z[20])
-Z([1,'358e17df-1'])
+Z([1,'7f776b89-1'])
 Z([3,'立即注册→'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_8);return __WXML_GLOBAL__.ops_cached.$gwx_8
 }
@@ -1185,21 +1185,21 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_9)return __WXML_GLOBAL__.ops_cached.$gwx_9
 __WXML_GLOBAL__.ops_cached.$gwx_9=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'358e17df'])
+Z([3,'7f776b89'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_9);return __WXML_GLOBAL__.ops_cached.$gwx_9
 }
 function gz$gwx_10(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_10)return __WXML_GLOBAL__.ops_cached.$gwx_10
 __WXML_GLOBAL__.ops_cached.$gwx_10=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'7a43abaa'])
-Z([3,'_view data-v-5c8b8e0f Content'])
-Z([3,'_view data-v-5c8b8e0f regHeader'])
-Z([3,'_span data-v-5c8b8e0f'])
+Z([3,'00209655'])
+Z([3,'_view data-v-c2eb50c6 Content'])
+Z([3,'_view data-v-c2eb50c6 regHeader'])
+Z([3,'_span data-v-c2eb50c6'])
 Z([3,'免费注册'])
-Z([3,'_view data-v-5c8b8e0f regForm'])
-Z([3,'_view data-v-5c8b8e0f regFormItem'])
-Z([3,'_input data-v-5c8b8e0f'])
+Z([3,'_view data-v-c2eb50c6 regForm'])
+Z([3,'_view data-v-c2eb50c6 regFormItem'])
+Z([3,'_input data-v-c2eb50c6'])
 Z([3,'请输入手机号'])
 Z([3,'text'])
 Z([3,''])
@@ -1219,19 +1219,19 @@ Z([3,'请输入验证码'])
 Z(z[9])
 Z(z[10])
 Z(z[6])
-Z([3,'_button data-v-5c8b8e0f'])
+Z([3,'_button data-v-c2eb50c6'])
 Z([3,'primary'])
 Z([3,'注册'])
-Z([3,'_view data-v-5c8b8e0f Agreement'])
+Z([3,'_view data-v-c2eb50c6 Agreement'])
 Z([3,'注册即表示您同意'])
 Z(z[3])
 Z([3,'《用户注册协议》'])
-Z([3,'_view data-v-5c8b8e0f toLogin'])
+Z([3,'_view data-v-c2eb50c6 toLogin'])
 Z([3,'已有账号？'])
 Z([3,'handleProxy'])
 Z(z[3])
 Z([[7],[3,'$k']])
-Z([1,'7a43abaa-0'])
+Z([1,'00209655-0'])
 Z([3,'去登录\x3e'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_10);return __WXML_GLOBAL__.ops_cached.$gwx_10
 }
@@ -1240,7 +1240,7 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_11)return __WXML_GLOBAL__.ops_cached.$gwx_11
 __WXML_GLOBAL__.ops_cached.$gwx_11=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'7a43abaa'])
+Z([3,'00209655'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_11);return __WXML_GLOBAL__.ops_cached.$gwx_11
 }
 __WXML_GLOBAL__.ops_set.$gwx=z;
@@ -1254,9 +1254,9 @@ return r
 }
 e_[x[0]]={f:m0,j:[],i:[],ti:[],ic:[]}
 d_[x[1]]={}
-d_[x[1]]["30af4f5b"]=function(e,s,r,gg){
+d_[x[1]]["0dda83f6"]=function(e,s,r,gg){
 var z=gz$gwx_2()
-var b=x[1]+':30af4f5b'
+var b=x[1]+':0dda83f6'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/getpass/getpass.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[1]);return}
@@ -1305,9 +1305,9 @@ return r
 }
 e_[x[2]]={f:m2,j:[],i:[],ti:[x[3]],ic:[]}
 d_[x[4]]={}
-d_[x[4]]["371817f1"]=function(e,s,r,gg){
+d_[x[4]]["fdfd28ca"]=function(e,s,r,gg){
 var z=gz$gwx_4()
-var b=x[4]+':371817f1'
+var b=x[4]+':fdfd28ca'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/index/index.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[4]);return}
@@ -1361,9 +1361,9 @@ return r
 }
 e_[x[5]]={f:m4,j:[],i:[],ti:[x[6]],ic:[]}
 d_[x[7]]={}
-d_[x[7]]["d95d57a4"]=function(e,s,r,gg){
+d_[x[7]]["5bb4c2d8"]=function(e,s,r,gg){
 var z=gz$gwx_6()
-var b=x[7]+':d95d57a4'
+var b=x[7]+':5bb4c2d8'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/index/mine/mine.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[7]);return}
@@ -1448,9 +1448,9 @@ return r
 }
 e_[x[8]]={f:m6,j:[],i:[],ti:[x[9]],ic:[]}
 d_[x[10]]={}
-d_[x[10]]["358e17df"]=function(e,s,r,gg){
+d_[x[10]]["7f776b89"]=function(e,s,r,gg){
 var z=gz$gwx_8()
-var b=x[10]+':358e17df'
+var b=x[10]+':7f776b89'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/login/login.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[10]);return}
@@ -1593,9 +1593,9 @@ return r
 }
 e_[x[11]]={f:m8,j:[],i:[],ti:[x[12]],ic:[]}
 d_[x[13]]={}
-d_[x[13]]["7a43abaa"]=function(e,s,r,gg){
+d_[x[13]]["00209655"]=function(e,s,r,gg){
 var z=gz$gwx_10()
-var b=x[13]+':7a43abaa'
+var b=x[13]+':00209655'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/register/register.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[13]);return}
@@ -1868,10 +1868,10 @@ __wxAppCode__['pages/index/index.wxml']=$gwx('./pages/index/index.wxml');
 __wxAppCode__['pages/index/mine/mine.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\nbody { background-color: #f5f5f5; }\n.",[1],"mine .",[1],"topCon { width: 100%; height: ",[0,280],"; background-image: -o-linear-gradient(45deg, #ffb516, #ff4545); background-image: linear-gradient(45deg, #ffb516, #ff4545); }\n.",[1],"mine .",[1],"topCon .",[1],"settings { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; }\n.",[1],"mine .",[1],"topCon .",[1],"settings .",[1],"_a { margin: ",[0,20],"; font-size: ",[0,20],"; color: #fff; background: rgba(0, 0, 0, 0.2); border-radius: ",[0,24],"; text-decoration: none; padding: ",[0,14],"; }\n.",[1],"mine .",[1],"topCon .",[1],"settings wx-text { color: #ffffff; padding: ",[0,20],"; font-size: ",[0,40],"; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead wx-image { width: ",[0,100],"; height: ",[0,100],"; border-radius: 50%; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead wx-text { color: #ffffff; font-size: ",[0,30],"; }\n",],undefined,{path:"./pages/index/mine/mine.wxss"});    
 __wxAppCode__['pages/index/mine/mine.wxml']=$gwx('./pages/index/mine/mine.wxml');
 
-__wxAppCode__['pages/login/login.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\n.",[1],"Content.",[1],"data-v-f9c0ea7a { padding: ",[0,100]," ",[0,80],"; }\n.",[1],"Content .",[1],"loginForm.",[1],"data-v-f9c0ea7a { width: 100%; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem.",[1],"data-v-f9c0ea7a { font-family: \x27microsoft yahei\x27; font-size: ",[0,28],"; margin-bottom: ",[0,50],"; position: relative; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-input.",[1],"data-v-f9c0ea7a { height: ",[0,90],"; line-height: ",[0,90],"; background-color: #F3F3F3; border: none; border-radius: ",[0,10],"; padding-left: ",[0,20],"; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem .",[1],"_i.",[1],"data-v-f9c0ea7a { font-size: ",[0,48],"; position: absolute; right: ",[0,20],"; top: ",[0,20],"; color: #C3C3C3; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-button.",[1],"data-v-f9c0ea7a { display: block; height: ",[0,90],"; line-height: ",[0,90],"; background: #e4393c; color: #fff; border-radius: ",[0,6],"; font-size: ",[0,30],"; text-align: center; -webkit-box-sizing: border-box; box-sizing: border-box; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd.",[1],"data-v-f9c0ea7a { text-align: center; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd .",[1],"_span.",[1],"data-v-f9c0ea7a { font-size: ",[0,24],"; color: #f5686a; cursor: pointer; }\n.",[1],"Content .",[1],"otherLogin.",[1],"data-v-f9c0ea7a { margin: ",[0,100]," 0; position: relative; text-align: center; }\n.",[1],"Content .",[1],"otherLogin .",[1],"_span.",[1],"data-v-f9c0ea7a { font-size: ",[0,24],"; color: #8e8e93; padding: 0 ",[0,20],"; }\n.",[1],"Content .",[1],"wxLogin.",[1],"data-v-f9c0ea7a { text-align: center; }\n.",[1],"Content .",[1],"wxLogin .",[1],"_i.",[1],"data-v-f9c0ea7a { display: inline-block; font-size: ",[0,96],"; color: #27BF27; }\n.",[1],"Content .",[1],"toRegister.",[1],"data-v-f9c0ea7a { margin-top: ",[0,40],"; text-align: center; font-size: ",[0,24],"; color: #828282; }\n.",[1],"Content .",[1],"toRegister .",[1],"_span.",[1],"data-v-f9c0ea7a { color: #f5686a; }\n",],undefined,{path:"./pages/login/login.wxss"});    
+__wxAppCode__['pages/login/login.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\n.",[1],"Content.",[1],"data-v-8fbfd25e { padding: ",[0,100]," ",[0,80],"; }\n.",[1],"Content .",[1],"loginForm.",[1],"data-v-8fbfd25e { width: 100%; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem.",[1],"data-v-8fbfd25e { font-family: \x27microsoft yahei\x27; font-size: ",[0,28],"; margin-bottom: ",[0,50],"; position: relative; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-input.",[1],"data-v-8fbfd25e { height: ",[0,90],"; line-height: ",[0,90],"; background-color: #F3F3F3; border: none; border-radius: ",[0,10],"; padding-left: ",[0,20],"; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem .",[1],"_i.",[1],"data-v-8fbfd25e { font-size: ",[0,48],"; position: absolute; right: ",[0,20],"; top: ",[0,20],"; color: #C3C3C3; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-button.",[1],"data-v-8fbfd25e { display: block; height: ",[0,90],"; line-height: ",[0,90],"; background: #e4393c; color: #fff; border-radius: ",[0,6],"; font-size: ",[0,30],"; text-align: center; -webkit-box-sizing: border-box; box-sizing: border-box; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd.",[1],"data-v-8fbfd25e { text-align: center; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd .",[1],"_span.",[1],"data-v-8fbfd25e { font-size: ",[0,24],"; color: #f5686a; cursor: pointer; }\n.",[1],"Content .",[1],"otherLogin.",[1],"data-v-8fbfd25e { margin: ",[0,100]," 0; position: relative; text-align: center; }\n.",[1],"Content .",[1],"otherLogin .",[1],"_span.",[1],"data-v-8fbfd25e { font-size: ",[0,24],"; color: #8e8e93; padding: 0 ",[0,20],"; }\n.",[1],"Content .",[1],"wxLogin.",[1],"data-v-8fbfd25e { text-align: center; }\n.",[1],"Content .",[1],"wxLogin .",[1],"_i.",[1],"data-v-8fbfd25e { display: inline-block; font-size: ",[0,96],"; color: #27BF27; }\n.",[1],"Content .",[1],"toRegister.",[1],"data-v-8fbfd25e { margin-top: ",[0,40],"; text-align: center; font-size: ",[0,24],"; color: #828282; }\n.",[1],"Content .",[1],"toRegister .",[1],"_span.",[1],"data-v-8fbfd25e { color: #f5686a; }\n",],undefined,{path:"./pages/login/login.wxss"});    
 __wxAppCode__['pages/login/login.wxml']=$gwx('./pages/login/login.wxml');
 
-__wxAppCode__['pages/register/register.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\n.",[1],"Content.",[1],"data-v-5c8b8e0f { padding: ",[0,100]," ",[0,80]," 0 ",[0,80],"; }\n.",[1],"Content .",[1],"regHeader.",[1],"data-v-5c8b8e0f { margin-bottom: ",[0,100],"; }\n.",[1],"Content .",[1],"regHeader .",[1],"_span.",[1],"data-v-5c8b8e0f { font-size: ",[0,48],"; color: #e4393c; }\n.",[1],"Content .",[1],"regForm.",[1],"data-v-5c8b8e0f { width: 100%; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem.",[1],"data-v-5c8b8e0f { font-family: \x27microsoft yahei\x27; font-size: ",[0,28],"; margin-bottom: ",[0,50],"; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem wx-input.",[1],"data-v-5c8b8e0f { width: 100%; height: ",[0,90],"; line-height: ",[0,90],"; background-color: #F3F3F3; border: none; border-radius: ",[0,10],"; padding-left: ",[0,20],"; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem wx-button.",[1],"data-v-5c8b8e0f { display: block; height: ",[0,90],"; line-height: ",[0,90],"; background: #e4393c; color: #fff; border-radius: ",[0,6],"; font-size: ",[0,30],"; text-align: center; -webkit-box-sizing: border-box; box-sizing: border-box; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem .",[1],"Agreement.",[1],"data-v-5c8b8e0f { font-size: ",[0,24],"; color: #333333; margin: ",[0,20]," 0; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem .",[1],"Agreement .",[1],"_span.",[1],"data-v-5c8b8e0f { color: #3975E4; }\n.",[1],"Content .",[1],"toLogin.",[1],"data-v-5c8b8e0f { margin-top: ",[0,40],"; text-align: center; font-size: ",[0,24],"; color: #828282; }\n.",[1],"Content .",[1],"toLogin .",[1],"_span.",[1],"data-v-5c8b8e0f { color: #3975E4; }\n",],undefined,{path:"./pages/register/register.wxss"});    
+__wxAppCode__['pages/register/register.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\n.",[1],"Content.",[1],"data-v-c2eb50c6 { padding: ",[0,100]," ",[0,80]," 0 ",[0,80],"; }\n.",[1],"Content .",[1],"regHeader.",[1],"data-v-c2eb50c6 { margin-bottom: ",[0,100],"; }\n.",[1],"Content .",[1],"regHeader .",[1],"_span.",[1],"data-v-c2eb50c6 { font-size: ",[0,48],"; color: #e4393c; }\n.",[1],"Content .",[1],"regForm.",[1],"data-v-c2eb50c6 { width: 100%; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem.",[1],"data-v-c2eb50c6 { font-family: \x27microsoft yahei\x27; font-size: ",[0,28],"; margin-bottom: ",[0,50],"; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem wx-input.",[1],"data-v-c2eb50c6 { width: 100%; height: ",[0,90],"; line-height: ",[0,90],"; background-color: #F3F3F3; border: none; border-radius: ",[0,10],"; padding-left: ",[0,20],"; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem wx-button.",[1],"data-v-c2eb50c6 { display: block; height: ",[0,90],"; line-height: ",[0,90],"; background: #e4393c; color: #fff; border-radius: ",[0,6],"; font-size: ",[0,30],"; text-align: center; -webkit-box-sizing: border-box; box-sizing: border-box; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem .",[1],"Agreement.",[1],"data-v-c2eb50c6 { font-size: ",[0,24],"; color: #333333; margin: ",[0,20]," 0; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem .",[1],"Agreement .",[1],"_span.",[1],"data-v-c2eb50c6 { color: #3975E4; }\n.",[1],"Content .",[1],"toLogin.",[1],"data-v-c2eb50c6 { margin-top: ",[0,40],"; text-align: center; font-size: ",[0,24],"; color: #828282; }\n.",[1],"Content .",[1],"toLogin .",[1],"_span.",[1],"data-v-c2eb50c6 { color: #3975E4; }\n",],undefined,{path:"./pages/register/register.wxss"});    
 __wxAppCode__['pages/register/register.wxml']=$gwx('./pages/register/register.wxml');
 
 ;var __pageFrameEndTime__ = Date.now();

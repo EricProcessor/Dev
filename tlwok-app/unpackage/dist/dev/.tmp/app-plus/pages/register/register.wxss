@@ -24,25 +24,25 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.Content.data-v-5c8b8e0f {
+.Content.data-v-c2eb50c6 {
   padding: 100rpx 80rpx 0 80rpx;
 }
-.Content .regHeader.data-v-5c8b8e0f {
+.Content .regHeader.data-v-c2eb50c6 {
     margin-bottom: 100rpx;
 }
-.Content .regHeader ._span.data-v-5c8b8e0f {
+.Content .regHeader ._span.data-v-c2eb50c6 {
       font-size: 48rpx;
       color: #e4393c;
 }
-.Content .regForm.data-v-5c8b8e0f {
+.Content .regForm.data-v-c2eb50c6 {
     width: 100%;
 }
-.Content .regForm .regFormItem.data-v-5c8b8e0f {
+.Content .regForm .regFormItem.data-v-c2eb50c6 {
       font-family: 'microsoft yahei';
       font-size: 28rpx;
       margin-bottom: 50rpx;
 }
-.Content .regForm .regFormItem input.data-v-5c8b8e0f {
+.Content .regForm .regFormItem input.data-v-c2eb50c6 {
         width: 100%;
         height: 90rpx;
         line-height: 90rpx;
@@ -51,7 +51,7 @@
         border-radius: 10rpx;
         padding-left: 20rpx;
 }
-.Content .regForm .regFormItem button.data-v-5c8b8e0f {
+.Content .regForm .regFormItem button.data-v-c2eb50c6 {
         display: block;
         height: 90rpx;
         line-height: 90rpx;
@@ -63,21 +63,21 @@
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
 }
-.Content .regForm .regFormItem .Agreement.data-v-5c8b8e0f {
+.Content .regForm .regFormItem .Agreement.data-v-c2eb50c6 {
         font-size: 24rpx;
         color: #333333;
         margin: 20rpx 0;
 }
-.Content .regForm .regFormItem .Agreement ._span.data-v-5c8b8e0f {
+.Content .regForm .regFormItem .Agreement ._span.data-v-c2eb50c6 {
           color: #3975E4;
 }
-.Content .toLogin.data-v-5c8b8e0f {
+.Content .toLogin.data-v-c2eb50c6 {
     margin-top: 40rpx;
     text-align: center;
     font-size: 24rpx;
     color: #828282;
 }
-.Content .toLogin ._span.data-v-5c8b8e0f {
+.Content .toLogin ._span.data-v-c2eb50c6 {
       color: #3975E4;
 }
 
