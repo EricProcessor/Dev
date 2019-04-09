@@ -3,9 +3,11 @@
 		<view class="loginForm">
 			<view class="loginItem">
 				<input type="text" value="" placeholder="用户名/手机号"/>
+				<i class="tlwok-icon">&#xe736</i>
 			</view>
 			<view class="loginItem">
 				<input type="text" value="" placeholder="请输入密码"/>
+				<i class="tlwok-icon">&#xe6c0</i>
 			</view>
 			<view class="loginItem forgetPwd">
 				<span @tap="togetPass">忘记密码？</span>
