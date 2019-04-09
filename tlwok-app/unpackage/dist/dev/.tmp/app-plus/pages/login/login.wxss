@@ -78,10 +78,8 @@
 }
 .Content .wxLogin ._i.data-v-f9c0ea7a {
       display: inline-block;
-      width: 96rpx;
-      height: 96rpx;
-      background: url(/static/image/wx-icon.png) no-repeat;
-      background-size: 100% auto;
+      font-size: 96rpx;
+      color: #50B674;
 }
 .Content .toRegister.data-v-f9c0ea7a {
     margin-top: 40rpx;

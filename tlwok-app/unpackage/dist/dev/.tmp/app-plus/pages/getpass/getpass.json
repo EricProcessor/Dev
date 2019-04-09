@@ -1,7 +1,7 @@
 {
   "usingComponents": {},
-  "navigationBarBackgroundColor": "#FFFFFF",
+  "navigationBarBackgroundColor": "#fdfbfb",
   "navigationBarTextStyle": "black",
   "navigationBarTitleText": "找回密码",
-  "backgroundColor": "#FFFFFF"
+  "backgroundColor": "#fdfbfb"
 }
