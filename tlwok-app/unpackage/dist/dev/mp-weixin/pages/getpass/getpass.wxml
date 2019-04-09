@@ -1,0 +1,1 @@
+<view class="Content" bind:__l="__l">找回密码</view>

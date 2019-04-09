@@ -1,0 +1,1 @@
+<view bind:__l="__l"><view class="topCon"><view class="settings"><navigator href class="_a">切换为卖家</navigator><text class="tlwok-icon"></text></view></view></view>

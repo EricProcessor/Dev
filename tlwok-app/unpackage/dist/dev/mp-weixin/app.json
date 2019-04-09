@@ -13,11 +13,5 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {},
-  "splashscreen": {
-    "alwaysShowBeforeRender": true,
-    "autoclose": false
-  },
-  "appname": "tlwok-app",
-  "compilerVersion": "1.8.2"
+  "usingComponents": {}
 }

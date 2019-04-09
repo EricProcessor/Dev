@@ -1106,6 +1106,39 @@ function gz$gwx_6(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_6)return __WXML_GLOBAL__.ops_cached.$gwx_6
 __WXML_GLOBAL__.ops_cached.$gwx_6=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
+Z([3,'d95d57a4'])
+Z([3,'_view d95d57a4 mine'])
+Z([3,'_view d95d57a4 topCon'])
+Z([3,'_view d95d57a4 settings'])
+Z([3,'handleProxy'])
+Z([3,'_a d95d57a4'])
+Z([[7],[3,'$k']])
+Z([1,'d95d57a4-0'])
+Z([3,'切换为卖家'])
+Z(z[4])
+Z([3,'_text d95d57a4 tlwok-icon'])
+Z(z[6])
+Z([1,'d95d57a4-1'])
+Z([3,''])
+Z([3,'_view d95d57a4 userHead'])
+Z([3,'_image d95d57a4'])
+Z([3,'../../../static/image/head.jpg'])
+Z([3,'_text d95d57a4'])
+Z([3,'usdh17712xxx'])
+})(__WXML_GLOBAL__.ops_cached.$gwx_6);return __WXML_GLOBAL__.ops_cached.$gwx_6
+}
+function gz$gwx_7(){
+if( __WXML_GLOBAL__.ops_cached.$gwx_7)return __WXML_GLOBAL__.ops_cached.$gwx_7
+__WXML_GLOBAL__.ops_cached.$gwx_7=[];
+(function(z){var a=11;function Z(ops){z.push(ops)}
+Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
+Z([3,'d95d57a4'])
+})(__WXML_GLOBAL__.ops_cached.$gwx_7);return __WXML_GLOBAL__.ops_cached.$gwx_7
+}
+function gz$gwx_8(){
+if( __WXML_GLOBAL__.ops_cached.$gwx_8)return __WXML_GLOBAL__.ops_cached.$gwx_8
+__WXML_GLOBAL__.ops_cached.$gwx_8=[];
+(function(z){var a=11;function Z(ops){z.push(ops)}
 Z([3,'358e17df'])
 Z([3,'_view data-v-f9c0ea7a Content'])
 Z([3,'_view data-v-f9c0ea7a loginForm'])
@@ -1142,19 +1175,19 @@ Z(z[15])
 Z(z[16])
 Z([1,'358e17df-1'])
 Z([3,'立即注册→'])
-})(__WXML_GLOBAL__.ops_cached.$gwx_6);return __WXML_GLOBAL__.ops_cached.$gwx_6
+})(__WXML_GLOBAL__.ops_cached.$gwx_8);return __WXML_GLOBAL__.ops_cached.$gwx_8
 }
-function gz$gwx_7(){
-if( __WXML_GLOBAL__.ops_cached.$gwx_7)return __WXML_GLOBAL__.ops_cached.$gwx_7
-__WXML_GLOBAL__.ops_cached.$gwx_7=[];
+function gz$gwx_9(){
+if( __WXML_GLOBAL__.ops_cached.$gwx_9)return __WXML_GLOBAL__.ops_cached.$gwx_9
+__WXML_GLOBAL__.ops_cached.$gwx_9=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
 Z([3,'358e17df'])
-})(__WXML_GLOBAL__.ops_cached.$gwx_7);return __WXML_GLOBAL__.ops_cached.$gwx_7
+})(__WXML_GLOBAL__.ops_cached.$gwx_9);return __WXML_GLOBAL__.ops_cached.$gwx_9
 }
-function gz$gwx_8(){
-if( __WXML_GLOBAL__.ops_cached.$gwx_8)return __WXML_GLOBAL__.ops_cached.$gwx_8
-__WXML_GLOBAL__.ops_cached.$gwx_8=[];
+function gz$gwx_10(){
+if( __WXML_GLOBAL__.ops_cached.$gwx_10)return __WXML_GLOBAL__.ops_cached.$gwx_10
+__WXML_GLOBAL__.ops_cached.$gwx_10=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([3,'7a43abaa'])
 Z([3,'_view data-v-5c8b8e0f Content'])
@@ -1197,21 +1230,21 @@ Z(z[3])
 Z([[7],[3,'$k']])
 Z([1,'7a43abaa-0'])
 Z([3,'去登录\x3e'])
-})(__WXML_GLOBAL__.ops_cached.$gwx_8);return __WXML_GLOBAL__.ops_cached.$gwx_8
+})(__WXML_GLOBAL__.ops_cached.$gwx_10);return __WXML_GLOBAL__.ops_cached.$gwx_10
 }
-function gz$gwx_9(){
-if( __WXML_GLOBAL__.ops_cached.$gwx_9)return __WXML_GLOBAL__.ops_cached.$gwx_9
-__WXML_GLOBAL__.ops_cached.$gwx_9=[];
+function gz$gwx_11(){
+if( __WXML_GLOBAL__.ops_cached.$gwx_11)return __WXML_GLOBAL__.ops_cached.$gwx_11
+__WXML_GLOBAL__.ops_cached.$gwx_11=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
 Z([3,'7a43abaa'])
-})(__WXML_GLOBAL__.ops_cached.$gwx_9);return __WXML_GLOBAL__.ops_cached.$gwx_9
+})(__WXML_GLOBAL__.ops_cached.$gwx_11);return __WXML_GLOBAL__.ops_cached.$gwx_11
 }
 __WXML_GLOBAL__.ops_set.$gwx=z;
 __WXML_GLOBAL__.ops_init.$gwx=true;
 var nv_require=function(){var nnm={};var nom={};return function(n){return function(){if(!nnm[n]) return undefined;try{if(!nom[n])nom[n]=nnm[n]();return nom[n];}catch(e){e.message=e.message.replace(/nv_/g,'');var tmp = e.stack.substring(0,e.stack.lastIndexOf(n));e.stack = tmp.substring(0,tmp.lastIndexOf('\n'));e.stack = e.stack.replace(/\snv_/g,' ');e.stack = $gstack(e.stack);e.stack += '\n    at ' + n.substring(2);console.error(e);}
 }}}()
-var x=['./common/slots.wxml','./pages/getpass/getpass.vue.wxml','./pages/getpass/getpass.wxml','./getpass.vue.wxml','./pages/index/index.vue.wxml','./pages/index/index.wxml','./index.vue.wxml','./pages/login/login.vue.wxml','./pages/login/login.wxml','./login.vue.wxml','./pages/register/register.vue.wxml','./pages/register/register.wxml','./register.vue.wxml'];d_[x[0]]={}
+var x=['./common/slots.wxml','./pages/getpass/getpass.vue.wxml','./pages/getpass/getpass.wxml','./getpass.vue.wxml','./pages/index/index.vue.wxml','./pages/index/index.wxml','./index.vue.wxml','./pages/index/mine/mine.vue.wxml','./pages/index/mine/mine.wxml','./mine.vue.wxml','./pages/login/login.vue.wxml','./pages/login/login.wxml','./login.vue.wxml','./pages/register/register.vue.wxml','./pages/register/register.wxml','./register.vue.wxml'];d_[x[0]]={}
 var m0=function(e,s,r,gg){
 var z=gz$gwx_1()
 return r
@@ -1330,12 +1363,99 @@ return r
 }
 e_[x[5]]={f:m4,j:[],i:[],ti:[x[6]],ic:[]}
 d_[x[7]]={}
-d_[x[7]]["358e17df"]=function(e,s,r,gg){
+d_[x[7]]["d95d57a4"]=function(e,s,r,gg){
 var z=gz$gwx_6()
-var b=x[7]+':358e17df'
+var b=x[7]+':d95d57a4'
+r.wxVkey=b
+gg.f=$gdc(f_["./pages/index/mine/mine.vue.wxml"],"",1)
+if(p_[b]){_wl(b,x[7]);return}
+p_[b]=true
+try{
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:27")
+var oB=_n('view')
+_rz(z,oB,'class',1,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:61")
+var xC=_n('view')
+_rz(z,xC,'class',2,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:97")
+var oD=_n('view')
+_rz(z,oD,'class',3,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:135")
+var fE=_mz(z,'view',['url',-1,'bindtap',4,'class',1,'data-comkey',2,'data-eventid',3],[],e,s,gg)
+var cF=_oz(z,8,e,s,gg)
+_(fE,cF)
+cs.pop()
+_(oD,fE)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:262")
+var hG=_mz(z,'text',['bindtap',9,'class',1,'data-comkey',2,'data-eventid',3],[],e,s,gg)
+var oH=_oz(z,13,e,s,gg)
+_(hG,oH)
+cs.pop()
+_(oD,hG)
+cs.pop()
+_(xC,oD)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:394")
+var cI=_n('view')
+_rz(z,cI,'class',14,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:image:1:432")
+var oJ=_mz(z,'image',['mode',-1,'class',15,'src',1],[],e,s,gg)
+cs.pop()
+_(cI,oJ)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:513")
+var lK=_n('text')
+_rz(z,lK,'class',17,e,s,gg)
+var aL=_oz(z,18,e,s,gg)
+_(lK,aL)
+cs.pop()
+_(cI,lK)
+cs.pop()
+_(xC,cI)
+cs.pop()
+_(oB,xC)
+cs.pop()
+_(r,oB)
+}catch(err){
+p_[b]=false
+throw err
+}
+p_[b]=false
+return r
+}
+var m5=function(e,s,r,gg){
+var z=gz$gwx_6()
+return r
+}
+e_[x[7]]={f:m5,j:[],i:[],ti:[],ic:[]}
+d_[x[8]]={}
+var m6=function(e,s,r,gg){
+var z=gz$gwx_7()
+var oR=e_[x[8]].i
+_ai(oR,x[9],e_,x[8],1,1)
+var fS=_v()
+_(r,fS)
+cs.push("./pages/index/mine/mine.wxml:template:2:6")
+var cT=_oz(z,1,e,s,gg)
+var hU=_gd(x[8],cT,e_,d_)
+if(hU){
+var oV=_1z(z,0,e,s,gg) || {}
+var cur_globalf=gg.f
+fS.wxXCkey=3
+hU(oV,oV,fS,gg)
+gg.f=cur_globalf
+}
+else _w(cT,x[8],2,18)
+cs.pop()
+oR.pop()
+return r
+}
+e_[x[8]]={f:m6,j:[],i:[],ti:[x[9]],ic:[]}
+d_[x[10]]={}
+d_[x[10]]["358e17df"]=function(e,s,r,gg){
+var z=gz$gwx_8()
+var b=x[10]+':358e17df'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/login/login.vue.wxml"],"",1)
-if(p_[b]){_wl(b,x[7]);return}
+if(p_[b]){_wl(b,x[10]);return}
 p_[b]=true
 try{
 cs.push("./pages/login/login.vue.wxml:view:1:27")
@@ -1432,41 +1552,41 @@ throw err
 p_[b]=false
 return r
 }
-var m5=function(e,s,r,gg){
-var z=gz$gwx_6()
+var m7=function(e,s,r,gg){
+var z=gz$gwx_8()
 return r
 }
-e_[x[7]]={f:m5,j:[],i:[],ti:[],ic:[]}
-d_[x[8]]={}
-var m6=function(e,s,r,gg){
-var z=gz$gwx_7()
-var oR=e_[x[8]].i
-_ai(oR,x[9],e_,x[8],1,1)
-var fS=_v()
-_(r,fS)
+e_[x[10]]={f:m7,j:[],i:[],ti:[],ic:[]}
+d_[x[11]]={}
+var m8=function(e,s,r,gg){
+var z=gz$gwx_9()
+var lY=e_[x[11]].i
+_ai(lY,x[12],e_,x[11],1,1)
+var aZ=_v()
+_(r,aZ)
 cs.push("./pages/login/login.wxml:template:2:6")
-var cT=_oz(z,1,e,s,gg)
-var hU=_gd(x[8],cT,e_,d_)
-if(hU){
-var oV=_1z(z,0,e,s,gg) || {}
+var t1=_oz(z,1,e,s,gg)
+var e2=_gd(x[11],t1,e_,d_)
+if(e2){
+var b3=_1z(z,0,e,s,gg) || {}
 var cur_globalf=gg.f
-fS.wxXCkey=3
-hU(oV,oV,fS,gg)
+aZ.wxXCkey=3
+e2(b3,b3,aZ,gg)
 gg.f=cur_globalf
 }
-else _w(cT,x[8],2,18)
+else _w(t1,x[11],2,18)
 cs.pop()
-oR.pop()
+lY.pop()
 return r
 }
-e_[x[8]]={f:m6,j:[],i:[],ti:[x[9]],ic:[]}
-d_[x[10]]={}
-d_[x[10]]["7a43abaa"]=function(e,s,r,gg){
-var z=gz$gwx_8()
-var b=x[10]+':7a43abaa'
+e_[x[11]]={f:m8,j:[],i:[],ti:[x[12]],ic:[]}
+d_[x[13]]={}
+d_[x[13]]["7a43abaa"]=function(e,s,r,gg){
+var z=gz$gwx_10()
+var b=x[13]+':7a43abaa'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/register/register.vue.wxml"],"",1)
-if(p_[b]){_wl(b,x[10]);return}
+if(p_[b]){_wl(b,x[13]);return}
 p_[b]=true
 try{
 cs.push("./pages/register/register.vue.wxml:view:1:27")
@@ -1572,34 +1692,34 @@ throw err
 p_[b]=false
 return r
 }
-var m7=function(e,s,r,gg){
-var z=gz$gwx_8()
+var m9=function(e,s,r,gg){
+var z=gz$gwx_10()
 return r
 }
-e_[x[10]]={f:m7,j:[],i:[],ti:[],ic:[]}
-d_[x[11]]={}
-var m8=function(e,s,r,gg){
-var z=gz$gwx_9()
-var lY=e_[x[11]].i
-_ai(lY,x[12],e_,x[11],1,1)
-var aZ=_v()
-_(r,aZ)
+e_[x[13]]={f:m9,j:[],i:[],ti:[],ic:[]}
+d_[x[14]]={}
+var m10=function(e,s,r,gg){
+var z=gz$gwx_11()
+var o6=e_[x[14]].i
+_ai(o6,x[15],e_,x[14],1,1)
+var f7=_v()
+_(r,f7)
 cs.push("./pages/register/register.wxml:template:2:6")
-var t1=_oz(z,1,e,s,gg)
-var e2=_gd(x[11],t1,e_,d_)
-if(e2){
-var b3=_1z(z,0,e,s,gg) || {}
+var c8=_oz(z,1,e,s,gg)
+var h9=_gd(x[14],c8,e_,d_)
+if(h9){
+var o0=_1z(z,0,e,s,gg) || {}
 var cur_globalf=gg.f
-aZ.wxXCkey=3
-e2(b3,b3,aZ,gg)
+f7.wxXCkey=3
+h9(o0,o0,f7,gg)
 gg.f=cur_globalf
 }
-else _w(t1,x[11],2,18)
+else _w(c8,x[14],2,18)
 cs.pop()
-lY.pop()
+o6.pop()
 return r
 }
-e_[x[11]]={f:m8,j:[],i:[],ti:[x[12]],ic:[]}
+e_[x[14]]={f:m10,j:[],i:[],ti:[x[15]],ic:[]}
 if(path&&e_[path]){
 window.__wxml_comp_version__=0.02
 return function(env,dd,global){$gwxc=0;var root={"tag":"wx-page"};root.children=[]
@@ -1732,6 +1852,9 @@ __wxAppCode__['pages/getpass/getpass.wxml']=$gwx('./pages/getpass/getpass.wxml')
 
 __wxAppCode__['pages/index/index.wxss']=setCssToHead([".",[1],"content { text-align: center; height: ",[0,400],"; }\n.",[1],"logo{ height: ",[0,200],"; width: ",[0,200],"; margin-top: ",[0,200],"; }\n.",[1],"title { font-size: ",[0,36],"; color: #8f8f94; }\n",],undefined,{path:"./pages/index/index.wxss"});    
 __wxAppCode__['pages/index/index.wxml']=$gwx('./pages/index/index.wxml');
+
+__wxAppCode__['pages/index/mine/mine.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\nbody { background-color: #f5f5f5; }\n.",[1],"mine .",[1],"topCon { width: 100%; height: ",[0,280],"; background-image: -o-linear-gradient(45deg, #ffb516, #ff4545); background-image: linear-gradient(45deg, #ffb516, #ff4545); }\n.",[1],"mine .",[1],"topCon .",[1],"settings { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; }\n.",[1],"mine .",[1],"topCon .",[1],"settings .",[1],"_a { margin: ",[0,20],"; font-size: ",[0,20],"; color: #fff; background: rgba(0, 0, 0, 0.2); border-radius: ",[0,24],"; text-decoration: none; padding: ",[0,14],"; }\n.",[1],"mine .",[1],"topCon .",[1],"settings wx-text { color: #ffffff; padding: ",[0,20],"; font-size: ",[0,40],"; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead wx-image { width: ",[0,100],"; height: ",[0,100],"; border-radius: 50%; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead wx-text { color: #ffffff; font-size: ",[0,30],"; }\n",],undefined,{path:"./pages/index/mine/mine.wxss"});    
+__wxAppCode__['pages/index/mine/mine.wxml']=$gwx('./pages/index/mine/mine.wxml');
 
 __wxAppCode__['pages/login/login.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\n.",[1],"Content.",[1],"data-v-f9c0ea7a { padding: ",[0,100]," ",[0,80],"; }\n.",[1],"Content .",[1],"loginForm.",[1],"data-v-f9c0ea7a { width: 100%; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem.",[1],"data-v-f9c0ea7a { font-family: \x27microsoft yahei\x27; font-size: ",[0,28],"; margin-bottom: ",[0,50],"; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-input.",[1],"data-v-f9c0ea7a { height: ",[0,90],"; line-height: ",[0,90],"; background-color: #F3F3F3; border: none; border-radius: ",[0,10],"; padding-left: ",[0,20],"; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-button.",[1],"data-v-f9c0ea7a { display: block; height: ",[0,90],"; line-height: ",[0,90],"; background: #e4393c; color: #fff; border-radius: ",[0,6],"; font-size: ",[0,30],"; text-align: center; -webkit-box-sizing: border-box; box-sizing: border-box; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd.",[1],"data-v-f9c0ea7a { text-align: center; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd .",[1],"_span.",[1],"data-v-f9c0ea7a { font-size: ",[0,24],"; color: #f5686a; cursor: pointer; }\n.",[1],"Content .",[1],"otherLogin.",[1],"data-v-f9c0ea7a { margin: ",[0,100]," 0; position: relative; text-align: center; }\n.",[1],"Content .",[1],"otherLogin .",[1],"_span.",[1],"data-v-f9c0ea7a { font-size: ",[0,24],"; color: #8e8e93; padding: 0 ",[0,20],"; }\n.",[1],"Content .",[1],"wxLogin.",[1],"data-v-f9c0ea7a { text-align: center; }\n.",[1],"Content .",[1],"wxLogin .",[1],"_i.",[1],"data-v-f9c0ea7a { display: inline-block; font-size: ",[0,96],"; color: #50B674; }\n.",[1],"Content .",[1],"toRegister.",[1],"data-v-f9c0ea7a { margin-top: ",[0,40],"; text-align: center; font-size: ",[0,24],"; color: #828282; }\n.",[1],"Content .",[1],"toRegister .",[1],"_span.",[1],"data-v-f9c0ea7a { color: #f5686a; }\n",],undefined,{path:"./pages/login/login.wxss"});    
 __wxAppCode__['pages/login/login.wxml']=$gwx('./pages/login/login.wxml');
