@@ -8,7 +8,7 @@
 				<input type="text" value="" placeholder="请输入密码"/>
 			</view>
 			<view class="loginItem forgetPwd">
-				<a href="">忘记密码？</a>
+				<span @tap="togetPass">忘记密码？</span>
 			</view>
 			<view class="loginItem">
 				<button type="primary">登录</button>
@@ -37,6 +37,13 @@
 			toRegister:function (){
 				uni.navigateTo({
 					url: '/pages/register/register',
+					animationType: 'pop-in',
+					animationDuration: 200
+				});
+			},
+			togetPass:function (){
+				uni.navigateTo({
+					url: '/pages/getpass/getpass',
 					animationType: 'pop-in',
 					animationDuration: 200
 				});

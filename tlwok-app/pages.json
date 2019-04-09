@@ -15,6 +15,24 @@
 				"backgroundColor":"#FFFFFF"
 			}
         }
+        ,{
+            "path" : "pages/register/register",
+            "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "注册",
+				"backgroundColor":"#FFFFFF"
+			}
+        }
+        ,{
+            "path" : "pages/getpass/getpass",
+            "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "找回密码",
+				"backgroundColor":"#FFFFFF"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
