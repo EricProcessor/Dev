@@ -34,6 +34,7 @@
       font-family: 'microsoft yahei';
       font-size: 28rpx;
       margin-bottom: 50rpx;
+      position: relative;
 }
 .Content .loginForm .loginItem input.data-v-f9c0ea7a {
         height: 90rpx;
@@ -42,6 +43,13 @@
         border: none;
         border-radius: 10rpx;
         padding-left: 20rpx;
+}
+.Content .loginForm .loginItem ._i.data-v-f9c0ea7a {
+        font-size: 48rpx;
+        position: absolute;
+        right: 20rpx;
+        top: 20rpx;
+        color: #C3C3C3;
 }
 .Content .loginForm .loginItem button.data-v-f9c0ea7a {
         display: block;
@@ -79,7 +87,7 @@
 .Content .wxLogin ._i.data-v-f9c0ea7a {
       display: inline-block;
       font-size: 96rpx;
-      color: #50B674;
+      color: #27BF27;
 }
 .Content .toRegister.data-v-f9c0ea7a {
     margin-top: 40rpx;
