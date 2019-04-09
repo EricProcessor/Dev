@@ -1,12 +1,11 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-		    "path" : "pages/login/login",
+		        {
+		    "path" : "pages/index/mine/mine",
 		    "style" : {
 				"navigationBarBackgroundColor": "#FFFFFF",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "登录",
-				"backgroundColor":"#FFFFFF"
+				"navigationBarTitleText": "个人中心"
 			}
 		},
 		{
@@ -23,7 +22,16 @@
 				"navigationBarTitleText": "注册",
 				"backgroundColor":"#FFFFFF"
 			}
-        }
+        },
+		{
+		    "path" : "pages/login/login",
+		    "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "登录",
+				"backgroundColor":"#FFFFFF"
+			}
+		}
         ,{
             "path" : "pages/getpass/getpass",
             "style" : {

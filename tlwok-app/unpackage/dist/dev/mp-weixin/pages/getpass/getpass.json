@@ -2,5 +2,10 @@
   "navigationBarBackgroundColor": "#fdfbfb",
   "navigationBarTextStyle": "black",
   "navigationBarTitleText": "找回密码",
+<<<<<<< HEAD
   "backgroundColor": "#fdfbfb"
+=======
+  "backgroundColor": "#fdfbfb",
+  "usingComponents": {}
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
 }

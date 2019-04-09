@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 <import src="./login.vue.wxml" />
     <template is="358e17df" data="{{ ...$root['0'], $root }}"/>
+=======
+<view class="Content data-v-f9c0ea7a" bind:__l="__l"><view class="loginForm data-v-f9c0ea7a"><view class="loginItem data-v-f9c0ea7a"><input type="text" value="" placeholder="用户名/手机号" class="data-v-f9c0ea7a"/></view><view class="loginItem data-v-f9c0ea7a"><input type="text" value="" placeholder="请输入密码" class="data-v-f9c0ea7a"/></view><view class="loginItem forgetPwd data-v-f9c0ea7a"><label data-event-opts="{{[['tap',[['togetPass',['$event']]]]]}}" bindtap="__e" class="_span data-v-f9c0ea7a">忘记密码？</label></view><view class="loginItem data-v-f9c0ea7a"><button type="primary" class="data-v-f9c0ea7a">登录</button></view></view><view class="otherLogin data-v-f9c0ea7a"><label class="_span data-v-f9c0ea7a">其他方式登录</label></view><view class="wxLogin data-v-f9c0ea7a"><view class="tlwok-icon _i data-v-f9c0ea7a"></view></view><view class="toRegister data-v-f9c0ea7a">还没有账号？<label data-event-opts="{{[['tap',[['toRegister',['$event']]]]]}}" bindtap="__e" class="_span data-v-f9c0ea7a">立即注册→</label></view></view>
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081

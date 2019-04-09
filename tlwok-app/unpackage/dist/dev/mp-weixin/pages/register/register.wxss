@@ -24,6 +24,7 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+<<<<<<< HEAD
 .Content.data-v-060852a5 {
   padding: 100rpx 80rpx 0 80rpx;
 }
@@ -38,11 +39,31 @@
     width: 100%;
 }
 .Content .regForm .regFormItem.data-v-060852a5 {
+=======
+.Content.data-v-5c8b8e0f {
+  padding: 100rpx 80rpx;
+}
+.Content .regHeader.data-v-5c8b8e0f {
+    margin-bottom: 100rpx;
+}
+.Content .regHeader ._span.data-v-5c8b8e0f {
+      font-size: 48rpx;
+      color: #e4393c;
+}
+.Content .regForm.data-v-5c8b8e0f {
+    width: 100%;
+}
+.Content .regForm .regFormItem.data-v-5c8b8e0f {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
       font-family: 'microsoft yahei';
       font-size: 28rpx;
       margin-bottom: 50rpx;
 }
+<<<<<<< HEAD
 .Content .regForm .regFormItem ._input.data-v-060852a5 {
+=======
+.Content .regForm .regFormItem input.data-v-5c8b8e0f {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
         width: 100%;
         height: 90rpx;
         line-height: 90rpx;
@@ -51,7 +72,11 @@
         border-radius: 10rpx;
         padding-left: 20rpx;
 }
+<<<<<<< HEAD
 .Content .regForm .regFormItem ._button.data-v-060852a5 {
+=======
+.Content .regForm .regFormItem button.data-v-5c8b8e0f {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
         display: block;
         height: 90rpx;
         line-height: 90rpx;
@@ -63,21 +88,36 @@
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
 }
+<<<<<<< HEAD
 .Content .regForm .regFormItem .Agreement.data-v-060852a5 {
+=======
+.Content .regForm .regFormItem .Agreement.data-v-5c8b8e0f {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
         font-size: 24rpx;
         color: #333333;
         margin: 20rpx 0;
 }
+<<<<<<< HEAD
 .Content .regForm .regFormItem .Agreement ._span.data-v-060852a5 {
           color: #3975E4;
 }
 .Content .toLogin.data-v-060852a5 {
+=======
+.Content .regForm .regFormItem .Agreement ._span.data-v-5c8b8e0f {
+          color: #3975E4;
+}
+.Content .toLogin.data-v-5c8b8e0f {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
     margin-top: 40rpx;
     text-align: center;
     font-size: 24rpx;
     color: #828282;
 }
+<<<<<<< HEAD
 .Content .toLogin ._span.data-v-060852a5 {
+=======
+.Content .toLogin ._span.data-v-5c8b8e0f {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
       color: #3975E4;
 }
 

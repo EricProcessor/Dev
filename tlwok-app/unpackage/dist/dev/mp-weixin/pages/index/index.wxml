@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 <import src="./index.vue.wxml" />
     <template is="371817f1" data="{{ ...$root['0'], $root }}"/>
+=======
+<view class="content" bind:__l="__l"><view><text class="title">{{title}}</text></view></view>
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081

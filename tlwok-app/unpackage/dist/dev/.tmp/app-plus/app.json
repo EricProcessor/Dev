@@ -1,8 +1,9 @@
 {
   "pages": [
-    "pages/login/login",
+    "pages/index/mine/mine",
     "pages/index/index",
     "pages/register/register",
+    "pages/login/login",
     "pages/getpass/getpass"
   ],
   "subPackages": [],

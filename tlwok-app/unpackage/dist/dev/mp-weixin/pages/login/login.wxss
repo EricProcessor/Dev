@@ -24,6 +24,7 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+<<<<<<< HEAD
 .Content.data-v-2858f7d9 {
   padding: 100rpx 80rpx;
 }
@@ -37,6 +38,20 @@
       position: relative;
 }
 .Content .loginForm .loginItem ._input.data-v-2858f7d9 {
+=======
+.Content.data-v-f9c0ea7a {
+  padding: 100rpx 80rpx;
+}
+.Content .loginForm.data-v-f9c0ea7a {
+    width: 100%;
+}
+.Content .loginForm .loginItem.data-v-f9c0ea7a {
+      font-family: 'microsoft yahei';
+      font-size: 28rpx;
+      margin-bottom: 50rpx;
+}
+.Content .loginForm .loginItem input.data-v-f9c0ea7a {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
         height: 90rpx;
         line-height: 90rpx;
         background-color: #F3F3F3;
@@ -44,6 +59,7 @@
         border-radius: 10rpx;
         padding-left: 20rpx;
 }
+<<<<<<< HEAD
 .Content .loginForm .loginItem ._i.data-v-2858f7d9 {
         font-size: 48rpx;
         position: absolute;
@@ -52,6 +68,9 @@
         color: #C3C3C3;
 }
 .Content .loginForm .loginItem ._button.data-v-2858f7d9 {
+=======
+.Content .loginForm .loginItem button.data-v-f9c0ea7a {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
         display: block;
         height: 90rpx;
         line-height: 90rpx;
@@ -63,24 +82,40 @@
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
 }
+<<<<<<< HEAD
 .Content .loginForm .forgetPwd.data-v-2858f7d9 {
       text-align: center;
 }
 .Content .loginForm .forgetPwd ._span.data-v-2858f7d9 {
+=======
+.Content .loginForm .forgetPwd.data-v-f9c0ea7a {
+      text-align: center;
+}
+.Content .loginForm .forgetPwd ._span.data-v-f9c0ea7a {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
         font-size: 24rpx;
         color: #f5686a;
         cursor: pointer;
 }
+<<<<<<< HEAD
 .Content .otherLogin.data-v-2858f7d9 {
+=======
+.Content .otherLogin.data-v-f9c0ea7a {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
     margin: 100rpx 0;
     position: relative;
     text-align: center;
 }
+<<<<<<< HEAD
 .Content .otherLogin ._span.data-v-2858f7d9 {
+=======
+.Content .otherLogin ._span.data-v-f9c0ea7a {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
       font-size: 24rpx;
       color: #8e8e93;
       padding: 0 20rpx;
 }
+<<<<<<< HEAD
 .Content .wxLogin.data-v-2858f7d9 {
     text-align: center;
 }
@@ -90,12 +125,27 @@
       color: #27BF27;
 }
 .Content .toRegister.data-v-2858f7d9 {
+=======
+.Content .wxLogin.data-v-f9c0ea7a {
+    text-align: center;
+}
+.Content .wxLogin ._i.data-v-f9c0ea7a {
+      display: inline-block;
+      font-size: 96rpx;
+      color: #50B674;
+}
+.Content .toRegister.data-v-f9c0ea7a {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
     margin-top: 40rpx;
     text-align: center;
     font-size: 24rpx;
     color: #828282;
 }
+<<<<<<< HEAD
 .Content .toRegister ._span.data-v-2858f7d9 {
+=======
+.Content .toRegister ._span.data-v-f9c0ea7a {
+>>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
       color: #f5686a;
 }
 
