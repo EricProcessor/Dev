@@ -1,0 +1,2 @@
+<import src="./getpass.vue.wxml" />
+    <template is="30af4f5b" data="{{ ...$root['0'], $root }}"/>
