@@ -18,7 +18,7 @@
 			<span>其他方式登录</span>
 		</view>
 		<view class="wxLogin">
-			<i></i>
+			<i class="tlwok-icon" >&#xe73f</i>
 		</view>
 		<view class="toRegister">
 			还没有账号？<span @tap="toRegister">立即注册→</span>
