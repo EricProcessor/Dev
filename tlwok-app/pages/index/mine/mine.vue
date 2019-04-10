@@ -11,13 +11,13 @@
 			</view>
 		</view>
 		<view class="orderInfo">
-			<view class="details" v-for="item in orderInfoData" :key="item.id" :data-link="item.orderlink" @tap="orderSel">
+			<view class="details" v-for="item in orderInfoData" :key="item.id" @tap="orderSel(item.orderlink)">
 				<text :class="item.ordericon"></text>
 				<text>{{ item.ordertitle }}</text>
 			</view>
 		</view>
 		<view class="myFun">
-			<view class="details" v-for="item in myFunlist" :key="item.id" :data-link="item.myfunlink" @tap="orderSel">
+			<view class="details" v-for="item in myFunlist" :key="item.id" @tap="orderSel(item.myfunlink)">
 				<text :class="item.myfunicon"></text>
 				<text>{{item.myfuntitle}}</text>
 			</view>
@@ -37,12 +37,12 @@
 						{id:5,ordericon:'tlwok-icon tlwicon-calendar',ordertitle:'我的订单',orderlink:'tomyorder'}
 					],
 				myFunlist:[
-					{id:1,myfunicon:"tlwok-icon tlwicon-like",myfuntitle:"收藏夹",myfunlink:"tofavorite"},
-					{id:2,myfunicon:"tlwok-icon tlwicon-footprint",myfuntitle:"浏览历史",myfunlink:"tohistory"},
-					{id:3,myfunicon:"tlwok-icon tlwicon-mark",myfuntitle:"我的消息",myfunlink:"tomymessage"},
-					{id:4,myfunicon:"tlwok-icon tlwicon-coupon",myfuntitle:"优惠券",myfunlink:"toyouhui"},
-					{id:5,myfunicon:"tlwok-icon tlwicon-location",myfuntitle:"收货地址",myfunlink:"tolocation"},
-					{id:6,myfunicon:"tlwok-icon tlwicon-sponsor",myfuntitle:"金融服务",myfunlink:"toservice"},
+					{id:1,myfunicon:"tlwok-icon tlwicon-like",myfuntitle:"收藏夹",myfunlink:"/pages/favorite/favorite"},
+					{id:2,myfunicon:"tlwok-icon tlwicon-footprint",myfuntitle:"浏览历史",myfunlink:"/pages/history/history"},
+					{id:3,myfunicon:"tlwok-icon tlwicon-mark",myfuntitle:"我的消息",myfunlink:"/pages/myNews/myNews"},
+					{id:4,myfunicon:"tlwok-icon tlwicon-coupon",myfuntitle:"优惠券",myfunlink:"/pages/coupon/coupon"},
+					{id:5,myfunicon:"tlwok-icon tlwicon-location",myfuntitle:"收货地址",myfunlink:"/pages/address/address"},
+					{id:6,myfunicon:"tlwok-icon tlwicon-sponsor",myfuntitle:"金融服务",myfunlink:"/pages/finance/finance"},
 				]
 			};
 		},
@@ -53,8 +53,13 @@
 			settings(){
 				console.log("触发设置按钮")
 			},
-			orderSel: function(e){
-				console.log("跳转到"+e.currentTarget.dataset.link);
+			orderSel: function(link){
+				console.log("跳转到"+link);
+				uni.navigateTo({
+					url: link,
+					animationType: 'pop-in',
+					animationDuration: 200
+				});
 			}
 		}
 	}
