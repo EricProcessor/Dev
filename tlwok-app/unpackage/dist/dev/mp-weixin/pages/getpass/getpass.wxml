@@ -1,6 +1,0 @@
-<<<<<<< HEAD
-<import src="./getpass.vue.wxml" />
-    <template is="30af4f5b" data="{{ ...$root['0'], $root }}"/>
-=======
-<view class="Content" bind:__l="__l">找回密码</view>
->>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
