@@ -4,7 +4,7 @@
 			v-for="(item,index) in footerList" 
 			:data-type="index" 
 			:class="[index == currentIndex ? 'itemActive' : '']"
-			@tap="changeItems(index)">
+			@tap="changeItems($event)">
 			<image :src="index == currentIndex?item.pic_url:item.default_pic_url" mode=""></image>
 			<view>{{item.title}}</view>
 		</view>
