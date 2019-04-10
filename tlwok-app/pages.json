@@ -14,6 +14,13 @@
 			}
 		}
 		,{
+		    "path" : "pages/index/cart/cart",
+		    "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "购物车"
+			}
+		},{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "uni-app"
@@ -47,6 +54,30 @@
         }
         ,{
             "path" : "pages/order/order",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/favorite/favorite",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/history/history",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/myNews/myNews",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/coupon/coupon",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/address/address",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/finance/finance",
             "style" : {}
         }
     ],
