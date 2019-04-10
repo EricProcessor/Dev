@@ -11,51 +11,15 @@
 			</view>
 		</view>
 		<view class="orderInfo">
-			<view class="details">
-				<text class="tlwok-icon">&#xe6ee;</text>
-				<text>待付款</text>
-			</view>
-			<view class="details">
-				<text class="tlwok-icon">&#xe671;</text>
-				<text>待收货</text>
-			</view>
-			<view class="details">
-				<text class="tlwok-icon">&#xe667;</text>
-				<text>待评价</text>
-			</view>
-			<view class="details">
-				<text class="tlwok-icon">&#xe6ed;</text>
-				<text>售后/退款</text>
-			</view>
-			<view class="details">
-				<text class="tlwok-icon">&#xe74a;</text>
-				<text>我的订单</text>
+			<view class="details" v-for="item in orderInfoData" :key="item.id" :data-link="item.orderlink" @tap="orderSel">
+				<text :class="item.ordericon"></text>
+				<text>{{ item.ordertitle }}</text>
 			</view>
 		</view>
 		<view class="myFun">
-			<view class="details">
-				<text class="tlwok-icon">&#xe7ec;</text>
-				<text>收藏夹</text>
-			</view>
-			<view class="details">
-				<text class="tlwok-icon">&#xe69d;</text>
-				<text>浏览历史</text>
-			</view>
-			<view class="details">
-				<text class="tlwok-icon">&#xe666;</text>
-				<text>我的消息</text>
-			</view>
-			<view class="details">
-				<text class="tlwok-icon">&#xe667;</text>
-				<text>优惠券</text>
-			</view>
-			<view class="details">
-				<text class="tlwok-icon">&#xe651;</text>
-				<text>收货地址</text>
-			</view>
-			<view class="details">
-				<text class="tlwok-icon">&#xe6ac;</text>
-				<text>金融服务</text>
+			<view class="details" v-for="item in myFunlist" :key="item.id" :data-link="item.myfunlink" @tap="orderSel">
+				<text :class="item.myfunicon"></text>
+				<text>{{item.myfuntitle}}</text>
 			</view>
 		</view>
 	</view>
@@ -65,7 +29,21 @@
 	export default {
 		data() {
 			return {
-				
+				orderInfoData:[
+						{id:1,ordericon:'tlwok-icon tlwicon-vipcard',ordertitle:'待付款',orderlink:'toPendingpayment'},
+						{id:2,ordericon:'tlwok-icon tlwicon-deliver',ordertitle:'待收货',orderlink:'tobereceived'},
+						{id:3,ordericon:'tlwok-icon tlwicon-comment',ordertitle:'待评价',orderlink:'tobeevaluated'},
+						{id:4,ordericon:'tlwok-icon tlwicon-recharge',ordertitle:'售后/退款',orderlink:'torefund'},
+						{id:5,ordericon:'tlwok-icon tlwicon-calendar',ordertitle:'我的订单',orderlink:'tomyorder'}
+					],
+				myFunlist:[
+					{id:1,myfunicon:"tlwok-icon tlwicon-like",myfuntitle:"收藏夹",myfunlink:"tofavorite"},
+					{id:2,myfunicon:"tlwok-icon tlwicon-footprint",myfuntitle:"浏览历史",myfunlink:"tohistory"},
+					{id:3,myfunicon:"tlwok-icon tlwicon-mark",myfuntitle:"我的消息",myfunlink:"tomymessage"},
+					{id:4,myfunicon:"tlwok-icon tlwicon-coupon",myfuntitle:"优惠券",myfunlink:"toyouhui"},
+					{id:5,myfunicon:"tlwok-icon tlwicon-location",myfuntitle:"收货地址",myfunlink:"tolocation"},
+					{id:6,myfunicon:"tlwok-icon tlwicon-sponsor",myfuntitle:"金融服务",myfunlink:"toservice"},
+				]
 			};
 		},
 		methods:{
@@ -74,6 +52,9 @@
 			},
 			settings(){
 				console.log("触发设置按钮")
+			},
+			orderSel: function(e){
+				console.log("跳转到"+e.currentTarget.dataset.link);
 			}
 		}
 	}

@@ -5,7 +5,12 @@
 		    "style" : {
 				"navigationBarBackgroundColor": "#FFFFFF",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "个人中心"
+				"navigationBarTitleText": "个人中心",
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+					}
+				}
 			}
 		},
 		{
@@ -40,6 +45,10 @@
 				"navigationBarTitleText": "找回密码",
 				"backgroundColor":"#fdfbfb"
 			}
+        }
+        ,{
+            "path" : "pages/order/order",
+            "style" : {}
         }
     ],
 	"globalStyle": {
