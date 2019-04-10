@@ -24,19 +24,19 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.Content.data-v-f9c0ea7a {
+.Content.data-v-8fbfd25e {
   padding: 100rpx 80rpx;
 }
-.Content .loginForm.data-v-f9c0ea7a {
+.Content .loginForm.data-v-8fbfd25e {
     width: 100%;
 }
-.Content .loginForm .loginItem.data-v-f9c0ea7a {
+.Content .loginForm .loginItem.data-v-8fbfd25e {
       font-family: 'microsoft yahei';
       font-size: 28rpx;
       margin-bottom: 50rpx;
       position: relative;
 }
-.Content .loginForm .loginItem input.data-v-f9c0ea7a {
+.Content .loginForm .loginItem input.data-v-8fbfd25e {
         height: 90rpx;
         line-height: 90rpx;
         background-color: #F3F3F3;
@@ -44,14 +44,14 @@
         border-radius: 10rpx;
         padding-left: 20rpx;
 }
-.Content .loginForm .loginItem ._i.data-v-f9c0ea7a {
+.Content .loginForm .loginItem ._i.data-v-8fbfd25e {
         font-size: 48rpx;
         position: absolute;
         right: 20rpx;
         top: 20rpx;
         color: #C3C3C3;
 }
-.Content .loginForm .loginItem button.data-v-f9c0ea7a {
+.Content .loginForm .loginItem button.data-v-8fbfd25e {
         display: block;
         height: 90rpx;
         line-height: 90rpx;
@@ -63,39 +63,39 @@
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
 }
-.Content .loginForm .forgetPwd.data-v-f9c0ea7a {
+.Content .loginForm .forgetPwd.data-v-8fbfd25e {
       text-align: center;
 }
-.Content .loginForm .forgetPwd ._span.data-v-f9c0ea7a {
+.Content .loginForm .forgetPwd ._span.data-v-8fbfd25e {
         font-size: 24rpx;
         color: #f5686a;
         cursor: pointer;
 }
-.Content .otherLogin.data-v-f9c0ea7a {
+.Content .otherLogin.data-v-8fbfd25e {
     margin: 100rpx 0;
     position: relative;
     text-align: center;
 }
-.Content .otherLogin ._span.data-v-f9c0ea7a {
+.Content .otherLogin ._span.data-v-8fbfd25e {
       font-size: 24rpx;
       color: #8e8e93;
       padding: 0 20rpx;
 }
-.Content .wxLogin.data-v-f9c0ea7a {
+.Content .wxLogin.data-v-8fbfd25e {
     text-align: center;
 }
-.Content .wxLogin ._i.data-v-f9c0ea7a {
+.Content .wxLogin ._i.data-v-8fbfd25e {
       display: inline-block;
       font-size: 96rpx;
       color: #27BF27;
 }
-.Content .toRegister.data-v-f9c0ea7a {
+.Content .toRegister.data-v-8fbfd25e {
     margin-top: 40rpx;
     text-align: center;
     font-size: 24rpx;
     color: #828282;
 }
-.Content .toRegister ._span.data-v-f9c0ea7a {
+.Content .toRegister ._span.data-v-8fbfd25e {
       color: #f5686a;
 }
 

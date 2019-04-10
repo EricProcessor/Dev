@@ -1070,8 +1070,8 @@ function gz$gwx_2(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_2)return __WXML_GLOBAL__.ops_cached.$gwx_2
 __WXML_GLOBAL__.ops_cached.$gwx_2=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'30af4f5b'])
-Z([3,'_view 30af4f5b Content'])
+Z([3,'0dda83f6'])
+Z([3,'_view 0dda83f6 Content'])
 Z([3,'找回密码'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_2);return __WXML_GLOBAL__.ops_cached.$gwx_2
 }
@@ -1080,16 +1080,16 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_3)return __WXML_GLOBAL__.ops_cached.$gwx_3
 __WXML_GLOBAL__.ops_cached.$gwx_3=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'30af4f5b'])
+Z([3,'0dda83f6'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_3);return __WXML_GLOBAL__.ops_cached.$gwx_3
 }
 function gz$gwx_4(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_4)return __WXML_GLOBAL__.ops_cached.$gwx_4
 __WXML_GLOBAL__.ops_cached.$gwx_4=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'371817f1'])
-Z([3,'_view 371817f1 content'])
-Z([3,'_view 371817f1'])
+Z([3,'fdfd28ca'])
+Z([3,'_view fdfd28ca content'])
+Z([3,'_view fdfd28ca'])
 Z([3,'111'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_4);return __WXML_GLOBAL__.ops_cached.$gwx_4
 }
@@ -1098,32 +1098,94 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_5)return __WXML_GLOBAL__.ops_cached.$gwx_5
 __WXML_GLOBAL__.ops_cached.$gwx_5=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'371817f1'])
+Z([3,'fdfd28ca'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_5);return __WXML_GLOBAL__.ops_cached.$gwx_5
 }
 function gz$gwx_6(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_6)return __WXML_GLOBAL__.ops_cached.$gwx_6
 __WXML_GLOBAL__.ops_cached.$gwx_6=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'d95d57a4'])
-Z([3,'_view d95d57a4 mine'])
-Z([3,'_view d95d57a4 topCon'])
-Z([3,'_view d95d57a4 settings'])
+Z([3,'5bb4c2d8'])
+Z([3,'_view 5bb4c2d8 mine'])
+Z([3,'_view 5bb4c2d8 topCon'])
+Z([3,'_view 5bb4c2d8 settings'])
 Z([3,'handleProxy'])
-Z([3,'_a d95d57a4'])
+Z([3,'_a 5bb4c2d8'])
 Z([[7],[3,'$k']])
-Z([1,'d95d57a4-0'])
+Z([1,'5bb4c2d8-0'])
 Z([3,'切换为卖家'])
 Z(z[4])
-Z([3,'_text d95d57a4 tlwok-icon'])
+Z([3,'_text 5bb4c2d8 tlwok-icon'])
 Z(z[6])
-Z([1,'d95d57a4-1'])
+Z([1,'5bb4c2d8-1'])
 Z([3,''])
-Z([3,'_view d95d57a4 userHead'])
-Z([3,'_image d95d57a4'])
+Z([3,'_view 5bb4c2d8 userHead'])
+Z([3,'_image 5bb4c2d8'])
 Z([3,'../../../static/image/head.jpg'])
+<<<<<<< HEAD
 Z([3,'_text d95d57a4'])
 Z([3,'usdh17712xqwxx'])
+=======
+Z([3,'_text 5bb4c2d8'])
+Z([3,'usdh17712xqwqwxx'])
+Z([3,'_view 5bb4c2d8 orderInfo'])
+Z([3,'_view 5bb4c2d8 details'])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'待付款'])
+Z(z[20])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'待收货'])
+Z(z[20])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'待评价'])
+Z(z[20])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'售后/退款'])
+Z(z[20])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'我的订单'])
+Z([3,'_view 5bb4c2d8 myFun'])
+Z(z[20])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'收藏夹'])
+Z(z[20])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'浏览历史'])
+Z(z[20])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'我的消息'])
+Z(z[20])
+Z(z[10])
+Z(z[32])
+Z(z[17])
+Z([3,'优惠券'])
+Z(z[20])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'收货地址'])
+Z(z[20])
+Z(z[10])
+Z([3,''])
+Z(z[17])
+Z([3,'金融服务'])
+>>>>>>> eccf430cb6ae40cfc50ffb4f2267924b3b848821
 })(__WXML_GLOBAL__.ops_cached.$gwx_6);return __WXML_GLOBAL__.ops_cached.$gwx_6
 }
 function gz$gwx_7(){
@@ -1131,22 +1193,22 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_7)return __WXML_GLOBAL__.ops_cached.$gwx_7
 __WXML_GLOBAL__.ops_cached.$gwx_7=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'d95d57a4'])
+Z([3,'5bb4c2d8'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_7);return __WXML_GLOBAL__.ops_cached.$gwx_7
 }
 function gz$gwx_8(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_8)return __WXML_GLOBAL__.ops_cached.$gwx_8
 __WXML_GLOBAL__.ops_cached.$gwx_8=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'358e17df'])
-Z([3,'_view data-v-f9c0ea7a Content'])
-Z([3,'_view data-v-f9c0ea7a loginForm'])
-Z([3,'_view data-v-f9c0ea7a loginItem'])
-Z([3,'_input data-v-f9c0ea7a'])
+Z([3,'7f776b89'])
+Z([3,'_view data-v-8fbfd25e Content'])
+Z([3,'_view data-v-8fbfd25e loginForm'])
+Z([3,'_view data-v-8fbfd25e loginItem'])
+Z([3,'_input data-v-8fbfd25e'])
 Z([3,'用户名/手机号'])
 Z([3,'text'])
 Z([3,''])
-Z([3,'_i data-v-f9c0ea7a tlwok-icon'])
+Z([3,'_i data-v-8fbfd25e tlwok-icon'])
 Z([3,''])
 Z(z[3])
 Z(z[4])
@@ -1155,28 +1217,28 @@ Z(z[6])
 Z(z[7])
 Z(z[8])
 Z([3,''])
-Z([3,'_view data-v-f9c0ea7a loginItem forgetPwd'])
+Z([3,'_view data-v-8fbfd25e loginItem forgetPwd'])
 Z([3,'handleProxy'])
-Z([3,'_span data-v-f9c0ea7a'])
+Z([3,'_span data-v-8fbfd25e'])
 Z([[7],[3,'$k']])
-Z([1,'358e17df-0'])
+Z([1,'7f776b89-0'])
 Z([3,'忘记密码？'])
 Z(z[3])
-Z([3,'_button data-v-f9c0ea7a'])
+Z([3,'_button data-v-8fbfd25e'])
 Z([3,'primary'])
 Z([3,'登录'])
-Z([3,'_view data-v-f9c0ea7a otherLogin'])
+Z([3,'_view data-v-8fbfd25e otherLogin'])
 Z(z[19])
 Z([3,'其他方式登录'])
-Z([3,'_view data-v-f9c0ea7a wxLogin'])
+Z([3,'_view data-v-8fbfd25e wxLogin'])
 Z(z[8])
 Z([3,''])
-Z([3,'_view data-v-f9c0ea7a toRegister'])
+Z([3,'_view data-v-8fbfd25e toRegister'])
 Z([3,'还没有账号？'])
 Z(z[18])
 Z(z[19])
 Z(z[20])
-Z([1,'358e17df-1'])
+Z([1,'7f776b89-1'])
 Z([3,'立即注册→'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_8);return __WXML_GLOBAL__.ops_cached.$gwx_8
 }
@@ -1185,21 +1247,21 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_9)return __WXML_GLOBAL__.ops_cached.$gwx_9
 __WXML_GLOBAL__.ops_cached.$gwx_9=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'358e17df'])
+Z([3,'7f776b89'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_9);return __WXML_GLOBAL__.ops_cached.$gwx_9
 }
 function gz$gwx_10(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_10)return __WXML_GLOBAL__.ops_cached.$gwx_10
 __WXML_GLOBAL__.ops_cached.$gwx_10=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
-Z([3,'7a43abaa'])
-Z([3,'_view data-v-5c8b8e0f Content'])
-Z([3,'_view data-v-5c8b8e0f regHeader'])
-Z([3,'_span data-v-5c8b8e0f'])
+Z([3,'00209655'])
+Z([3,'_view data-v-c2eb50c6 Content'])
+Z([3,'_view data-v-c2eb50c6 regHeader'])
+Z([3,'_span data-v-c2eb50c6'])
 Z([3,'免费注册'])
-Z([3,'_view data-v-5c8b8e0f regForm'])
-Z([3,'_view data-v-5c8b8e0f regFormItem'])
-Z([3,'_input data-v-5c8b8e0f'])
+Z([3,'_view data-v-c2eb50c6 regForm'])
+Z([3,'_view data-v-c2eb50c6 regFormItem'])
+Z([3,'_input data-v-c2eb50c6'])
 Z([3,'请输入手机号'])
 Z([3,'text'])
 Z([3,''])
@@ -1219,19 +1281,19 @@ Z([3,'请输入验证码'])
 Z(z[9])
 Z(z[10])
 Z(z[6])
-Z([3,'_button data-v-5c8b8e0f'])
+Z([3,'_button data-v-c2eb50c6'])
 Z([3,'primary'])
 Z([3,'注册'])
-Z([3,'_view data-v-5c8b8e0f Agreement'])
+Z([3,'_view data-v-c2eb50c6 Agreement'])
 Z([3,'注册即表示您同意'])
 Z(z[3])
 Z([3,'《用户注册协议》'])
-Z([3,'_view data-v-5c8b8e0f toLogin'])
+Z([3,'_view data-v-c2eb50c6 toLogin'])
 Z([3,'已有账号？'])
 Z([3,'handleProxy'])
 Z(z[3])
 Z([[7],[3,'$k']])
-Z([1,'7a43abaa-0'])
+Z([1,'00209655-0'])
 Z([3,'去登录\x3e'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_10);return __WXML_GLOBAL__.ops_cached.$gwx_10
 }
@@ -1240,7 +1302,7 @@ if( __WXML_GLOBAL__.ops_cached.$gwx_11)return __WXML_GLOBAL__.ops_cached.$gwx_11
 __WXML_GLOBAL__.ops_cached.$gwx_11=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
 Z([[9],[[10],[[6],[[7],[3,'$root']],[1,'0']]],[[8],'$root',[[7],[3,'$root']]]])
-Z([3,'7a43abaa'])
+Z([3,'00209655'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_11);return __WXML_GLOBAL__.ops_cached.$gwx_11
 }
 __WXML_GLOBAL__.ops_set.$gwx=z;
@@ -1254,9 +1316,9 @@ return r
 }
 e_[x[0]]={f:m0,j:[],i:[],ti:[],ic:[]}
 d_[x[1]]={}
-d_[x[1]]["30af4f5b"]=function(e,s,r,gg){
+d_[x[1]]["0dda83f6"]=function(e,s,r,gg){
 var z=gz$gwx_2()
-var b=x[1]+':30af4f5b'
+var b=x[1]+':0dda83f6'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/getpass/getpass.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[1]);return}
@@ -1305,9 +1367,9 @@ return r
 }
 e_[x[2]]={f:m2,j:[],i:[],ti:[x[3]],ic:[]}
 d_[x[4]]={}
-d_[x[4]]["371817f1"]=function(e,s,r,gg){
+d_[x[4]]["fdfd28ca"]=function(e,s,r,gg){
 var z=gz$gwx_4()
-var b=x[4]+':371817f1'
+var b=x[4]+':fdfd28ca'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/index/index.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[4]);return}
@@ -1361,9 +1423,9 @@ return r
 }
 e_[x[5]]={f:m4,j:[],i:[],ti:[x[6]],ic:[]}
 d_[x[7]]={}
-d_[x[7]]["d95d57a4"]=function(e,s,r,gg){
+d_[x[7]]["5bb4c2d8"]=function(e,s,r,gg){
 var z=gz$gwx_6()
-var b=x[7]+':d95d57a4'
+var b=x[7]+':5bb4c2d8'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/index/mine/mine.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[7]);return}
@@ -1410,6 +1472,225 @@ cs.pop()
 _(xC,cI)
 cs.pop()
 _(oB,xC)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:579")
+var tM=_n('view')
+_rz(z,tM,'class',19,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:618")
+var eN=_n('view')
+_rz(z,eN,'class',20,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:655")
+var bO=_n('text')
+_rz(z,bO,'class',21,e,s,gg)
+var oP=_oz(z,22,e,s,gg)
+_(bO,oP)
+cs.pop()
+_(eN,bO)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:705")
+var xQ=_n('text')
+_rz(z,xQ,'class',23,e,s,gg)
+var oR=_oz(z,24,e,s,gg)
+_(xQ,oR)
+cs.pop()
+_(eN,xQ)
+cs.pop()
+_(tM,eN)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:757")
+var fS=_n('view')
+_rz(z,fS,'class',25,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:794")
+var cT=_n('text')
+_rz(z,cT,'class',26,e,s,gg)
+var hU=_oz(z,27,e,s,gg)
+_(cT,hU)
+cs.pop()
+_(fS,cT)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:844")
+var oV=_n('text')
+_rz(z,oV,'class',28,e,s,gg)
+var cW=_oz(z,29,e,s,gg)
+_(oV,cW)
+cs.pop()
+_(fS,oV)
+cs.pop()
+_(tM,fS)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:896")
+var oX=_n('view')
+_rz(z,oX,'class',30,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:933")
+var lY=_n('text')
+_rz(z,lY,'class',31,e,s,gg)
+var aZ=_oz(z,32,e,s,gg)
+_(lY,aZ)
+cs.pop()
+_(oX,lY)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:983")
+var t1=_n('text')
+_rz(z,t1,'class',33,e,s,gg)
+var e2=_oz(z,34,e,s,gg)
+_(t1,e2)
+cs.pop()
+_(oX,t1)
+cs.pop()
+_(tM,oX)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:1035")
+var b3=_n('view')
+_rz(z,b3,'class',35,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1072")
+var o4=_n('text')
+_rz(z,o4,'class',36,e,s,gg)
+var x5=_oz(z,37,e,s,gg)
+_(o4,x5)
+cs.pop()
+_(b3,o4)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1122")
+var o6=_n('text')
+_rz(z,o6,'class',38,e,s,gg)
+var f7=_oz(z,39,e,s,gg)
+_(o6,f7)
+cs.pop()
+_(b3,o6)
+cs.pop()
+_(tM,b3)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:1178")
+var c8=_n('view')
+_rz(z,c8,'class',40,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1215")
+var h9=_n('text')
+_rz(z,h9,'class',41,e,s,gg)
+var o0=_oz(z,42,e,s,gg)
+_(h9,o0)
+cs.pop()
+_(c8,h9)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1265")
+var cAB=_n('text')
+_rz(z,cAB,'class',43,e,s,gg)
+var oBB=_oz(z,44,e,s,gg)
+_(cAB,oBB)
+cs.pop()
+_(c8,cAB)
+cs.pop()
+_(tM,c8)
+cs.pop()
+_(oB,tM)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:1327")
+var lCB=_n('view')
+_rz(z,lCB,'class',45,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:1362")
+var aDB=_n('view')
+_rz(z,aDB,'class',46,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1399")
+var tEB=_n('text')
+_rz(z,tEB,'class',47,e,s,gg)
+var eFB=_oz(z,48,e,s,gg)
+_(tEB,eFB)
+cs.pop()
+_(aDB,tEB)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1449")
+var bGB=_n('text')
+_rz(z,bGB,'class',49,e,s,gg)
+var oHB=_oz(z,50,e,s,gg)
+_(bGB,oHB)
+cs.pop()
+_(aDB,bGB)
+cs.pop()
+_(lCB,aDB)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:1501")
+var xIB=_n('view')
+_rz(z,xIB,'class',51,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1538")
+var oJB=_n('text')
+_rz(z,oJB,'class',52,e,s,gg)
+var fKB=_oz(z,53,e,s,gg)
+_(oJB,fKB)
+cs.pop()
+_(xIB,oJB)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1588")
+var cLB=_n('text')
+_rz(z,cLB,'class',54,e,s,gg)
+var hMB=_oz(z,55,e,s,gg)
+_(cLB,hMB)
+cs.pop()
+_(xIB,cLB)
+cs.pop()
+_(lCB,xIB)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:1643")
+var oNB=_n('view')
+_rz(z,oNB,'class',56,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1680")
+var cOB=_n('text')
+_rz(z,cOB,'class',57,e,s,gg)
+var oPB=_oz(z,58,e,s,gg)
+_(cOB,oPB)
+cs.pop()
+_(oNB,cOB)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1730")
+var lQB=_n('text')
+_rz(z,lQB,'class',59,e,s,gg)
+var aRB=_oz(z,60,e,s,gg)
+_(lQB,aRB)
+cs.pop()
+_(oNB,lQB)
+cs.pop()
+_(lCB,oNB)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:1785")
+var tSB=_n('view')
+_rz(z,tSB,'class',61,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1822")
+var eTB=_n('text')
+_rz(z,eTB,'class',62,e,s,gg)
+var bUB=_oz(z,63,e,s,gg)
+_(eTB,bUB)
+cs.pop()
+_(tSB,eTB)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1872")
+var oVB=_n('text')
+_rz(z,oVB,'class',64,e,s,gg)
+var xWB=_oz(z,65,e,s,gg)
+_(oVB,xWB)
+cs.pop()
+_(tSB,oVB)
+cs.pop()
+_(lCB,tSB)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:1924")
+var oXB=_n('view')
+_rz(z,oXB,'class',66,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:1961")
+var fYB=_n('text')
+_rz(z,fYB,'class',67,e,s,gg)
+var cZB=_oz(z,68,e,s,gg)
+_(fYB,cZB)
+cs.pop()
+_(oXB,fYB)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:2011")
+var h1B=_n('text')
+_rz(z,h1B,'class',69,e,s,gg)
+var o2B=_oz(z,70,e,s,gg)
+_(h1B,o2B)
+cs.pop()
+_(oXB,h1B)
+cs.pop()
+_(lCB,oXB)
+cs.push("./pages/index/mine/mine.vue.wxml:view:1:2066")
+var c3B=_n('view')
+_rz(z,c3B,'class',71,e,s,gg)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:2103")
+var o4B=_n('text')
+_rz(z,o4B,'class',72,e,s,gg)
+var l5B=_oz(z,73,e,s,gg)
+_(o4B,l5B)
+cs.pop()
+_(c3B,o4B)
+cs.push("./pages/index/mine/mine.vue.wxml:text:1:2153")
+var a6B=_n('text')
+_rz(z,a6B,'class',74,e,s,gg)
+var t7B=_oz(z,75,e,s,gg)
+_(a6B,t7B)
+cs.pop()
+_(c3B,a6B)
+cs.pop()
+_(lCB,c3B)
+cs.pop()
+_(oB,lCB)
 cs.pop()
 _(r,oB)
 }catch(err){
@@ -1448,9 +1729,9 @@ return r
 }
 e_[x[8]]={f:m6,j:[],i:[],ti:[x[9]],ic:[]}
 d_[x[10]]={}
-d_[x[10]]["358e17df"]=function(e,s,r,gg){
+d_[x[10]]["7f776b89"]=function(e,s,r,gg){
 var z=gz$gwx_8()
-var b=x[10]+':358e17df'
+var b=x[10]+':7f776b89'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/login/login.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[10]);return}
@@ -1593,9 +1874,9 @@ return r
 }
 e_[x[11]]={f:m8,j:[],i:[],ti:[x[12]],ic:[]}
 d_[x[13]]={}
-d_[x[13]]["7a43abaa"]=function(e,s,r,gg){
+d_[x[13]]["00209655"]=function(e,s,r,gg){
 var z=gz$gwx_10()
-var b=x[13]+':7a43abaa'
+var b=x[13]+':00209655'
 r.wxVkey=b
 gg.f=$gdc(f_["./pages/register/register.vue.wxml"],"",1)
 if(p_[b]){_wl(b,x[13]);return}
@@ -1865,13 +2146,13 @@ __wxAppCode__['pages/getpass/getpass.wxml']=$gwx('./pages/getpass/getpass.wxml')
 __wxAppCode__['pages/index/index.wxss']=undefined;    
 __wxAppCode__['pages/index/index.wxml']=$gwx('./pages/index/index.wxml');
 
-__wxAppCode__['pages/index/mine/mine.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\nbody { background-color: #f5f5f5; }\n.",[1],"mine .",[1],"topCon { width: 100%; height: ",[0,280],"; background-image: -o-linear-gradient(45deg, #ffb516, #ff4545); background-image: linear-gradient(45deg, #ffb516, #ff4545); }\n.",[1],"mine .",[1],"topCon .",[1],"settings { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; }\n.",[1],"mine .",[1],"topCon .",[1],"settings .",[1],"_a { margin: ",[0,20],"; font-size: ",[0,20],"; color: #fff; background: rgba(0, 0, 0, 0.2); border-radius: ",[0,24],"; text-decoration: none; padding: ",[0,14],"; }\n.",[1],"mine .",[1],"topCon .",[1],"settings wx-text { color: #ffffff; padding: ",[0,20],"; font-size: ",[0,40],"; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead wx-image { width: ",[0,100],"; height: ",[0,100],"; border-radius: 50%; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead wx-text { color: #ffffff; font-size: ",[0,30],"; }\n",],undefined,{path:"./pages/index/mine/mine.wxss"});    
+__wxAppCode__['pages/index/mine/mine.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\nbody { background-color: #f5f5f5; }\n.",[1],"mine .",[1],"topCon { width: 100%; height: ",[0,280],"; background-image: -o-linear-gradient(45deg, #ffb516, #ff4545); background-image: linear-gradient(45deg, #ffb516, #ff4545); }\n.",[1],"mine .",[1],"topCon .",[1],"settings { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; }\n.",[1],"mine .",[1],"topCon .",[1],"settings .",[1],"_a { margin: ",[0,20],"; font-size: ",[0,20],"; color: #fff; background: rgba(0, 0, 0, 0.2); border-radius: ",[0,24],"; text-decoration: none; padding: ",[0,14],"; }\n.",[1],"mine .",[1],"topCon .",[1],"settings wx-text { color: #ffffff; padding: ",[0,20],"; font-size: ",[0,40],"; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead wx-image { width: ",[0,100],"; height: ",[0,100],"; border-radius: 50%; }\n.",[1],"mine .",[1],"topCon .",[1],"userHead wx-text { color: #ffffff; font-size: ",[0,30],"; }\n.",[1],"mine .",[1],"orderInfo { width: 100%; height: ",[0,124],"; background-color: #ffffff; margin-top: ",[0,20],"; margin-bottom: ",[0,20],"; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; }\n.",[1],"mine .",[1],"orderInfo .",[1],"details { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; }\n.",[1],"mine .",[1],"orderInfo .",[1],"details .",[1],"tlwok-icon { font-size: ",[0,48],"; }\n.",[1],"mine .",[1],"orderInfo .",[1],"details wx-text { font-size: ",[0,26],"; }\n.",[1],"mine .",[1],"myFun { width: 100%; height: ",[0,600],"; background-color: #ffffff; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; }\n.",[1],"mine .",[1],"myFun .",[1],"details { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; width: 33%; }\n.",[1],"mine .",[1],"myFun .",[1],"details .",[1],"tlwok-icon { font-size: ",[0,80],"; }\n.",[1],"mine .",[1],"myFun .",[1],"details wx-text { font-size: ",[0,26],"; }\n",],undefined,{path:"./pages/index/mine/mine.wxss"});    
 __wxAppCode__['pages/index/mine/mine.wxml']=$gwx('./pages/index/mine/mine.wxml');
 
-__wxAppCode__['pages/login/login.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\n.",[1],"Content.",[1],"data-v-f9c0ea7a { padding: ",[0,100]," ",[0,80],"; }\n.",[1],"Content .",[1],"loginForm.",[1],"data-v-f9c0ea7a { width: 100%; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem.",[1],"data-v-f9c0ea7a { font-family: \x27microsoft yahei\x27; font-size: ",[0,28],"; margin-bottom: ",[0,50],"; position: relative; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-input.",[1],"data-v-f9c0ea7a { height: ",[0,90],"; line-height: ",[0,90],"; background-color: #F3F3F3; border: none; border-radius: ",[0,10],"; padding-left: ",[0,20],"; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem .",[1],"_i.",[1],"data-v-f9c0ea7a { font-size: ",[0,48],"; position: absolute; right: ",[0,20],"; top: ",[0,20],"; color: #C3C3C3; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-button.",[1],"data-v-f9c0ea7a { display: block; height: ",[0,90],"; line-height: ",[0,90],"; background: #e4393c; color: #fff; border-radius: ",[0,6],"; font-size: ",[0,30],"; text-align: center; -webkit-box-sizing: border-box; box-sizing: border-box; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd.",[1],"data-v-f9c0ea7a { text-align: center; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd .",[1],"_span.",[1],"data-v-f9c0ea7a { font-size: ",[0,24],"; color: #f5686a; cursor: pointer; }\n.",[1],"Content .",[1],"otherLogin.",[1],"data-v-f9c0ea7a { margin: ",[0,100]," 0; position: relative; text-align: center; }\n.",[1],"Content .",[1],"otherLogin .",[1],"_span.",[1],"data-v-f9c0ea7a { font-size: ",[0,24],"; color: #8e8e93; padding: 0 ",[0,20],"; }\n.",[1],"Content .",[1],"wxLogin.",[1],"data-v-f9c0ea7a { text-align: center; }\n.",[1],"Content .",[1],"wxLogin .",[1],"_i.",[1],"data-v-f9c0ea7a { display: inline-block; font-size: ",[0,96],"; color: #27BF27; }\n.",[1],"Content .",[1],"toRegister.",[1],"data-v-f9c0ea7a { margin-top: ",[0,40],"; text-align: center; font-size: ",[0,24],"; color: #828282; }\n.",[1],"Content .",[1],"toRegister .",[1],"_span.",[1],"data-v-f9c0ea7a { color: #f5686a; }\n",],undefined,{path:"./pages/login/login.wxss"});    
+__wxAppCode__['pages/login/login.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\n.",[1],"Content.",[1],"data-v-8fbfd25e { padding: ",[0,100]," ",[0,80],"; }\n.",[1],"Content .",[1],"loginForm.",[1],"data-v-8fbfd25e { width: 100%; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem.",[1],"data-v-8fbfd25e { font-family: \x27microsoft yahei\x27; font-size: ",[0,28],"; margin-bottom: ",[0,50],"; position: relative; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-input.",[1],"data-v-8fbfd25e { height: ",[0,90],"; line-height: ",[0,90],"; background-color: #F3F3F3; border: none; border-radius: ",[0,10],"; padding-left: ",[0,20],"; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem .",[1],"_i.",[1],"data-v-8fbfd25e { font-size: ",[0,48],"; position: absolute; right: ",[0,20],"; top: ",[0,20],"; color: #C3C3C3; }\n.",[1],"Content .",[1],"loginForm .",[1],"loginItem wx-button.",[1],"data-v-8fbfd25e { display: block; height: ",[0,90],"; line-height: ",[0,90],"; background: #e4393c; color: #fff; border-radius: ",[0,6],"; font-size: ",[0,30],"; text-align: center; -webkit-box-sizing: border-box; box-sizing: border-box; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd.",[1],"data-v-8fbfd25e { text-align: center; }\n.",[1],"Content .",[1],"loginForm .",[1],"forgetPwd .",[1],"_span.",[1],"data-v-8fbfd25e { font-size: ",[0,24],"; color: #f5686a; cursor: pointer; }\n.",[1],"Content .",[1],"otherLogin.",[1],"data-v-8fbfd25e { margin: ",[0,100]," 0; position: relative; text-align: center; }\n.",[1],"Content .",[1],"otherLogin .",[1],"_span.",[1],"data-v-8fbfd25e { font-size: ",[0,24],"; color: #8e8e93; padding: 0 ",[0,20],"; }\n.",[1],"Content .",[1],"wxLogin.",[1],"data-v-8fbfd25e { text-align: center; }\n.",[1],"Content .",[1],"wxLogin .",[1],"_i.",[1],"data-v-8fbfd25e { display: inline-block; font-size: ",[0,96],"; color: #27BF27; }\n.",[1],"Content .",[1],"toRegister.",[1],"data-v-8fbfd25e { margin-top: ",[0,40],"; text-align: center; font-size: ",[0,24],"; color: #828282; }\n.",[1],"Content .",[1],"toRegister .",[1],"_span.",[1],"data-v-8fbfd25e { color: #f5686a; }\n",],undefined,{path:"./pages/login/login.wxss"});    
 __wxAppCode__['pages/login/login.wxml']=$gwx('./pages/login/login.wxml');
 
-__wxAppCode__['pages/register/register.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\n.",[1],"Content.",[1],"data-v-5c8b8e0f { padding: ",[0,100]," ",[0,80]," 0 ",[0,80],"; }\n.",[1],"Content .",[1],"regHeader.",[1],"data-v-5c8b8e0f { margin-bottom: ",[0,100],"; }\n.",[1],"Content .",[1],"regHeader .",[1],"_span.",[1],"data-v-5c8b8e0f { font-size: ",[0,48],"; color: #e4393c; }\n.",[1],"Content .",[1],"regForm.",[1],"data-v-5c8b8e0f { width: 100%; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem.",[1],"data-v-5c8b8e0f { font-family: \x27microsoft yahei\x27; font-size: ",[0,28],"; margin-bottom: ",[0,50],"; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem wx-input.",[1],"data-v-5c8b8e0f { width: 100%; height: ",[0,90],"; line-height: ",[0,90],"; background-color: #F3F3F3; border: none; border-radius: ",[0,10],"; padding-left: ",[0,20],"; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem wx-button.",[1],"data-v-5c8b8e0f { display: block; height: ",[0,90],"; line-height: ",[0,90],"; background: #e4393c; color: #fff; border-radius: ",[0,6],"; font-size: ",[0,30],"; text-align: center; -webkit-box-sizing: border-box; box-sizing: border-box; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem .",[1],"Agreement.",[1],"data-v-5c8b8e0f { font-size: ",[0,24],"; color: #333333; margin: ",[0,20]," 0; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem .",[1],"Agreement .",[1],"_span.",[1],"data-v-5c8b8e0f { color: #3975E4; }\n.",[1],"Content .",[1],"toLogin.",[1],"data-v-5c8b8e0f { margin-top: ",[0,40],"; text-align: center; font-size: ",[0,24],"; color: #828282; }\n.",[1],"Content .",[1],"toLogin .",[1],"_span.",[1],"data-v-5c8b8e0f { color: #3975E4; }\n",],undefined,{path:"./pages/register/register.wxss"});    
+__wxAppCode__['pages/register/register.wxss']=setCssToHead(["@charset \x22UTF-8\x22;\n.",[1],"Content.",[1],"data-v-c2eb50c6 { padding: ",[0,100]," ",[0,80]," 0 ",[0,80],"; }\n.",[1],"Content .",[1],"regHeader.",[1],"data-v-c2eb50c6 { margin-bottom: ",[0,100],"; }\n.",[1],"Content .",[1],"regHeader .",[1],"_span.",[1],"data-v-c2eb50c6 { font-size: ",[0,48],"; color: #e4393c; }\n.",[1],"Content .",[1],"regForm.",[1],"data-v-c2eb50c6 { width: 100%; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem.",[1],"data-v-c2eb50c6 { font-family: \x27microsoft yahei\x27; font-size: ",[0,28],"; margin-bottom: ",[0,50],"; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem wx-input.",[1],"data-v-c2eb50c6 { width: 100%; height: ",[0,90],"; line-height: ",[0,90],"; background-color: #F3F3F3; border: none; border-radius: ",[0,10],"; padding-left: ",[0,20],"; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem wx-button.",[1],"data-v-c2eb50c6 { display: block; height: ",[0,90],"; line-height: ",[0,90],"; background: #e4393c; color: #fff; border-radius: ",[0,6],"; font-size: ",[0,30],"; text-align: center; -webkit-box-sizing: border-box; box-sizing: border-box; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem .",[1],"Agreement.",[1],"data-v-c2eb50c6 { font-size: ",[0,24],"; color: #333333; margin: ",[0,20]," 0; }\n.",[1],"Content .",[1],"regForm .",[1],"regFormItem .",[1],"Agreement .",[1],"_span.",[1],"data-v-c2eb50c6 { color: #3975E4; }\n.",[1],"Content .",[1],"toLogin.",[1],"data-v-c2eb50c6 { margin-top: ",[0,40],"; text-align: center; font-size: ",[0,24],"; color: #828282; }\n.",[1],"Content .",[1],"toLogin .",[1],"_span.",[1],"data-v-c2eb50c6 { color: #3975E4; }\n",],undefined,{path:"./pages/register/register.wxss"});    
 __wxAppCode__['pages/register/register.wxml']=$gwx('./pages/register/register.wxml');
 
 ;var __pageFrameEndTime__ = Date.now();
