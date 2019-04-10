@@ -160,9 +160,11 @@ page{
 			width: 33%;
 			.tlwok-icon{
 				font-size: 80upx;
+				color: #ffb685;
 			}
 			text{
 				font-size: 26upx;
+				
 			}
 		}
 	}

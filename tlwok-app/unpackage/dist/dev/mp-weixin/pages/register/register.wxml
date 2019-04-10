@@ -1,6 +1,0 @@
-<<<<<<< HEAD
-<import src="./register.vue.wxml" />
-    <template is="7a43abaa" data="{{ ...$root['0'], $root }}"/>
-=======
-<view class="Content data-v-5c8b8e0f" bind:__l="__l"><view class="regHeader data-v-5c8b8e0f"><label class="_span data-v-5c8b8e0f">免费注册</label></view><view class="regForm data-v-5c8b8e0f"><view class="regFormItem data-v-5c8b8e0f"><input type="text" value="" placeholder="请输入手机号" class="data-v-5c8b8e0f"/></view><view class="regFormItem data-v-5c8b8e0f"><input type="text" value="" placeholder="请输入密码" class="data-v-5c8b8e0f"/></view><view class="regFormItem data-v-5c8b8e0f"><input type="text" value="" placeholder="请再次输入密码" class="data-v-5c8b8e0f"/></view><view class="regFormItem data-v-5c8b8e0f"><input type="text" value="" placeholder="请输入验证码" class="data-v-5c8b8e0f"/></view><view class="regFormItem data-v-5c8b8e0f"><button type="primary" class="data-v-5c8b8e0f">注册</button><view class="Agreement data-v-5c8b8e0f">注册即表示您同意<label class="_span data-v-5c8b8e0f">《用户注册协议》</label></view></view></view><view class="toLogin data-v-5c8b8e0f">已有账号？<label data-event-opts="{{[['tap',[['toLogin',['$event']]]]]}}" bindtap="__e" class="_span data-v-5c8b8e0f">去登录></label></view></view>
->>>>>>> e6f63ebdb1cc8120e51f6d56c5c0553ef9b4b081
