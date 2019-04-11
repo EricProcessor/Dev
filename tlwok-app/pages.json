@@ -54,7 +54,12 @@
         }
         ,{
             "path" : "pages/order/order",
-            "style" : {}
+            "style" : {
+			    "navigationBarTitleText":"全部订单"	,
+				 "app-plus": {  
+						"titleNView": false  
+				} 
+			}
         }
         ,{
             "path" : "pages/favorite/favorite",
