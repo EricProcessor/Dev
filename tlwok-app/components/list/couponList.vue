@@ -1,16 +1,21 @@
 <template>
 	<view>
 		<view class="list-cell" hover-class="uni-list-cell-hover" @click="bindClick">
-			<view class="list-left">
-				<view class="left-top">¥{{options.price}}</view>
+			<view class="list-left" :class="index == 'noused' ? 'background1': 'background2'">
+				<view class="left-top">¥<span>{{options.price}}</span></view>
 				<view class="left-bottom">满{{options.priceRange}}元可用</view>
 			</view>
 			<view class="list-right">
-				<view class="">
-					<view>{{options.name}}</view>
-					<view>{{options.applicable_scope}}</view>
+				<view class="couponImage" v-show="index != 'noused'">
+					<image :src="index == 'used'?'/static/image/ysy.png':'/static/image/ygq.png'" mode=""></image>
 				</view>
-				<view class="">有效期至：{{options.timeRange}}</view>
+				<view class="right-top">
+					<view class="name" 
+					 :class="index != 'noused' ? 'font-disabled': ''">{{options.name}}</view>
+					<view class="shopName">{{options.applicable_scope}}</view>
+				</view>
+				<view class="right-bottom" 
+				 :class="index != 'noused' ? 'font-disabled': ''">有效期至：<span>{{options.timeRange}}</span></view>
 			</view>
 		</view>
 	</view>
@@ -24,6 +29,10 @@
 				default: function(e) {
 					return {}
 				}
+			},
+			index:{
+				type: String,
+				required: true,
 			}
 		},
 		methods: {
@@ -36,25 +45,79 @@
 	view {
 		.list-cell{
 			display: flex;
-			padding: 20upx;
 			background: #ffffff;
 			margin: 10px;
 			border-radius: 10upx;
+			overflow: hidden;
+			.background1{
+				background-image: url('../../static/image/bg_cp.png');
+				background-size: 100% 200upx;
+			}.background2{
+				background-image: url('../../static/image/bg_cp2.png');
+				background-size: 100% 200upx;
+			}
 			.list-left{
 				width: 35%;
 				text-align: center;
+				color: #ffffff;
 				.left-top{
 					height:140upx;
 					line-height: 140upx;
+					span{
+						font-size: 52upx;
+					}
 				}
 				.left-bottom{
+					font-size: 24upx;
 					height:60upx;
 					line-height: 60upx;
 				}
 			}
 			.list-right{
 				width: 65%;
+				color: #666666;
+				position: relative;
+				.couponImage{
+					position:absolute;
+					top: 20upx;
+					right: 20upx;
+					image{
+						width: 130upx;
+						height: 100upx;
+					}
+					
+				}
+				.right-top{
+					height:140upx;
+					line-height: 140upx;
+					padding-left: 20upx;
+					.name{
+						padding-top: 30upx;
+						font-size: 30upx;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+					}
+					.shopName{
+						padding-top: 10upx;
+						font-size: 24upx;
+						color: #a7a7a7;
+					}
+				}
+				.right-bottom{
+					font-size: 24upx;
+					height:60upx;
+					line-height: 60upx;
+					text-align: center;
+					span{
+						color: #a7a7a7;
+					}
+				}
+				.font-disabled{
+					color: #a7a7a7!important;
+				}
 			}
+			
 		}
 	}
 </style>
