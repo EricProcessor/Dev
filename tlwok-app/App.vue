@@ -12,14 +12,12 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	/*每个页面公共css */
 	@import '/common/css/iconfont.css';
 	@import '/common/css/uni.css';
 	page {
 		background-color: #F5F5F5;
 		height: 100%;
-		font-size: 28upx;
-		line-height: 1.8;
 	}
 </style>
