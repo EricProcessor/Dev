@@ -63,7 +63,18 @@
             "style" : {
 				"navigationBarBackgroundColor": "#fdfbfb",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "我的收藏"
+				"navigationBarTitleText": "我的收藏",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"fontSrc": "/static/titleIcon.ttf",
+								"fontSize": "14px",
+								"text": "编辑"
+							}
+						]
+					}
+				}
 			}
         }
         ,{

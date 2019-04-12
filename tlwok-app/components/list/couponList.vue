@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="list-cell" hover-class="uni-list-cell-hover" @click="bindClick">
+		<view class="list-cell">
 			<view class="list-left" :class="index == 'noused' ? 'background1': 'background2'">
 				<view class="left-top">¥<span>{{options.price}}</span></view>
 				<view class="left-bottom">满{{options.priceRange}}元可用</view>
