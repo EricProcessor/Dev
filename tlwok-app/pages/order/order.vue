@@ -13,22 +13,228 @@
 		</view>
 		<!-- 占位 -->
 		<view class="place"></view>
-		订单页面
+		<!-- 弹框 -->
 		<uni-popup :show="type === 'top'" position="top" mode="fixed" @hidePopup="togglePopup('')">
 			sdsdfsdkfjsdkfjsdkfjs
 		</uni-popup>
+		<!-- 选项卡 -->
+		<scroll-view id="tab-bar" class="uni-swiper-tab" scroll-x :scroll-left="scrollLeft">
+			<view v-for="(tab,index) in tabBars" :key="tab.id" class="swiper-tab-list" :class="tabIndex==index ? 'active' : ''" 
+			:id="tab.id" :data-current="index" @click="tapTab">{{tab.name}}
+		 </view>
+		</scroll-view>
+		<swiper :current="tabIndex" class="swiper-box" :duration="300" @change="changeTab">
+			<swiper-item v-for="(ordedatas,index1) in orderitems" :key="index1">
+				<scroll-view class="list" scroll-y @scrolltolower="loadMore(index1)">
+					<block v-for="(orderitem,index2) in ordedatas" :key="index2">
+						<order-list :options="orderitem"></order-list>
+					</block>
+					<!-- <block v-for="(newsitem,index2) in tab.data" :key="index2">
+						<media-list :options="newsitem" @close="close(index1,index2)" @click="goDetail(newsitem)"></media-list>
+					</block>
+					<view class="uni-tab-bar-loading">
+						{{tab.loadingText}}
+					</view> -->
+				</scroll-view>
+			</swiper-item>
+		</swiper>
+<!-- 		
+		<scroll-view id="tab-bar" class="uni-swiper-tab" scroll-x :scroll-left="scrollLeft">
+			<view v-for="(tab,index) in tabBars" :key="tab.id" class="swiper-tab-list" :class="tabIndex==index ? 'active' : ''" :id="tab.id"
+			 :data-current="index" @click="tapTab">{{tab.name}}</view>
+		</scroll-view>
+		<swiper :current="tabIndex" class="swiper-box" :duration="300" @change="changeTab">
+			<swiper-item v-for="(tab,index1) in newsitems" :key="index1">
+				<scroll-view class="list" scroll-y @scrolltolower="loadMore(index1)">
+					<block v-for="(newsitem,index2) in tab.data" :key="index2">
+						<media-list :options="newsitem" @close="close(index1,index2)" @click="goDetail(newsitem)"></media-list>
+					</block>
+					<view class="uni-tab-bar-loading">
+						{{tab.loadingText}}
+					</view>
+				</scroll-view>
+			</swiper-item>
+		</swiper> -->
 	</view>
 </template>
 
 <script>
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import orderList from '@/components/list/orderList.vue' 
 	export default {
 		components: {
-			uniPopup
+			uniPopup,
+			orderList
 		},
 		data() {
 			return {
-				type: '',
+				type: '',//弹框位置类型
+				//tab切换
+				tabIndex:0,
+				scrollLeft: 0,
+				isClickChange: false,
+				tabBars:[
+					{name:'全部',id:'all'},
+					{name:'待付款',id:'Pendingpayment'},
+					{name:'待收货',id:'beRecived'},
+					{name:'待评价',id:'beEvaluated'},
+					{name:'交易成功',id:'succTrad'},
+					{name:'交易关闭',id:'closeTrad'}
+				],
+				orderitems:{
+					all:[
+						{
+							name:"待付款",
+							shopname:"这个店铺",
+							ordernum:12323,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:100.02,
+							postfee:0
+						}
+					],
+					Pendingpayment:[
+						{
+							name:"待付款",
+							shopname:"这个店铺",
+							ordernum:12323,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:100.02,
+							postfee:0
+						},
+						{
+							name:"待付款",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						}
+					],
+					beRecived:[
+						{
+							name:"待收货",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						},
+						{
+							name:"待收货",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						},
+						{
+							name:"待收货",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						}
+					],
+					beEvaluated:[
+						{
+							name:"待评价",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						},
+						{
+							name:"待评价",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						},
+						{
+							name:"待评价",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						},
+						{
+							name:"待评价",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						}
+					],
+					succTrad:[
+						{
+							name:"已完成",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						},
+						{
+							name:"已完成",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						}
+					],
+					closeTrad:[
+						{
+							name:"已关闭",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						},
+						{
+							name:"已关闭",
+							shopname:"这个店铺",
+							ordernum:123093,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"@static/image/productmini.jpg",
+							count:1,
+							price:110.02,
+							postfee:0
+						}
+					]
+				}
 			};
 		},
 		onBackPress() {
@@ -45,8 +251,34 @@
 			},
 			togglePopup(type) {
 				this.type = type;
-				console.log("111111")
-			}
+			},
+			async tapTab(e) { //点击tab-bar
+				let tabIndex = e.target.dataset.current;
+				console.log(tabIndex);
+// 				if(this.newsitems[tabIndex].data.length === 0){
+// 					this.addData(tabIndex)
+// 				}
+				if (this.tabIndex === tabIndex) {
+					return false;
+				} else {
+					let tabBar = await this.getElSize("tab-bar"),
+						tabBarScrollLeft = tabBar.scrollLeft; //点击的时候记录并设置scrollLeft
+					
+					this.scrollLeft = tabBarScrollLeft;
+					this.isClickChange = true;
+					this.tabIndex = tabIndex;
+				}
+			},
+			getElSize(id) { //得到元素的size
+				return new Promise((res, rej) => {
+					uni.createSelectorQuery().select("#" + id).fields({
+						size: true,
+						scrollOffset: true
+					}, (data) => {
+						res(data);
+					}).exec();
+				})
+			},
 		}
 	}
 </script>
@@ -96,7 +328,6 @@
 		// margin-top: var(--status-bar-height);
 		/*  #endif  */
 	}
-	.uni-popup-top{
-		top:200upx
-	}
+	.active{color:#e4093c; }
+	.uni-swiper-tab{border: none;background-color: #FFFFFF;}
 </style>
