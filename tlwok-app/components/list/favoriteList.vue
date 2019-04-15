@@ -2,7 +2,6 @@
 	<view>
 		<view class="list-cell"
 		 @tap="itemTap($event)" 
-		 :class="[checkItem.indexOf(options.id) === -1 ? '':'itemActive']"
 		 :data-id="options.id">
 			<template v-if="index == 'goods'">
 				<view class="list-left" :data-type="index">
@@ -44,7 +43,8 @@
 		},
 		data(){
 			return{
-				checkItem:[]
+				pagesType:'goods',
+				checkItems:[]
 			}
 		},
 		props: {
@@ -67,11 +67,7 @@
 			itemTap:function (e){
 				if(this.editStatus == 1){
 					let itemId = e.currentTarget.dataset.id;
-					if(this.checkItem.indexOf(itemId) === -1){
-						this.checkItem.push(itemId);
-					}else{
-						this.checkItem.splice(this.checkItem.indexOf(itemId), 1);
-					}
+					
 				}else{
 					console.log("跳转页面")
 				}
