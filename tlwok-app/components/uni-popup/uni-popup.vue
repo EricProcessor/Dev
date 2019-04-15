@@ -96,7 +96,7 @@
 		}
 	};
 </script>
-<style>
+<style lang="scss">
 	.uni-mask {
 		position: fixed;
 		z-index: 998;
@@ -170,7 +170,13 @@
 	}
 
 	.uni-popup-top {
-		top: 0;
+		/* #ifdef H5 || MP-WEIXIN */
+		top: 88upx;;
+		/* #endif */
+		/* #ifdef APP-PLUS */
+		top: var(--status-bar-height);
+		// top:100upx;
+		/* #endif */
 		left: 0;
 		width: 100%;
 		height: 100upx;
