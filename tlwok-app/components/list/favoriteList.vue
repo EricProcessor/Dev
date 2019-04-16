@@ -43,7 +43,6 @@
 		},
 		data(){
 			return{
-				pagesType:'goods',
 				checkItems:[]
 			}
 		},
@@ -67,7 +66,14 @@
 			itemTap:function (e){
 				if(this.editStatus == 1){
 					let itemId = e.currentTarget.dataset.id;
-					
+					if(this.checkItems.join(',').indexOf(itemId) === -1){
+						var length = this.checkItems.length;
+						this.checkItems[length] = itemId;
+						console.log(this.checkItems)
+					}else{
+						this.checkItems.splice(this.checkItems.indexOf(itemId),1)
+					}
+					console.log(this.checkItems);
 				}else{
 					console.log("跳转页面")
 				}
