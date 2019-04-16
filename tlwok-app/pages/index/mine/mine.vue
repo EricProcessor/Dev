@@ -110,7 +110,7 @@ page{
 	}
 	.orderInfo{
 		width: 100%;
-		height: 124upx;
+		height: 200upx;
 		background-color: #ffffff;
 		margin-top: 20upx;
 		margin-bottom: 20upx;
@@ -133,7 +133,7 @@ page{
 	}
 	.myFun{
 		width: 100%;
-		height: 600upx;
+		height: 400upx;
 		background-color: #ffffff;
 		display: flex;
 		justify-content: center;

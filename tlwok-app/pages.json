@@ -82,7 +82,18 @@
             "style" : {
 				"navigationBarBackgroundColor": "#fdfbfb",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "浏览记录"
+				"navigationBarTitleText": "浏览记录",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"fontSrc": "/static/titleIcon.ttf",
+								"fontSize": "14px",
+								"text": "清空"
+							}
+						]
+					}
+				}
 			}
         }
         ,{

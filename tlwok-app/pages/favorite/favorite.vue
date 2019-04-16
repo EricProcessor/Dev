@@ -13,7 +13,7 @@
 			<swiper-item v-for="(items,index1) in favoriteItems" :key="index1">
 				<scroll-view class="list" scroll-y @scrolltolower="loadMore(index1)">
 					<block v-for="(item,index2) in items" :key="index2">
-						<favoriteList :options="item" :index="index1" :editStatus="editStatus"></favoriteList>
+						<favoriteList :options="item" :index="index1" :editStatus="editStatus" ></favoriteList>
 					</block>
 					<!-- <view class="uni-tab-bar-loading">
 						{{tab.loadingText}}
