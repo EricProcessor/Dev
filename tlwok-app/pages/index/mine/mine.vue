@@ -72,7 +72,7 @@ page{
 .mine{
 	.topCon{
 		width: 100%;
-		height: 280upx;
+		height: 300upx;
 		 background-image: linear-gradient(45deg, #ffb516, #ff4545);
 		 .settings{
 			 display: flex;
