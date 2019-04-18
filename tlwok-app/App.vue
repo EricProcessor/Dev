@@ -17,7 +17,7 @@
 	@import '/common/css/iconfont.css';
 	@import '/common/css/uni.css';
 	page {
-		background-color: #F5F5F5;
+		background-color: #F1F0F5;
 		height: 100%;
 	}
 </style>
