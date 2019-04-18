@@ -33,7 +33,9 @@
 				<button class="submitAddress" formType="submit">保存</button>
 			</view>
 		</form>
-		<mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker" :pickerValueDefault="addressInfo.cityPickerValueDefault"
+		<mpvue-city-picker 
+		 :themeColor="themeColor" ref="mpvueCityPicker" 
+		 :pickerValueDefault="addressInfo.cityPickerValueDefault"
 		 @onCancel="onCancel" @onConfirm="onConfirm"></mpvue-city-picker>
 	</view>
 </template>

@@ -83,7 +83,7 @@
 				"navigationBarBackgroundColor": "#fdfbfb",
 				"navigationBarTextStyle": "black",
 				"navigationBarTitleText": "浏览记录",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": true, //下拉刷新
 				"app-plus": {
 					"titleNView": {
 						"buttons": [
@@ -120,8 +120,7 @@
 				"navigationBarTextStyle": "black",
 				"navigationBarTitleText": "收货地址"
 			}
-        }
-        ,{
+        },{
             "path" : "pages/finance/finance",
             "style" : {
 				"navigationBarBackgroundColor": "#fdfbfb",
@@ -139,7 +138,10 @@
         }
         ,{
             "path" : "pages/editAddress/editAddress",
-            "style" : {}
+            "style" : {
+				"navigationBarBackgroundColor": "#fdfbfb",
+				"navigationBarTextStyle": "black"
+			}
         }
     ],
 	"globalStyle": {
