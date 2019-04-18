@@ -72,7 +72,7 @@ page{
 .mine{
 	.topCon{
 		width: 100%;
-		height: 280upx;
+		height: 300upx;
 		 background-image: linear-gradient(45deg, #ffb516, #ff4545);
 		 .settings{
 			 display: flex;
@@ -110,7 +110,7 @@ page{
 	}
 	.orderInfo{
 		width: 100%;
-		height: 124upx;
+		height: 200upx;
 		background-color: #ffffff;
 		margin-top: 20upx;
 		margin-bottom: 20upx;
@@ -133,7 +133,7 @@ page{
 	}
 	.myFun{
 		width: 100%;
-		height: 600upx;
+		height: 400upx;
 		background-color: #ffffff;
 		display: flex;
 		justify-content: center;

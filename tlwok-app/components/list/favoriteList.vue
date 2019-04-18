@@ -1,8 +1,9 @@
 <template>
 	<view>
 		<view class="list-cell"
-		 @tap="itemTap($event)" 
-		 :class="[checkItem.indexOf(options.id) === -1 ? '':'itemActive']"
+		 :class="checkStatus?'itemActive':''"
+		 @tap="itemTap($event,checkStatus)"
+		 :data-status="checkStatus"
 		 :data-id="options.id">
 			<template v-if="index == 'goods'">
 				<view class="list-left" :data-type="index">
@@ -42,11 +43,6 @@
 		components:{
 			uniRate
 		},
-		data(){
-			return{
-				checkItem:[]
-			}
-		},
 		props: {
 			options: {
 				type: Object,
@@ -61,16 +57,19 @@
 			editStatus:{
 				type: Number,
 				required: true,
+			},
+			checkStatus:{
+				type: Boolean,
+				required: true,
 			}
 		},
 		methods: {
-			itemTap:function (e){
+			itemTap:function (e,checkStatus){
 				if(this.editStatus == 1){
-					let itemId = e.currentTarget.dataset.id;
-					if(this.checkItem.indexOf(itemId) === -1){
-						this.checkItem.push(itemId);
+					if(checkStatus){
+						this.checkStatus = false
 					}else{
-						this.checkItem.splice(this.checkItem.indexOf(itemId), 1);
+						this.checkStatus = true
 					}
 				}else{
 					console.log("跳转页面")

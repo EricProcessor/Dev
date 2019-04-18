@@ -82,7 +82,19 @@
             "style" : {
 				"navigationBarBackgroundColor": "#fdfbfb",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "浏览记录"
+				"navigationBarTitleText": "浏览记录",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"fontSrc": "/static/titleIcon.ttf",
+								"fontSize": "14px",
+								"text": "清空"
+							}
+						]
+					}
+				}
 			}
         }
         ,{
@@ -116,6 +128,18 @@
 				"navigationBarTextStyle": "black",
 				"navigationBarTitleText": "金融服务"
 			}
+        }
+        ,{
+            "path" : "pages/message/message",
+            "style" : {
+				"navigationBarBackgroundColor": "#fdfbfb",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "我的消息"
+			}
+        }
+        ,{
+            "path" : "pages/editAddress/editAddress",
+            "style" : {}
         }
     ],
 	"globalStyle": {
