@@ -43,11 +43,6 @@
 		components:{
 			uniRate
 		},
-		data(){
-			return {
-				checkStatus:false
-			}
-		},
 		props: {
 			options: {
 				type: Object,
@@ -61,6 +56,10 @@
 			},
 			editStatus:{
 				type: Number,
+				required: true,
+			},
+			checkStatus:{
+				type: Boolean,
 				required: true,
 			}
 		},

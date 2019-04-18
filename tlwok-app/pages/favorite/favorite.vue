@@ -13,7 +13,7 @@
 			<swiper-item v-for="(items,index1) in favoriteItems" :key="index1">
 				<scroll-view class="list" scroll-y @scrolltolower="loadMore(index1)">
 					<block v-for="(item,index2) in items" :key="index2">
-						<favoriteList :options="item" :index="index1" :editStatus="editStatus" ></favoriteList>
+						<favoriteList :options="item" :index="index1" :editStatus="editStatus" :checkStatus="checkStatus"></favoriteList>
 					</block>
 					<!-- <view class="uni-tab-bar-loading">
 						{{tab.loadingText}}
@@ -42,6 +42,7 @@
 				editStatus:0,
 				scrollLeft: 0,
 				tabIndex: 0,
+				checkStatus:false,
 				isClickChange: false,
 				tabBars: [{
 					name: '商品',
@@ -98,6 +99,7 @@
 			let pages = getCurrentPages();
 			let page = pages[pages.length - 1];
 			this.editStatus = this.editStatus == 0 ? 1 : 0;
+			this.checkStatus = false;
 			// #ifdef APP-PLUS
 			let currentWebview = page.$getAppWebview();
 			let titleObj = currentWebview.getStyle().titleNView;

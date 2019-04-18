@@ -129,6 +129,18 @@
 				"navigationBarTitleText": "金融服务"
 			}
         }
+        ,{
+            "path" : "pages/message/message",
+            "style" : {
+				"navigationBarBackgroundColor": "#fdfbfb",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "我的消息"
+			}
+        }
+        ,{
+            "path" : "pages/editAddress/editAddress",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
