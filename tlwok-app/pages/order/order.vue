@@ -34,23 +34,6 @@
 				</swiper-item>
 			</swiper>
 		</view>
-<!-- 		
-		<scroll-view id="tab-bar" class="uni-swiper-tab" scroll-x :scroll-left="scrollLeft">
-			<view v-for="(tab,index) in tabBars" :key="tab.id" class="swiper-tab-list" :class="tabIndex==index ? 'active' : ''" :id="tab.id"
-			 :data-current="index" @click="tapTab">{{tab.name}}</view>
-		</scroll-view>
-		<swiper :current="tabIndex" class="swiper-box" :duration="300" @change="changeTab">
-			<swiper-item v-for="(tab,index1) in newsitems" :key="index1">
-				<scroll-view class="list" scroll-y @scrolltolower="loadMore(index1)">
-					<block v-for="(newsitem,index2) in tab.data" :key="index2">
-						<media-list :options="newsitem" @close="close(index1,index2)" @click="goDetail(newsitem)"></media-list>
-					</block>
-					<view class="uni-tab-bar-loading">
-						{{tab.loadingText}}
-					</view>
-				</scroll-view>
-			</swiper-item>
-		</swiper> -->
 	</view>
 </template>
 
@@ -364,9 +347,12 @@
 	}
 	.active{color:#e4093c; font-weight: bold;}
 	.uni-swiper-tab{border: none;background-color: #FFFFFF;}
-	.orderBox .uni-tab-bar {
-		/* #ifdef H5 */
-		margin-top: 84upx;
-		/* #endif */
-	}
+	.orderBox{
+		height: 100%;
+		.uni-tab-bar {
+			/* #ifdef H5 */
+			margin-top: 84upx;
+			/* #endif */
+		}
+	} 
 </style>
