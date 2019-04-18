@@ -88,7 +88,16 @@
 							shopname:"这个店铺",
 							ordernum:12323,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
+							count:1,
+							price:100.02,
+							postfee:0
+						},{
+							name:"待付款",
+							shopname:"这个店铺",
+							ordernum:12323,
+							tradedate:"2019-04-14 12:00",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:100.02,
 							postfee:0
@@ -100,7 +109,7 @@
 							shopname:"这个店铺",
 							ordernum:12323,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:100.02,
 							postfee:0
@@ -110,7 +119,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -122,7 +131,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -132,7 +141,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -142,7 +151,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -154,7 +163,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -164,7 +173,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -174,7 +183,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -184,7 +193,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -196,7 +205,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -206,7 +215,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -218,7 +227,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -228,7 +237,7 @@
 							shopname:"这个店铺",
 							ordernum:123093,
 							tradedate:"2019-04-14 12:00",
-							imageurl:"@static/image/productmini.jpg",
+							imageurl:"/static/image/productmini.jpg",
 							count:1,
 							price:110.02,
 							postfee:0
@@ -268,6 +277,36 @@
 					this.isClickChange = true;
 					this.tabIndex = tabIndex;
 				}
+			},
+			async changeTab(e) {
+				let index = e.target.current;
+// 				if(this.newsitems[index].data.length === 0){
+// 					this.addData(index)
+// 				}
+				if (this.isClickChange) {
+					this.tabIndex = index;
+					this.isClickChange = false;
+					return;
+				}
+				let tabBar = await this.getElSize("tab-bar"),
+					tabBarScrollLeft = tabBar.scrollLeft;
+				let width = 0;
+			
+				for (let i = 0; i < index; i++) {
+					let result = await this.getElSize(this.tabBars[i].id);
+					width += result.width;
+				}
+				let winWidth = uni.getSystemInfoSync().windowWidth,
+					nowElement = await this.getElSize(this.tabBars[index].id),
+					nowWidth = nowElement.width;
+				if (width + nowWidth - tabBarScrollLeft > winWidth) {
+					this.scrollLeft = width + nowWidth - winWidth;
+				}
+				if (width < tabBarScrollLeft) {
+					this.scrollLeft = width;
+				}
+				this.isClickChange = false;
+				this.tabIndex = index; //一旦访问data就会出问题
 			},
 			getElSize(id) { //得到元素的size
 				return new Promise((res, rej) => {
@@ -328,6 +367,6 @@
 		// margin-top: var(--status-bar-height);
 		/*  #endif  */
 	}
-	.active{color:#e4093c; }
+	.active{color:#e4093c; font-weight: bold;}
 	.uni-swiper-tab{border: none;background-color: #FFFFFF;}
 </style>
