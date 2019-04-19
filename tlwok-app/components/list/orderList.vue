@@ -53,8 +53,10 @@
 			width: 100%;
 			display: flex;
 			image{
-				width: 200upx;
-				height: 200upx;
+				width: 150upx;
+				height: 150upx;
+				border-radius: 10upx;
+				margin-right: 10upx;
 			}
 		}
 	}
