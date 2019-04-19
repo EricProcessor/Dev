@@ -3,7 +3,7 @@
 		<view class="topCon">
 			<view class="settings">	
 				<a href="" @tap="changeRole()">切换为卖家</a>
-				<text @tap="settings()" class="tlwok-icon">&#xe68a;</text>
+				<text @tap="settings" class="tlwok-icon">&#xe68a;</text>
 			</view>
 			<view class="userHead">
 				<image src="../../../static/image/head.jpg" mode=""></image>
@@ -51,7 +51,11 @@
 				console.log("切换角色");
 			},
 			settings(){
-				console.log("触发设置按钮")
+				uni.navigateTo({
+					url: '/pages/setting/setting',
+					animationType: 'pop-in',
+					animationDuration: 200
+				});
 			},
 			orderSel: function(link){
 				console.log("跳转到"+link);
