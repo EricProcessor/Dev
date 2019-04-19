@@ -143,6 +143,14 @@
 				"navigationBarTextStyle": "black"
 			}
         }
+        ,{
+            "path" : "pages/setting/setting",
+            "style" : {
+				"navigationBarBackgroundColor": "#fdfbfb",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "设置中心"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -151,8 +159,7 @@
 	},
 	"condition" : { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-			{
+		"list": [{
 				"name": "", //模式名称
 				"path": "", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
