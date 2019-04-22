@@ -27,6 +27,13 @@
 			<swiper :current="tabIndex" class="swiper-box" :duration="300" @change="changeTab">
 				<swiper-item v-for="(ordedatas,index1) in orderitems" :key="index1">
 					<scroll-view class="list" scroll-y>
+						<template v-if="!ordedatas.length">
+							<view class="noOrder">
+								
+								<view class="tlwok-icon tlwicon-text"></view>
+								<text>您还没有相关订单</text>
+							</view>
+						</template>
 					<!-- <scroll-view class="list" scroll-y @scrolltolower="loadMore(index1)"> -->
 						<block v-for="(orderitem,index2) in ordedatas" :key="index2">
 							<order-list :options="orderitem"></order-list>
@@ -86,28 +93,7 @@
 						}
 					],
 					Pendingpayment:[
-						{
-							name:"待付款",
-							shopname:"这个店铺",
-							ordernum:12323,
-							tradedate:"2019-04-14 12:00",
-							imageurl:"/static/image/productmini.jpg",
-							ordertitle:"Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-							count:1,
-							price:100.02,
-							postfee:0
-						},
-						{
-							name:"待付款",
-							shopname:"这个店铺",
-							ordernum:123093,
-							tradedate:"2019-04-14 12:00",
-							imageurl:"/static/image/productmini.jpg",
-							ordertitle:"Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-							count:1,
-							price:110.02,
-							postfee:0
-						}
+
 					],
 					beRecived:[
 						{
@@ -242,7 +228,7 @@
 			};
 		},
 		onLoad:function(option){
-			console.log(option);
+			// console.log(JSON.stringify(option) );
 			this.tabIndex=option.item;
 		},
 		onBackPress() {
@@ -371,6 +357,23 @@
 		height: 100%;
 		.uni-tab-bar {
 			margin-top: 84upx;
+			.list{
+				.noOrder{
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+					// height: 100%;
+					.tlwicon-text{
+						font-size: 200upx;
+						color: #cccccc;
+					}
+					text{
+						font-size: 40upx;
+						color: #cccccc;
+					}
+				}
+			}
 		}
 	} 
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="historyList" v-for="items in historyList">
+		<view class="historyList" v-for="(items,index1) in historyList" :key="index1">
 			<view class="historyTime">
 				{{items.visitDate}}
 			</view>
