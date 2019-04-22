@@ -241,6 +241,10 @@
 				}
 			};
 		},
+		onLoad:function(option){
+			console.log(option);
+			this.tabIndex=option.item;
+		},
 		onBackPress() {
 			if (this.type !== '') {
 				this.type = '';
@@ -366,9 +370,7 @@
 	.orderBox{
 		height: 100%;
 		.uni-tab-bar {
-			/* #ifdef H5 */
 			margin-top: 84upx;
-			/* #endif */
 		}
 	} 
 </style>

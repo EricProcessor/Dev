@@ -150,6 +150,21 @@
 				"navigationBarTextStyle": "black",
 				"navigationBarTitleText": "设置中心"
 			}
+        },{
+            "path" : "pages/test",
+            "style" : {
+				"navigationBarBackgroundColor": "#fdfbfb",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "测试"
+			}
+        }
+        ,{
+            "path" : "pages/afterSale/afterSale",
+            "style" : {
+				"navigationBarBackgroundColor": "#fdfbfb",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "售后/退款"
+			}
         }
     ],
 	"globalStyle": {

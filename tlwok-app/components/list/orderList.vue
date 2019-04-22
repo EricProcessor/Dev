@@ -117,6 +117,7 @@
 			display: flex;
 			padding: 10upx 0;
 			border-top: 2upx solid #F5F5F5;
+			justify-content: flex-end;
 			.item{
 				background-color: #e4093c;
 				color: #fff;

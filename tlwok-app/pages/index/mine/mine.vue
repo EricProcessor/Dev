@@ -30,11 +30,11 @@
 		data() {
 			return {
 				orderInfoData:[
-						{id:1,ordericon:'tlwok-icon tlwicon-vipcard',ordertitle:'待付款',orderlink:'/pages/order/order'},
-						{id:2,ordericon:'tlwok-icon tlwicon-deliver',ordertitle:'待收货',orderlink:'/pages/order/order'},
-						{id:3,ordericon:'tlwok-icon tlwicon-comment',ordertitle:'待评价',orderlink:'/pages/order/order'},
-						{id:4,ordericon:'tlwok-icon tlwicon-recharge',ordertitle:'售后/退款',orderlink:'/pages/order/order'},
-						{id:5,ordericon:'tlwok-icon tlwicon-calendar',ordertitle:'我的订单',orderlink:'/pages/order/order'}
+						{id:1,ordericon:'tlwok-icon tlwicon-vipcard',ordertitle:'待付款',orderlink:'/pages/order/order?item=1'},
+						{id:2,ordericon:'tlwok-icon tlwicon-deliver',ordertitle:'待收货',orderlink:'/pages/order/order?item=2'},
+						{id:3,ordericon:'tlwok-icon tlwicon-comment',ordertitle:'待评价',orderlink:'/pages/order/order?item=3'},
+						{id:4,ordericon:'tlwok-icon tlwicon-recharge',ordertitle:'售后/退款',orderlink:'/pages/afterSale/afterSale'},
+						{id:5,ordericon:'tlwok-icon tlwicon-calendar',ordertitle:'我的订单',orderlink:'/pages/order/order?item=0'}
 					],
 				myFunlist:[
 					{id:1,myfunicon:"tlwok-icon tlwicon-like",myfuntitle:"收藏夹",myfunlink:"/pages/favorite/favorite"},
@@ -57,13 +57,17 @@
 					animationDuration: 200
 				});
 			},
-			orderSel: function(link){
-				console.log("跳转到"+link);
+			web:function(){
 				uni.navigateTo({
-					url: link,
-					animationType: 'pop-in',
-					animationDuration: 200
-				});
+					url:'/pages/test'
+				})
+			},
+			orderSel: function(link){
+					uni.navigateTo({
+						url: link,
+						animationType: 'pop-in',
+						animationDuration: 200
+					});
 			}
 		}
 	}
