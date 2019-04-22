@@ -125,7 +125,19 @@
             "style" : {
 				"navigationBarBackgroundColor": "#fdfbfb",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "金融服务"
+				"navigationBarTitleText": "支付管理",
+				"enablePullDownRefresh": true, //下拉刷新
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"fontSrc": "/static/titleIcon.ttf",
+								"fontSize": "14px",
+								"text": "月结店铺"
+							}
+						]
+					}
+				}
 			}
         }
         ,{
@@ -149,6 +161,14 @@
 				"navigationBarBackgroundColor": "#fdfbfb",
 				"navigationBarTextStyle": "black",
 				"navigationBarTitleText": "设置中心"
+			}
+        }
+        ,{
+            "path" : "pages/category/category",
+            "style" : {
+				"navigationBarBackgroundColor": "#fdfbfb",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "全部类目"
 			}
         }
     ],
