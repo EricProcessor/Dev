@@ -327,11 +327,14 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		/* #ifdef MP-WEIXIN */
+		justify-content: flex-start;
+		/* #endif */
 		position: fixed;
 		top: 0;
 		z-index: 10;
 		background-color: #ffffff;
-		/*  #ifdef  APP-PLUS  */
+		/*  #ifdef  APP-PLUS|| MP-WEIXIN  */
 		top: var(--status-bar-height);
 		/*  #endif  */
 		.tlwok-icon{
@@ -351,7 +354,7 @@
 		margin-top: var(--status-bar-height);
 		/*  #endif  */
 	}
-	.active{color:#e4093c; font-weight: bold;}
+	.active{color:#e4393c; font-weight: bold;}
 	.uni-swiper-tab{border: none;background-color: #FFFFFF;}
 	.orderBox{
 		height: 100%;
