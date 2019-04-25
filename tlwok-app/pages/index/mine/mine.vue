@@ -1,5 +1,16 @@
 <template>
 	<view class="mine">
+		<!-- 自定义导航头开始 -->
+		<view class="status_bar">  
+			<view class="top_view"></view>  
+		</view>  
+		<view class="header">
+			<view style="margin:0 auto;font-size: 32upx;font-weight: 700;">
+				个人中心
+			</view>
+		</view>
+		<view class="place"></view>
+		<!-- 自定义导航头结束 -->
 		<view class="topCon">
 			<view class="settings">	
 				<a href="" @tap="changeRole">切换为卖家</a>
@@ -105,8 +116,9 @@ page{
 	.topCon{
 		width: 100%;
 		height: 300upx;
-		 background-image: linear-gradient(45deg, #ffb516, #ff4545);
-		 .settings{
+		background-image: linear-gradient(45deg, #ffb516, #ff4545);
+		margin-top: 84upx;
+		.settings{
 			 display: flex;
 			 justify-content: space-between;
 			 a{

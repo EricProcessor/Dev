@@ -67,7 +67,6 @@
 	.page-body {
 		display: flex;
 	}
-
 	.nav {
 		display: flex;
 		width: 100%;

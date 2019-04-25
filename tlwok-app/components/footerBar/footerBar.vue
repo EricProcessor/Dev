@@ -1,7 +1,7 @@
 <template>
 	<view class="footer-bar">
 		<view class="footer_item"
-			v-for="(item,index) in footerList" 
+			v-for="(item,index) in footerList" :key="index"
 			:data-type="index" 
 			:class="[index == currentIndex ? 'itemActive' : '']"
 			:style="'width:'+width+'%'"
@@ -28,7 +28,7 @@
 			}
 		},
 		mounted (){
-			let List = [{title:0},{title:1},{title:2},{title:3},{title:4}];
+			let List = [{title:0},{title:1},{title:2},{title:3}];
 			this.footerList = List;
 			this.width = 100/List.length;
 // 			uni.request({

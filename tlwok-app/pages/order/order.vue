@@ -308,35 +308,7 @@
 </script>
 
 <style lang="scss" scoped>
-.status_bar {  
-	    height: var(--status-bar-height);  
-	    width: 100%;  
-	    background-color: #FFFFFF;  
-	}  
-	.top_view {  
-	    height: var(--status-bar-height);  
-	    width: 100%;  
-	    position: fixed;  
-	    background-color: #FFFFFF;  
-	    top: 0;  
-	    z-index: 999;  
-	}  
 	.header{
-		width: 100%;
-		height: 88upx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		/* #ifdef MP-WEIXIN */
-		justify-content: flex-start;
-		/* #endif */
-		position: fixed;
-		top: 0;
-		z-index: 10;
-		background-color: #ffffff;
-		/*  #ifdef  APP-PLUS|| MP-WEIXIN  */
-		top: var(--status-bar-height);
-		/*  #endif  */
 		.tlwok-icon{
 			font-size: 46upx;
 			padding: 0 20upx;
@@ -347,12 +319,6 @@
 				font-size: 25upx;
 			}	
 		}
-	}
-	.place {
-		background-color: #ffffff;
-		/*  #ifdef  APP-PLUS  */
-		margin-top: var(--status-bar-height);
-		/*  #endif  */
 	}
 	.active{color:#e4393c; font-weight: bold;}
 	.uni-swiper-tab{border: none;background-color: #FFFFFF;}
@@ -366,7 +332,6 @@
 					flex-direction: column;
 					justify-content: center;
 					align-items: center;
-					// height: 100%;
 					.tlwicon-text{
 						font-size: 200upx;
 						color: #cccccc;

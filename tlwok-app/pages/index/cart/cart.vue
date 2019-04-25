@@ -1,7 +1,21 @@
 <template>
-	<scroll-view class="" scroll-y="true">
-		我是购物车页
-	</scroll-view>
+	<view>
+		<!-- 自定义导航头开始 -->
+		<view class="status_bar">  
+			<view class="top_view"></view>  
+		</view>  
+		<view class="header">
+			<view style="margin:0 auto;font-size: 32upx;font-weight: 700;">
+				购物车
+			</view>
+		</view>
+		<view class="place"></view>
+		<!-- 自定义导航头结束 -->
+		<scroll-view class="" scroll-y="true">
+			
+		</scroll-view>
+	</view>
+	
 </template>
 
 <script>
