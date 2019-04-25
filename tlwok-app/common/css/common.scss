@@ -1,0 +1,67 @@
+	page {
+		background-color: #F1F0F5;
+		height: 100%;
+	}
+	/*自定义导航头部公用样式*/
+	.status_bar{
+		height: var(--status-bar-height);  
+		width: 100%;  
+		background-color: #FFFFFF;
+		.top_view {  
+		    height: var(--status-bar-height);  
+		    width: 100%;  
+		    position: fixed;  
+		    background-color: #FFFFFF;  
+		    top: 0;  
+		    z-index: 999;  
+		}
+	}
+	.header{
+		width: 100%;
+		height: 88upx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		/* #ifdef MP-WEIXIN */
+		justify-content: flex-start;
+		/* #endif */
+		position: fixed;
+		top: 0;
+		z-index: 10;
+		background-color: #ffffff;
+		/*  #ifdef  APP-PLUS|| MP-WEIXIN  */
+		top: var(--status-bar-height);
+		/*  #endif  */
+	}
+	.place {
+		background-color: #ffffff;
+		/*  #ifdef  APP-PLUS  */
+		margin-top: var(--status-bar-height);
+		/*  #endif  */
+	}
+	/*页面无list时样式*/
+	.noList{
+		padding: 200upx 0;
+		.icon{
+			text-align: center;
+			margin-bottom: 40upx;
+			i{
+				width: 360upx;
+				height: 360upx;
+				line-height: 360upx;
+				font-size: 200upx;
+				color: #fff;
+				display: inline-block;
+				background: #D5DADD;
+				border-radius: 50%;
+			}
+		}
+		.text{
+			text-align: center;
+			view{
+				padding: 0 100upx;
+				font-size: 36upx;
+				color: #999;
+			}
+		}
+	}
