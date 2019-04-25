@@ -2,12 +2,21 @@
 	<view class="mine">
 		<view class="topCon">
 			<view class="settings">	
-				<a href="" @tap="changeRole()">切换为卖家</a>
+				<a href="" @tap="changeRole">切换为卖家</a>
 				<text @tap="settings" class="tlwok-icon">&#xe68a;</text>
 			</view>
 			<view class="userHead">
-				<image src="../../../static/image/head.jpg" mode=""></image>
-				<text>usdh17712xqwxx</text>
+				<template v-if="!isLogin">
+					<image src="/static/image/head.jpg" mode=""></image>
+					<view class="userLogin">
+						<view @tap="userTo('login')">登录</view>
+						<view @tap="userTo('register')">注册</view>
+					</view>
+				</template>
+				<template v-else>
+					<image src="/static/image/head.jpg" mode=""></image>
+					<text>{{userName}}</text>
+				</template>
 			</view>
 		</view>
 		<view class="orderInfo">
@@ -29,6 +38,8 @@
 	export default {
 		data() {
 			return {
+				isLogin:false,
+				userName:"sadasd",
 				orderInfoData:[
 						{id:1,ordericon:'tlwok-icon tlwicon-vipcard',ordertitle:'待付款',orderlink:'/pages/order/order?item=1'},
 						{id:2,ordericon:'tlwok-icon tlwicon-deliver',ordertitle:'待收货',orderlink:'/pages/order/order?item=2'},
@@ -57,9 +68,22 @@
 					animationDuration: 200
 				});
 			},
-			web:function(){
+			userTo:function(index){
+				let link = '';
+				switch (index){
+					case 'login':
+						link = '/pages/login/login'
+						break;
+					case 'register':
+					link = '/pages/register/register'
+						break;
+					default:
+						break;
+				}
 				uni.navigateTo({
-					url:'/pages/test'
+					url: link,
+					animationType: 'pop-in',
+					animationDuration: 200
 				})
 			},
 			orderSel: function(link){
@@ -113,6 +137,21 @@ page{
 			 text{
 				 color: #ffffff;
 				 font-size: 30upx;
+			 }
+			 .userLogin{
+				 display: flex;
+				 justify-content: space-between;
+				 view{
+					 display: inline-block;
+					 width: 160upx;
+					 height: 50upx;
+					 line-height: 50upx;
+					 text-align: center;
+					 color: #fff;
+					 margin: 10upx 20upx;
+					 border:2upx solid #fff;	
+					 box-sizing: border-box;
+				 }
 			 }
 		 }
 	}

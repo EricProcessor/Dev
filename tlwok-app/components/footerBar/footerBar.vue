@@ -4,6 +4,7 @@
 			v-for="(item,index) in footerList" 
 			:data-type="index" 
 			:class="[index == currentIndex ? 'itemActive' : '']"
+			:style="'width:'+width+'%'"
 			@tap="changeItems($event)">
 			<image :src="index == currentIndex?item.pic_url:item.default_pic_url" mode=""></image>
 			<view>{{item.title}}</view>
@@ -16,27 +17,31 @@
 		data (){
 			return {
 				currentIndex: 0,
-				footerList: []
+				footerList: [],
+				width:0,
 			}
 		},
 		methods:{
 			changeItems: function (e){
-				this.currentIndex = e;
+				this.currentIndex = e.currentTarget.dataset.type;
 				this.$emit('currentValue', this.currentIndex)
 			}
 		},
 		mounted (){
-			uni.request({
-				url: '/api/indexfloor',
-				method: 'GET',
-				dataType: 'json',
-				success: (res) => {
-					if(res.data){
-						let List = res.data.result.floors[14].data;
-						this.footerList = List;
-					}
-				}
-			});
+			let List = [{title:0},{title:1},{title:2},{title:3},{title:4}];
+			this.footerList = List;
+			this.width = 100/List.length;
+// 			uni.request({
+// 				url: '/api/indexfloor',
+// 				method: 'GET',
+// 				dataType: 'json',
+// 				success: (res) => {
+// 					if(res.data){
+// 						let List = res.data.result.floors[14].data;
+// 						this.footerList = List;
+// 					}
+// 				}
+// 			});
 		}
 	}
 </script>
@@ -55,7 +60,6 @@
 		box-sizing: border-box;
 		.footer_item{
 			float: left;
-			width: ;
 			text-align: center;
 			text-align: center;
 			font-size: 24upx;

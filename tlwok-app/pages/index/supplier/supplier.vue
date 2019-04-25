@@ -1,7 +1,7 @@
 <template>
-	<scroll-view class="" scroll-y="true">
-		我是购物车页
-	</scroll-view>
+	<view>
+		我是供应商页
+	</view>
 </template>
 
 <script>
