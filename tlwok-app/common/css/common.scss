@@ -35,7 +35,7 @@
 	}
 	.place {
 		background-color: #ffffff;
-		/*  #ifdef  APP-PLUS  */
+		/*  #ifdef  APP-PLUS || MP-WEIXIN || H5 */
 		margin-top: var(--status-bar-height);
 		/*  #endif  */
 	}
