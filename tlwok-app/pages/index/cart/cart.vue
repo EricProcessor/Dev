@@ -112,6 +112,7 @@
 				headerTop:null,
 				statusTop:null,
 				selectedList:[],
+				isShopselected:false,
 				isAllselected:false,
 				goodsList:[{
 					shopName:"乐活文具",
@@ -298,16 +299,25 @@
 				this.isAllselected = this.selectedList.length == this.goodsList.length && this.goodsList.length>0;
 				this.sum();
 			},
+			//获取全部商品数量
+			getGoodsNum:function (){
+				let goodsNum = 0;
+				for(let k = 0; k < this.goodsList.length;k++){
+					goodsNum += this.goodsList[k].goods.length
+				}
+				return goodsNum
+			},
 			// 选中店铺
 			shopSelected(index){
 				let item = this.goodsList[index];
 				item.selected = item.selected?false:true;
-				for(let i=0; i<item.goods.length; i++){
-					item.goods[i].selected = item.goods[i].selected?false:true;
+				for(let j = 0; j < item.goods.length; j++){
+					item.goods[j].selected = item.selected?true:false;
+					let i = this.selectedList.indexOf(item.goods[j].id);
+					if(i>-1){this.selectedList.splice(i, 1)}
+					if(item.goods[j].selected){this.selectedList.push(item.goods[j].id)}
 				}
-				let i = this.selectedList.indexOf(item.id);
-				i>-1?this.selectedList.splice(i, 1):this.selectedList.push(item.id);
-				this.isAllselected = this.selectedList.length == this.goodsList[index].goods.length;
+				this.isAllselected = this.selectedList.length == this.getGoodsNum()?true:false;
 				this.sum();
 			},
 			// 选中商品
@@ -316,7 +326,17 @@
 				item.selected = item.selected?false:true;
 				let i = this.selectedList.indexOf(item.id);
 				i>-1?this.selectedList.splice(i, 1):this.selectedList.push(item.id);
-				this.isAllselected = this.selectedList.length == this.goodsList[index].goods.length;
+				//所有商品被选中--全选按钮被选中
+				this.isAllselected = this.selectedList.length == this.getGoodsNum()?true:false;
+				//选中店铺内所有商品-店铺相应被选中
+				for(let j=0;j<this.goodsList[index].goods.length;j++){
+					if(!this.goodsList[index].goods[j].selected){
+						this.goodsList[index].selected = false;
+						break;
+					}else{
+						this.goodsList[index].selected = true;
+					}
+				}
 				this.sum();
 			},
 			//全选
@@ -449,8 +469,8 @@
 				.menu{
 					position: absolute;
 					width: 30%;
-					height: 100%;
-					right: 0;
+					height: 99%;
+					right: 1upx;
 					display: flex;
 					justify-content: center;
 					align-items: center;
@@ -508,7 +528,6 @@
 						}
 						.info{
 							width: 100%;
-							height: 22vw;
 							overflow: hidden;
 							display: flex;
 							flex-wrap: wrap;
@@ -536,13 +555,10 @@
 								display: flex;
 								align-items: center;
 								padding: 0 10upx;
-								border-radius: 15upx;
-								margin-bottom: 20vw;
+								margin: 10upx 0;
 							}
 							.price-number{
-								position: absolute;
 								width: 100%;
-								bottom: 0upx;
 								display: flex;
 								justify-content: space-between;
 								align-items: flex-end;
