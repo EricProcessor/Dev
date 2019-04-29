@@ -157,6 +157,14 @@
 				"navigationBarTitleText": "售后/退款"
 			}
         }
+        ,{
+            "path" : "pages/shop/shop",
+            "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "商家店铺"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

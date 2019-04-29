@@ -28,14 +28,19 @@
 					<!-- 商铺title -->
 					<view>
 						<!-- 商铺checkbox -->
-						<view class="shopTitle">
-							<view class="checkbox-box" @tap="shopSelected(index)">
-								<view class="checkbox">
-									<view :class="[shopList.selected?'on':'']"></view>
+						<view class="shopTitle" @tap="toShop(shopList.shopId)">
+							<view class="titleLeft">
+								<view class="checkbox-box" @tap="shopSelected(index)">
+									<view class="checkbox">
+										<view :class="[shopList.selected?'on':'']"></view>
+									</view>
 								</view>
+								<i class="tlwok-icon">&#xe676</i>
+								<view class="shopName">{{shopList.shopName}}</view>
 							</view>
-							<i class="tlwok-icon">&#xe676</i>
-							<view class="shopName">{{shopList.shopName}}</view>
+							<view>
+								<i class="tlwok-icon" style="">&#xe6a3</i>
+							</view>
 						</view>
 						<!-- 商品title -->
 						<view class="goodsItem" v-for="(item,index1) in shopList.goods" :key="index1" >
@@ -70,7 +75,7 @@
 													<view class="icon jian"></view>
 												</view>
 												<view class="input" @tap.stop="discard">
-													<input type="number" v-model="item.number" @input="sum" />
+													<input disabled="true" type="number" v-model="item.number" @input="sum" />
 												</view>
 												<view class="add"  @tap.stop="add(index,index1)">
 													<view class="icon jia"></view>
@@ -116,6 +121,7 @@
 				isAllselected:false,
 				goodsList:[{
 					shopName:"乐活文具",
+					shopId:12213,
 					selected:false,
 					goods:[{
 						id:1,
@@ -133,6 +139,7 @@
 				},{
 					shopName:"乐活文具",
 					selected:false,
+					shopId:124435,
 					goods:[{
 						id:3,
 						img:'http://img-b2b.jcloudcs.com/2430f2d4-2d52-4de1-9ce4-e9bf408ed019.jpg',
@@ -148,6 +155,7 @@
 					}]
 				},{
 					shopName:"乐活文具",
+					shopId:1213,
 					selected:false,
 					goods:[{
 						id:5,
@@ -242,7 +250,14 @@
 			},
 			//控制左滑删除效果-end
 			
-			
+			//店铺跳转
+			toShop:function (shopId){
+				uni.navigateTo({
+					url: "/pages/shop/shop?shopId="+shopId,
+					animationType: 'pop-in',
+					animationDuration: 200
+				});
+			},
 			//商品跳转
 			toGoods(e){
 				uni.showToast({title: '商品'+e.id,icon:"none"});
@@ -439,7 +454,7 @@
 		.shopList{
 			.shopTitle{
 				display: flex;
-				justify-content: flex-start;
+				justify-content: space-between;
 				padding: 0 20upx;
 				i{
 					height: 80upx;
@@ -447,11 +462,15 @@
 					display: inline-block;
 					margin-left:20upx;
 				}
-				.shopName{
-					font-size: 32upx;
-					height: 80upx;
-					line-height: 80upx;
-					margin-left: 10upx;
+				.titleLeft{
+					display: flex;
+					justify-content: flex-start;
+					.shopName{
+						font-size: 32upx;
+						height: 80upx;
+						line-height: 80upx;
+						margin-left: 10upx;
+					}
 				}
 			}
 			.goodsItem{
@@ -497,10 +516,9 @@
 					}
 					background-color: #fff;
 					.checkbox-box{
-						padding-left: 20upx;
+						padding:0 20upx;
 						flex-shrink: 0;
 						height: 22vw;
-						margin-right: 20upx;
 					}
 					position: absolute;
 					width: 100%;
@@ -552,6 +570,7 @@
 								background-color: #f3f3f3;
 								color: #a7a7a7;
 								height: 30upx;
+								line-height: 30upx;
 								display: flex;
 								align-items: center;
 								padding: 0 10upx;
@@ -652,7 +671,7 @@
 				min-width: 160upx;
 				padding: 0 30upx;
 				height: 100upx;
-				background-color: #f06c7a;
+				background-color: #e4393c;
 				color: #fff;
 				display: flex;
 				justify-content: center;
