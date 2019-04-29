@@ -17,6 +17,13 @@
 				"navigationBarTitleText": "商品列表"
 			}
 		},{
+			"path" : "pages/goods/goodsDetail",
+			"style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "商品详情"
+			}
+		},{
 			"path" : "pages/category/category",
 			"style" : {
 				"navigationBarBackgroundColor": "#FFFFFF",
@@ -123,7 +130,7 @@
 							{
 								"fontSrc": "/static/titleIcon.ttf",
 								"fontSize": "14px",
-								"text": "月结店铺"
+								"text": "授信店铺"
 							}
 						]
 					}

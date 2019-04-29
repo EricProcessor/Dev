@@ -122,13 +122,15 @@ page{
 			 display: flex;
 			 justify-content: space-between;
 			 a{
-				margin: 20upx;
+				margin:30upx 20upx;
 				font-size: 20upx;
 				color: #fff;
 				background: rgba(0,0,0,.2);
 				border-radius: 24upx;
 				text-decoration: none;
 				padding: 14upx;
+				height: 20upx;
+				line-height: 20upx;
 			 }
 			 text{
 				 color: #ffffff;

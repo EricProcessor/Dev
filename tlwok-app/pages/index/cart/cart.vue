@@ -28,18 +28,22 @@
 					<!-- 商铺title -->
 					<view>
 						<!-- 商铺checkbox -->
-						<view class="shopTitle" @tap="toShop(shopList.shopId)">
-							<view class="titleLeft">
-								<view class="checkbox-box" @tap="shopSelected(index)">
-									<view class="checkbox">
-										<view :class="[shopList.selected?'on':'']"></view>
+						<view class="shopTitle">
+							<view class="checkbox-box" @tap="shopSelected(index)">
+								<view class="checkbox">
+									<view :class="[shopList.selected?'on':'']"></view>
+								</view>
+							</view>
+							<view class="titleText">
+								<view class="left">
+									<i class="tlwok-icon">&#xe676</i>
+									<view class="shopName" @tap="toShop(shopList.shopId)">
+										{{shopList.shopName}}
 									</view>
 								</view>
-								<i class="tlwok-icon">&#xe676</i>
-								<view class="shopName">{{shopList.shopName}}</view>
-							</view>
-							<view>
-								<i class="tlwok-icon" style="">&#xe6a3</i>
+								<view>
+									<i class="tlwok-icon" style="">&#xe6a3</i>
+								</view>
 							</view>
 						</view>
 						<!-- 商品title -->
@@ -61,8 +65,8 @@
 									</view>
 								</view>
 								<!-- 商品信息 -->
-								<view class="goods-info" @tap="toGoods(item)">
-									<view class="img">
+								<view class="goods-info">
+									<view class="img" @tap="toGoods(item.id)">
 										<image :src="item.img"></image>
 									</view>
 									<view class="info">
@@ -259,10 +263,12 @@
 				});
 			},
 			//商品跳转
-			toGoods(e){
-				uni.showToast({title: '商品'+e.id,icon:"none"});
+			toGoods(goodId){
+				// uni.showToast({title: '商品'+e.id,icon:"none"});
 				uni.navigateTo({
-					url: '../goods/goods' 
+					url: "/pages/goods/goodsDetail?goodId="+goodId,
+					animationType: 'pop-in',
+					animationDuration: 200
 				});
 			},
 			//跳转确认订单页面
@@ -462,11 +468,17 @@
 					display: inline-block;
 					margin-left:20upx;
 				}
-				.titleLeft{
+				.titleText{
 					display: flex;
-					justify-content: flex-start;
+					justify-content: space-between;
+					width: 100%;
+					.left{
+						display: flex;
+						justify-content: flex-start;
+					}
 					.shopName{
 						font-size: 32upx;
+						font-weight: 700;
 						height: 80upx;
 						line-height: 80upx;
 						margin-left: 10upx;
