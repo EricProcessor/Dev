@@ -28,7 +28,7 @@
 			}
 		},
 		mounted (){
-			let List = [{title:0},{title:1},{title:2},{title:3}];
+			let List = [{title:"首页"},{title:"供应商"},{title:"购物车"},{title:"我的"}];
 			this.footerList = List;
 			this.width = 100/List.length;
 // 			uni.request({
@@ -68,7 +68,7 @@
 			image {
 				width: 46upx;
 				height:46upx;
-				margin: 10upx 0 4upx;
+				margin-top: 10upx;
 			}
 		}
 		.itemActive{

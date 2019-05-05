@@ -1,8 +1,6 @@
 <template>
-	<view>
-		<view class="list-cell">
-			
-		</view>
+	<view class="list-cell">
+		
 	</view>
 </template>
 

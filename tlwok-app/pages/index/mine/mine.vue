@@ -109,9 +109,7 @@
 </script>
 
 <style lang="scss">
-page{
-	background-color: #f5f5f5;
-}
+
 .mine{
 	.topCon{
 		width: 100%;
