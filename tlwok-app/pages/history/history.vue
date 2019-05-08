@@ -104,7 +104,6 @@
 			padding-left: 40upx;
 			line-height: 80upx;
 			font-size: 40upx;
-			border-bottom: 2upx solid #ccc;
 		}
 	}
 </style>

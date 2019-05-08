@@ -31,10 +31,17 @@
 			</view>
 		</view>
 		<view class="orderInfo">
-			<view class="details" v-for="item in orderInfoData" :key="item.id" @tap="orderSel(item.orderlink)">
-				<text :class="item.ordericon"></text>
-				<text>{{ item.ordertitle }}</text>
+			<view class="allOrder">
+				<view>我买到的货品</view>
+				<view>全部订单<i class="tlwok-icon">&#xe6a3</i></view>
 			</view>
+			<view class="orderOthers">
+				<view class="details" v-for="item in orderInfoData" :key="item.id" @tap="orderSel(item.orderlink)">
+					<text :class="item.ordericon"></text>
+					<text>{{ item.ordertitle }}</text>
+				</view>
+			</view>
+			
 		</view>
 		<view class="myFun">
 			<view class="details" v-for="item in myFunlist" :key="item.id" @tap="orderSel(item.myfunlink)">
@@ -53,10 +60,11 @@
 				userName:"sadasd",
 				orderInfoData:[
 						{id:1,ordericon:'tlwok-icon tlwicon-vipcard',ordertitle:'待付款',orderlink:'/pages/order/order?item=1'},
+						{id:6,ordericon:'tlwok-icon tlwicon-text',ordertitle:'待发货',orderlink:'/pages/order/order?item=4'},
 						{id:2,ordericon:'tlwok-icon tlwicon-deliver',ordertitle:'待收货',orderlink:'/pages/order/order?item=2'},
 						{id:3,ordericon:'tlwok-icon tlwicon-comment',ordertitle:'待评价',orderlink:'/pages/order/order?item=3'},
 						{id:4,ordericon:'tlwok-icon tlwicon-recharge',ordertitle:'售后/退款',orderlink:'/pages/afterSale/afterSale'},
-						{id:5,ordericon:'tlwok-icon tlwicon-calendar',ordertitle:'我的订单',orderlink:'/pages/order/order?item=0'}
+						// {id:5,ordericon:'tlwok-icon tlwicon-calendar',ordertitle:'我的订单',orderlink:'/pages/order/order?item=0'}
 					],
 				myFunlist:[
 					{id:1,myfunicon:"tlwok-icon tlwicon-like",myfuntitle:"收藏夹",myfunlink:"/pages/favorite/favorite"},
@@ -169,13 +177,24 @@
 	}
 	.orderInfo{
 		width: 100%;
-		height: 200upx;
 		background-color: #ffffff;
 		margin-top: 20upx;
 		margin-bottom: 20upx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		.allOrder{
+			display: flex;
+			justify-content: space-between;
+			height: 100upx;
+			line-height: 100upx;
+			border-bottom: 2upx solid #e2e7e9;
+			box-sizing: border-box;
+			padding: 0 20upx;
+		}
+		.orderOthers{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 160upx;
+		}
 		.details{
 			display: flex;
 			flex-direction: column;

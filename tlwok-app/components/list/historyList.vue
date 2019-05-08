@@ -53,6 +53,8 @@
 		height: 220upx;
 		justify-content: space-between;
 		padding: 20upx;
+		background: #fff;
+		margin-bottom: 10px;
 		.itemLeft{
 			padding-top: 10upx;
 			image{
@@ -63,7 +65,6 @@
 		.itemRight{
 			width: 100%;
 			padding-left: 20upx;
-			border-bottom: 1px dashed #ccc;
 			box-sizing: border-box;
 			.itemName{
 				height: 74upx;
