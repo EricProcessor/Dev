@@ -31,7 +31,7 @@
 			</view>
 		</view>
 		<view class="orderInfo">
-			<view class="allOrder">
+			<view class="allOrder" @tap="orderSel('/pages/order/order?item=0')">
 				<view>我买到的货品</view>
 				<view>全部订单<i class="tlwok-icon">&#xe6a3</i></view>
 			</view>
@@ -41,7 +41,6 @@
 					<text>{{ item.ordertitle }}</text>
 				</view>
 			</view>
-			
 		</view>
 		<view class="myFun">
 			<view class="details" v-for="item in myFunlist" :key="item.id" @tap="orderSel(item.myfunlink)">

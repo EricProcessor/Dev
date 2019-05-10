@@ -83,7 +83,6 @@
 				}
 			}
 			.newsContext{
-				height: 40upx;
 				font-size: 24upx;
 				text-overflow: ellipsis;
 				display: -webkit-box;
