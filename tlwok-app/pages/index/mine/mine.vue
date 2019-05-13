@@ -182,11 +182,14 @@
 		.allOrder{
 			display: flex;
 			justify-content: space-between;
+			align-items: center;
+			flex-wrap: nowrap;
+			width: 100%;
 			height: 100upx;
-			line-height: 100upx;
 			border-bottom: 2upx solid #e2e7e9;
 			box-sizing: border-box;
 			padding: 0 20upx;
+			i{display: inline-block}
 		}
 		.orderOthers{
 			display: flex;
