@@ -28,20 +28,22 @@
 			}
 		},
 		mounted (){
-			let List = [{title:"首页"},{title:"供应商"},{title:"购物车"},{title:"我的"}];
-			this.footerList = List;
-			this.width = 100/List.length;
-// 			uni.request({
-// 				url: '/api/indexfloor',
-// 				method: 'GET',
-// 				dataType: 'json',
-// 				success: (res) => {
-// 					if(res.data){
-// 						let List = res.data.result.floors[14].data;
-// 						this.footerList = List;
-// 					}
-// 				}
-// 			});
+			uni.request({
+				url: '/api/m/indexfloor',
+				method: 'GET',
+				dataType: 'json',
+				success: (res) => {
+					if(res.data.success){
+						let result = JSON.parse(res.data.result)
+						for(let i = 0; i < result.floors.length; i++){
+							if(result.floors[i].type == "navigation_sys_module"){
+								this.footerList = result.floors[i].data;
+								this.width = 100/result.floors[i].data.length;
+							}
+						}
+					}
+				}
+			});
 		}
 	}
 </script>

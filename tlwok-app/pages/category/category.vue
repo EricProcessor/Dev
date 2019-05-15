@@ -64,6 +64,9 @@
 </script>
 
 <style>
+	.container{
+		height: 100%;
+	}
 	.page-body {
 		display: flex;
 	}
