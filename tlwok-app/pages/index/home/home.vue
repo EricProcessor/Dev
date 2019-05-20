@@ -7,11 +7,11 @@
 		<view class="header">
 			<view class="headerColor" :style="{opacity:options}"></view>
 			<view class="iconCon">
-				<view class="fl"><i class="tlwok-icon">&#xe700</i><text>分类</text></view>
-				<view class="searchIpt"><input type="text" value="" disabled="disabled"/></view>
-				<view class="msg"><i class="tlwok-icon">&#xe6bc</i><text>消息</text></view>
+				<view class="fl" @tap="toPages($event)" data-pages="/pages/category/category"><i class="tlwok-icon tlwicon-sort"></i><text>分类</text></view>
+				<view class="searchIpt" @tap="toPages"><input type="text" value="" disabled="disabled"/></view>
+				<view class="msg" @tap="toPages($event)" data-pages="/pages/message/message"><i class="tlwok-icon tlwicon-message"></i><text>消息</text></view>
 			</view>
-		</view>
+		</view>`
 		<view class="place"></view>
 		<!-- 自定义导航头结束 -->
 		<view class="home">
@@ -19,7 +19,7 @@
 			<view class="swiper">
 				<view class="swiper-box">
 					<swiper circular="true" autoplay="true" @change="swiperChange">
-						<swiper-item v-for="(swiper,index) in swiperList" :key="swiper.index">
+						<swiper-item v-for="(swiper) in swiperList" :key="swiper.index">
 							<image :src="swiper.pic_url" @tap="toSwiper(swiper)"></image>
 						</swiper-item>
 					</swiper>
@@ -74,6 +74,15 @@
 			}
 		},
 		methods:{
+			//头部跳转
+			toPages:function (e){
+				let url = e.target.dataset.pages;
+				uni.navigateTo({
+					url: url,
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
+			},
 			//轮播图跳转
 			toSwiper(e) {
 				uni.showToast({ title: e.src, icon: 'none' });
@@ -85,7 +94,7 @@
 		},
 		mounted (){
 			uni.request({
-				url: '/api/m/indexfloor',
+				url: this.$apiUrl+'/m/indexfloor',
 				method: 'GET',
 				dataType: 'json',
 				success: (res) => {
@@ -217,7 +226,7 @@
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				items:4;
+				// items:4;
 				background: #ffffff;
 				.categoryItem{
 					width: 25%;
