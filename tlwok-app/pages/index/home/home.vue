@@ -7,9 +7,9 @@
 		<view class="header">
 			<view class="headerColor" :style="{opacity:options}"></view>
 			<view class="iconCon">
-				<view class="fl" @tap="toPages($event)" data-pages="/pages/category/category"><i class="tlwok-icon">&#xe700</i><text>分类</text></view>
-				<view class="searchIpt" @tap="toPages"><input type="text" value="" disabled="disabled"/></view>
-				<view class="msg" @tap="toPages($event)" data-pages="/pages/message/message"><i class="tlwok-icon">&#xe6bc</i><text>消息</text></view>
+				<view class="fl"><i class="tlwok-icon">&#xe700</i><text>分类</text></view>
+				<view class="searchIpt"><input type="text" value="" disabled="disabled"/></view>
+				<view class="msg"><i class="tlwok-icon">&#xe6bc</i><text>消息</text></view>
 			</view>
 		</view>
 		<view class="place"></view>
@@ -74,15 +74,6 @@
 			}
 		},
 		methods:{
-			//头部跳转
-			toPages:function (e){
-				let url = e.target.dataset.pages;
-				uni.navigateTo({
-					url: url,
-					animationType: 'pop-in',
-					animationDuration: 200
-				})
-			},
 			//轮播图跳转
 			toSwiper(e) {
 				uni.showToast({ title: e.src, icon: 'none' });
