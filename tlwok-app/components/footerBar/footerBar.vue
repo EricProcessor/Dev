@@ -29,7 +29,7 @@
 		},
 		mounted (){
 			uni.request({
-				url: '/api/m/indexfloor',
+				url: this.$apiUrl+'/m/indexfloor',
 				method: 'GET',
 				dataType: 'json',
 				success: (res) => {
