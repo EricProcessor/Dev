@@ -5,8 +5,11 @@
 			<view class="top_view"></view>  
 		</view>  
 		<view class="header">
-			<view style="margin:0 auto;font-size: 32upx;font-weight: 700;">
-				首页
+			<view class="headerColor" :style="{opacity:options}"></view>
+			<view class="iconCon">
+				<view class="fl" @tap="toPages($event)" data-pages="/pages/category/category"><i class="tlwok-icon">&#xe700</i><text>分类</text></view>
+				<view class="searchIpt" @tap="toPages"><input type="text" value="" disabled="disabled"/></view>
+				<view class="msg" @tap="toPages($event)" data-pages="/pages/message/message"><i class="tlwok-icon">&#xe6bc</i><text>消息</text></view>
 			</view>
 		</view>
 		<view class="place"></view>
@@ -41,7 +44,8 @@
 			</view>
 			<!-- 商品图 -->
 			<view class="pic" v-for="(items,index) in picList" :key="index">
-				<view class="item" v-for="(item,index0) in items.data" :key="index0">
+				<view class="picItem" v-for="(item,index0) in items.data" :key="index0"
+					:style="[{width: items.width + '%'}]">
 					<image :src="item.pic_url" mode=""></image>
 				</view>
 			</view>
@@ -63,7 +67,22 @@
 				picList:[]
 			};
 		},
+		props: {
+			options: {
+				type: Number,
+				default: true
+			}
+		},
 		methods:{
+			//头部跳转
+			toPages:function (e){
+				let url = e.target.dataset.pages;
+				uni.navigateTo({
+					url: url,
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
+			},
 			//轮播图跳转
 			toSwiper(e) {
 				uni.showToast({ title: e.src, icon: 'none' });
@@ -90,9 +109,10 @@
 							}
 							//商品图
 							if(result.floors[i].type == "pic_sys_module"){
+								let picWidth = 100/Number(result.floors[i].col)
+								result.floors[i].width = picWidth;
 								this.picList.push(result.floors[i])
 							}
-							console.log(this.picList)
 						}
 					}
 				}
@@ -104,15 +124,60 @@
 <style scoped lang="scss">
 	.content{
 		height: 100%;
+		//头部导航部分
+		.header{
+			background: transparent;
+			color: #ffffff;
+			.headerColor{
+				background: #c91523;
+				position: absolute;
+				top: 0;
+				width: 100%;
+				height: 88upx;
+				z-index: 11;
+			}
+			.iconCon{
+				position: relative;
+				z-index: 12;
+				display: flex;
+				justify-content: space-between;
+				flex-wrap: nowrap;
+				width: 100%;
+				.fl,.msg{
+					width: 80upx;
+					display: flex;
+					align-items: center;
+					flex-wrap: wrap;
+					padding:0 10upx;
+					font-size: 24upx; 	
+					justify-content: center;
+					i{
+						font-size: 48upx;
+					}
+				}
+				.searchIpt{
+					width: 80%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					input{
+						width: 100%;
+						height: 60upx;
+						background: #ffffff;
+						padding-left: 20upx;
+						border-radius: 20upx;
+					}
+				}
+			}
+		}
+		//内容部分
 		.home{
-			margin-top: 88upx;
 			padding-bottom: 100upx;
 			.swiper,.category,.pic{
 				margin-bottom: 20upx;
 			}
 			.swiper {
 				width: 100%;
-				margin-top: 10upx;
 				display: flex;
 				justify-content: center;
 				.swiper-box {
@@ -145,8 +210,8 @@
 						align-items: center;
 						justify-content: center;
 						.dots {
-							width: 20upx;
-							height: 20upx;
+							width: 10upx;
+							height: 10upx;
 							border-radius: 50%;
 							margin: 0 6upx;
 							background-color: rgba(255, 255, 255, .4);
@@ -180,14 +245,13 @@
 			.pic{
 				display: flex;
 				justify-content: flex-start;
-				.item{
+				flex-wrap: wrap;
+				.picItem{
 					overflow: hidden;
-					width: 25%;
 					image{
 						width: 100%;
-						min-height: 128upx;
+						height: 240upx;
 					}
-					
 				}
 			}
 		}

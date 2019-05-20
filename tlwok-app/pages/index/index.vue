@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-        <Home v-if="page_code=='0'"></Home>
+        <Home v-if="page_code=='0'" :options="opacity"></Home>
         <Supplier v-if="page_code=='1'"></Supplier>
 		<!-- <Category v-if="page_code=='2'"></Category> -->
 		<Cart v-if="page_code=='3'"></Cart>
@@ -19,7 +19,8 @@
 	export default {
 		data() {
 			return {
-				page_code: '0'
+				page_code: '0',
+				opacity:0
 			}
 		},
 		components:{
@@ -32,6 +33,20 @@
 		},
 		onLoad() {
 			
+		},
+		onPageScroll (obj){
+			if(this.page_code == 0){
+				if(this.opacity < 1 && obj.scrollTop > 0){
+					this.opacity = obj.scrollTop * 0.005
+				}else{
+					if(this.opacity >= 1){
+						this.opacity = 1
+					}
+					if(obj.scrollTop == 0){
+						this.opacity = 0
+					}
+				}
+			}
 		},
 		methods: {
 			currentValue: function (value){
