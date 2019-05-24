@@ -11,7 +11,7 @@
 				<view class="searchIpt" @tap="toPages"><input type="text" value="" disabled="disabled"/></view>
 				<view class="msg" @tap="toPages($event)" data-pages="/pages/message/message"><i class="tlwok-icon tlwicon-message"></i><text>消息</text></view>
 			</view>
-		</view>`
+		</view>
 		<view class="place"></view>
 		<!-- 自定义导航头结束 -->
 		<view class="home">
