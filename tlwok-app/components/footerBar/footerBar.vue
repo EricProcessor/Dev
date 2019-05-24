@@ -14,11 +14,17 @@
 
 <script>
 	export default{
+		props:{
+			footerList:{
+				type:Array
+			},
+			width:{
+				type:Number
+			}
+		},
 		data (){
 			return {
 				currentIndex: 0,
-				footerList: [],
-				width:0,
 			}
 		},
 		methods:{
@@ -27,24 +33,6 @@
 				this.$emit('currentValue', this.currentIndex)
 			}
 		},
-		mounted (){
-			uni.request({
-				url: this.$apiUrl+'/m/indexfloor',
-				method: 'GET',
-				dataType: 'json',
-				success: (res) => {
-					if(res.data.success){
-						let result = JSON.parse(res.data.result)
-						for(let i = 0; i < result.floors.length; i++){
-							if(result.floors[i].type == "navigation_sys_module"){
-								this.footerList = result.floors[i].data;
-								this.width = 100/result.floors[i].data.length;
-							}
-						}
-					}
-				}
-			});
-		}
 	}
 </script>
 

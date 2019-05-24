@@ -1,15 +1,11 @@
 import Vue from 'vue'
 import App from './App'
+import config from './utils/config.js'
 
 Vue.config.productionTip = false
 //配置公共接口api前缀
-console.log(uni.getSystemInfoSync())
-let system = uni.getSystemInfoSync().platform
-if(system == "ios" || system == "android"){
-	Vue.prototype.$apiUrl = "http://m-new-dev.tlwok.com";
-}else{
-	Vue.prototype.$apiUrl = "/api";
-}
+Vue.prototype.$apiUrl = config.httpApi
+
 
 App.mpType = 'app'
 

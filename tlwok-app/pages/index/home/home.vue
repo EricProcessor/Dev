@@ -11,7 +11,7 @@
 				<view class="searchIpt" @tap="toPages"><input type="text" value="" disabled="disabled"/></view>
 				<view class="msg" @tap="toPages($event)" data-pages="/pages/message/message"><i class="tlwok-icon tlwicon-message"></i><text>消息</text></view>
 			</view>
-		</view>`
+		</view>
 		<view class="place"></view>
 		<!-- 自定义导航头结束 -->
 		<view class="home">
@@ -57,20 +57,22 @@
 	export default {
 		data() {
 			return {
-				//轮播图
-				swiperList:[],
 				currentSwiper: 0,
-				//分类导航
-				categoryList:[],
 				categoryWidth:0,
-				//商品图
-				picList:[]
 			};
 		},
 		props: {
 			options: {
 				type: Number,
-				default: true
+			},
+			picList:{
+				type:Array,
+			},
+			categoryList:{
+				type:Array,
+			},
+			swiperList:{
+				type:Array,
 			}
 		},
 		methods:{
@@ -92,32 +94,6 @@
 				this.currentSwiper = event.detail.current;
 			}
 		},
-		mounted (){
-			uni.request({
-				url: this.$apiUrl+'/m/indexfloor',
-				method: 'GET',
-				dataType: 'json',
-				success: (res) => {
-					if(res.data.success){
-						let result = JSON.parse(res.data.result)
-						for(let i = 0; i < result.floors.length-1; i++){
-							//轮播图
-							result.floors[i].type == "banner_sys_module"?this.swiperList = result.floors[i].data:'';
-							//分类导航
-							if(result.floors[i].type == "icon_sys_module"){
-								this.categoryList = result.floors[i].data;
-							}
-							//商品图
-							if(result.floors[i].type == "pic_sys_module"){
-								let picWidth = 100/Number(result.floors[i].col)
-								result.floors[i].width = picWidth;
-								this.picList.push(result.floors[i])
-							}
-						}
-					}
-				}
-			});
-		}
 	}
 </script>
 
