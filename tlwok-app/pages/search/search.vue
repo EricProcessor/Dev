@@ -5,64 +5,90 @@
 			<view class="top_view"></view>  
 		</view> 
     <view class="content">
-      <view class="sarechAbout">
-        <view class="leftBox">
-          <view class="list">
-            <view class="pro selectName">产品</view>
-            <view class="vendor selectName">供货商</view>
+       <view class="topBar">
+          <view class="left" @tap="back"><i class="tlwok-icon tlwicon-back"></i></view>
+          <view class="input-view">
+            <view class="list"  @tap="selectElse">
+              <view class="name">
+                <view class="pro">产品</view>
+                <view class="vendor">供销商</view>
+              </view>
+              <view class="downIcon tlwok-icon tlwicon-unfold"></view>
+            </view>
+            <input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
+            <uni-icon type="search" size="22" color="#666666"></uni-icon>
           </view>
-          <view class="tlwok-icon tlwicon-unfold"></view>
-        </view>
-        <!-- <view class="rightBox">
-          <input class="searchInput" type="search" value="" placeholder="搜索">
-        </view> -->
-      </view>
+          <view class="right"><i class="tlwok-icon tlwicon-more_light"></i></view>
+       </view>
     </view> 
   </view>
 </template>
 <script>
+import uniIcon from '@/components/uni-icon/uni-icon.vue'
 export default {
   data(){
     return {}
-  }
+  },
+  methods:{
+    back(){
+      uni.navigateBack({
+					delta: 1
+			})
+    },
+    selectElse(){
+      console.log(123)
+    }
+  },
+  components: {
+			uniIcon
+	}
 }
 </script>
 <style lang="scss" scoped>
+  view {
+		font-size: 28upx;
+		line-height: inherit
+	}
 .content{
-  .sarechAbout{
+  .topBar{
     display: flex;
-    background: #eee;
-    width: 80%;
-    position: absolute;
-    top:-72upx;
-    left: 72upx;
-    z-index: 1111;
-    .leftBox{
+    background: #fff;
+    .left,.right{
       display: flex;
-      width: 84upx;
-      padding: 0 8upx;
-      .list{
-        height: 56upx;
-        overflow: hidden;
-        .selectName{
-          height: 56upx;
-          line-height: 56upx;
-          font-size: 28upx;
-          color: #1a1a1a;
-          text-align: center;
-        }
-      }
-      
-      
+      width: 88upx;
+      justify-content: center;
+      align-items: center;
     }
-    .rightBox{
-      // border: 1px solid red;
-      .searchInput{
-        border:1px solid #eee;
-        background: #fff;
+    .input-view {
+      width: 76%;
+      display: flex;
+      background-color: #e7e7e7;
+      height: 30px;
+      border-radius: 15px;
+      padding: 0 2%;
+      flex-wrap: nowrap;
+      margin: 7px 0;
+      line-height: 30px;
+      .uni-icon {
+        line-height: 30px !important;
+      }
+      .input {
+        height: 30px;
+        line-height: 30px;
+        width: 94%;
+        padding: 0 3%;
+      }
+      .list{
+        display: flex;
+        width: 200upx;
+        text-align: center;
+        .name{
+          height: auto;
+          overflow: hidden;
+          color: #333;
+        }
       }
     }
   }
- 
 }
 </style>

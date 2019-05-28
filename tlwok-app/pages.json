@@ -192,9 +192,10 @@
     },{
       "path": "pages/search/search",
       "style": {
-        "navigationBarBackgroundColor": "#FFFFFF",
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": ""
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleNView": false
+        }
       }
     }
   ],

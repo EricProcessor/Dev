@@ -2,17 +2,17 @@
 	<view class="Content">
 		<view class="loginForm">
 			<view class="loginItem">
-				<input type="text" value="" placeholder="用户名/手机号" />
-				<i class="tlwok-icon">&#xe736</i>
+				<input type="text"  v-model="userInfo.account" placeholder="用户名/手机号" />
+				<i class="tlwok-icon tlwicon-people"></i>
 			</view>
 			<view class="loginItem">
-				<input type="text" value="" placeholder="请输入密码" />
-				<i class="tlwok-icon">&#xe6c0</i>
+				<input type="password" v-model="userInfo.password" placeholder="请输入密码" />
+				<i class="tlwok-icon tlwicon-lock"></i>
 			</view>
 			<view class="loginItem forgetPwd">
 				<span @tap="togetPass">忘记密码？</span>
 			</view>
-			<view class="loginItem">
+			<view class="loginItem" @tap="loginIn">
 				<button type="primary">登录</button>
 			</view>
 		</view>
@@ -20,7 +20,7 @@
 			<span>其他方式登录</span>
 		</view>
 		<view class="wxLogin" @tap="loginWx" v-if="aouthWx">
-			<i class="tlwok-icon">&#xe73f</i>
+			<i class="tlwok-icon tlwicon-weixin"></i>
 		</view>
 		<view class="toRegister">
 			还没有账号？<span @tap="toRegister">立即注册→</span>
@@ -29,10 +29,17 @@
 </template>
 
 <script>
+import md5 from 'js-md5'
+import { loginUser } from "@/utils/request"
+
 	export default {
 		data() {
 			return {
-				aouthWx: false
+        aouthWx: false,
+        userInfo:{
+          account:'',
+          password:''
+        }
 			};
 		},
 		onLoad: function() {
@@ -41,6 +48,11 @@
 			// #endif
 		},
 		methods: {
+      async loginIn(){
+        this.userInfo.password = md5(this.userInfo.password)
+        const res = await loginUser(this.userInfo)
+        console.log(res)
+      },
 			toRegister: function() {
 				uni.navigateTo({
 					url: '/pages/register/register',
