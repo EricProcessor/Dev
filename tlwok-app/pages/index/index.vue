@@ -10,6 +10,7 @@
 </template>
 
 <script>
+	import md5 from 'js-md5'
 	import Home from './home/home.vue'
 	import Supplier from './supplier/supplier.vue'
 	// import Category from './category/category.vue'
@@ -49,8 +50,9 @@
 			footerBar
 		},
 		onReady() {
-      this.getCurrentData()
-      this.getShops(this.supply)
+		  this.getCurrentData()
+		  this.getShops(this.supply);
+		  console.log(md5('11111'))
 		},
 		onPageScroll(obj) {
 			if (this.page_code == 0) {
