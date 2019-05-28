@@ -1,5 +1,5 @@
 import config from './config.js'
-const tlwok_token = uni.getStorageSync('tlwok_token')
+const tlwok_token = uni.getStorageSync('tlwok_token').data
 async function get(url,data){
 	return new Promise((resolve,reject)=>{
 		uni.request({
@@ -70,13 +70,13 @@ export function getIndexFloor(){
 }
 // 获得所有供货商
 export function getShopsList(supply){
-  return get('/sec/shop',{ supply }).then(res =>{
+  return get('/sec/shop',supply).then(res =>{
     return res
   })
 }
 // 登录
 export function loginUser(userInfo){
-  return post('auth/login',userInfo).then(res =>{
+  return post('/auth/login',userInfo).then(res =>{
     return res
   })
 }
