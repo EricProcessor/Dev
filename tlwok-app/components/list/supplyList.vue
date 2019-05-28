@@ -18,26 +18,28 @@
 <script>
 	import uniRate from '@/components/uni-rate/uni-rate.vue'
 	export default{
-		components:{
-			uniRate
-		},
-		props:{
+    props:{
 			options: {
-				type: Object,
-				default: function(e) {
-					return {}
-				}
+				type: Object
 			}
-		},
-		methods:{
-			toShop:function (shopId){
+    },
+    data(){
+      return {}
+    },
+    methods:{
+			toShop(shopId){
 				uni.navigateTo({
 					url: "/pages/shop/shop?shopId="+shopId,
 					animationType: 'pop-in',
 					animationDuration: 200
 				});
 			}
-		}
+		},
+		components:{
+			uniRate
+		},
+	
+		
 	}
 </script>
 
@@ -48,8 +50,8 @@
 		height: 300upx;
 		background: #fff;
 		display: flex;
-		justify-content: space-between;
 		.left{
+      margin: 0 20upx;
 			image{
 				width: 200upx;
 				height: 200upx;
@@ -64,6 +66,7 @@
 			}
 			.shopName{
 				color: #1e1e1e;
+        font-weight: 700;
 			}
 			.introduce{
 				line-height: 36upx;

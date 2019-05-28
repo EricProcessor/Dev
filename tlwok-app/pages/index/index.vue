@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<Home v-if="page_code=='0'" :picList="picList" :categoryList="categoryList" :swiperList="swiperList" :options="opacity"></Home>
-		<Supplier v-if="page_code=='1'"></Supplier>
+		<Supplier v-if="page_code=='1'" :supply_list='supply_list'></Supplier>
 		<!-- <Category v-if="page_code=='2'"></Category> -->
 		<Cart v-if="page_code=='3'"></Cart>
 		<Mine v-if="page_code=='4'"></Mine>
@@ -17,7 +17,7 @@
 	import Mine from './mine/mine.vue'
 	import footerBar from '@/components/footerBar/footerBar.vue'
 	import {
-		getIndexFloor
+		getIndexFloor,getShopsList
 	} from '@/utils/request.js'
 	export default {
 		data() {
@@ -31,7 +31,13 @@
 				//商品图
 				picList:[],
 				width:0,
-				footerList:[]
+        footerList:[],
+        supply:{
+          words:'',
+          pageNum:1,
+          pageSize:10
+        },
+        supply_list:[]
 			}
 		},
 		components: {
@@ -43,7 +49,8 @@
 			footerBar
 		},
 		onReady() {
-			this.getCurrentData()
+      this.getCurrentData()
+      this.getShops(this.supply)
 		},
 		onPageScroll(obj) {
 			if (this.page_code == 0) {
@@ -64,7 +71,7 @@
 				this.page_code = value
 			},
 			async getCurrentData() {
-				const res = await getIndexFloor();
+        const res = await getIndexFloor();
 				if (res.data.success) {
 					let result = JSON.parse(res.data.result)
 					result.floors.forEach(item =>{
@@ -89,7 +96,15 @@
 						}
 					}
 				}
-			}
+      },
+      // 获得店铺数据
+      async getShops(supply){
+        supply = JSON.stringify(supply)
+        const result = await getShopsList(supply)
+        if(result.data.success){
+          this.supply_list = result.data.result
+        }
+      }
 		}
 	}
 </script>

@@ -60,18 +60,18 @@
             "urlCheck" : false
         },
         "usingComponents" : true
+    },
+    "h5" : {
+        "devServer": {
+			"port":8080,
+            "disableHostCheck": true,
+            "proxy": {
+                "/m": {
+                    "target": "http://m-new-dev.tlwok.com/",
+                    "changeOrigin": true,
+                    "secure": false
+                }
+            }
+        }
     }
-//     "h5" : {
-//         "devServer": {
-// 			"port":8888,
-//             "disableHostCheck": true,
-//             "proxy": {
-//                 "/api": {
-//                     "target": "http://m-new-dev.tlwok.com",
-//                     "changeOrigin": true,
-//                     "secure": false
-//                 }
-//             }
-//         }
-//     }
 }

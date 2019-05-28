@@ -8,7 +8,7 @@
 			<view class="headerColor" :style="{opacity:options}"></view>
 			<view class="iconCon">
 				<view class="fl" @tap="toPages($event)" data-pages="/pages/category/category"><i class="tlwok-icon tlwicon-sort"></i><text>分类</text></view>
-				<view class="searchIpt" @tap="toPages"><input type="text" value="" disabled="disabled"/></view>
+				<view class="searchIpt"><input type="text"  @tap="toPages($event)" data-pages="/pages/search/search" value="" /></view>
 				<view class="msg" @tap="toPages($event)" data-pages="/pages/message/message"><i class="tlwok-icon tlwicon-message"></i><text>消息</text></view>
 			</view>
 		</view>
@@ -158,18 +158,18 @@
 				justify-content: center;
 				.swiper-box {
 					width: 100%;
-					height: 700upx;
+					height: 420upx;
 					overflow: hidden;
 					//兼容ios，微信小程序
 					position: relative;
 					z-index: 1;
 					swiper {
 						width: 100%;
-						height: 700upx;
+						height: 420upx;
 						swiper-item {
 							image {
 								width: 100%;
-								height: 700upx;
+								height: 100%;
 							}
 						}
 					}

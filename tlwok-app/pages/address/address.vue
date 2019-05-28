@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="addressItem" v-for="items in addressList">
+		<view class="addressItem" v-for="items in addressList" :key="items.index">
 			<view class="addressTop">
 				<view class="itemInfo">
 					<view class="">{{items.contactPerson}}</view>
@@ -10,19 +10,19 @@
 			</view>
 			<view class="addressBottom">
 				<view>
-					<label class="radio">
-						<radio value="" :checked="items.isDefault" color="#e4393c"/>设为默认地址
+					<label class="radio" @tap="checkOther">
+						<radio value="" style="transform:scale(0.8)" :checked="items.isDefault" color="#e4393c"/>设为默认地址
 					</label>
 				</view>
 				<view class="addressBtn">
-					<span @tap="toEditAddress(items.id)"><i class="tlwok-icon">&#xe649</i>编辑</span>
-					<span><i class="tlwok-icon">&#xe6b4</i>删除</span>
+					<span @tap="toEditAddress(items.id)"><i class="tlwok-icon tlwicon-edit"></i>编辑</span>
+					<span @tap="deteleAddress(items.id)"><i class="tlwok-icon tlwicon-delete"></i>删除</span>
 				</view>
 			</view>
 		</view>
 		<view class="btnCon">
 			<view class="address" @tap="toEditAddress('')">
-				<span><i class="tlwok-icon">&#xe6da</i>新建收货地址</span>
+				<span><i class="tlwok-icon tlwicon-add"></i>新建收货地址</span>
 			</view>	
 		</view>
 	</view>
@@ -53,6 +53,21 @@
 				uni.navigateTo({
 					url: '/pages/editAddress/editAddress?addressId='+addressId+''
 				});
+				
+			},
+			checkOther(){
+				let isCheck = true
+				this.addressList.forEach(item=>{
+					if(!item.isDefault){
+						item.isDefault = isCheck
+					}else{
+						item.isDefault = false
+					}
+				})
+			},
+			deteleAddress(addrId){
+				let addressId = addrId || ''
+				console.log('删除....')
 			}
 		}
 	}

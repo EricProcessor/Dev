@@ -1,5 +1,4 @@
 import config from './config.js'
-
 async function get(url,data){
 	return new Promise((resolve,reject)=>{
 		uni.request({
@@ -47,7 +46,13 @@ async function post(url, data) {
 }
 
 export function getIndexFloor(){
-	return get('/m/indexfloor',{}).then(res=>{
+	return get('/indexfloor',{}).then(res=>{
 		return res
 	})
+}
+// 获得所有供货商
+export function getShopsList(supply){
+  return get('/sec/shop',{ supply }).then(res =>{
+    return res
+  })
 }
