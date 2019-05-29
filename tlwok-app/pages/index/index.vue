@@ -33,6 +33,7 @@
 				width:0,
         footerList:[],
         supply:{
+          words:'',
           pageNum:1,
           pageSize:10
         },
@@ -99,8 +100,9 @@
       // 获得店铺数据
       async getShops(supply){
         const result = await getShopsList(supply)
-        if(result.data.success){
-          this.supply_list = result.data.result
+        console.log(result)
+        if(result.statusCode == 200){
+          this.supply_list = result.data.list
         }
       }
 		}
