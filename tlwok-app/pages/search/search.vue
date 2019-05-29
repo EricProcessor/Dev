@@ -33,8 +33,11 @@
           <i class="tlwok-icon tlwicon-more_light"></i>
         </view>
       </view>
-      <view class="history" v-if="!isHistory">
-        <view class="hotTitle">搜索历史</view>
+      <view class="history" v-if="isHistory">
+        <view class="hotTitle pos1">
+          搜索历史
+          <view @tap="deleteAll" class="deleteAll tlwok-icon tlwicon-delete_light"></view>
+        </view>
         <view class="hotList">
           <view
             class="hotItem"
@@ -76,7 +79,7 @@ export default {
         pageSize: 10
       },
       keywords: "", //搜索内容
-      isHistory: false, //是否显示历史记录
+      isHistory: true, //是否显示历史记录
       historyData: [
         {
           id: 1,
@@ -154,6 +157,21 @@ export default {
       //   animationType: "pop-in",
       //   animationDuration: 200
       // });
+    },
+    deleteAll() {
+      const _this = this;
+      uni.showModal({
+        //需要修改
+        title: "提示",
+        content: "确定要清空历史记录吗",
+        success: function(res) {
+          if (res.confirm) {
+            _this.isHistory = false;
+          } else if (res.cancel) {
+            _this.isHistory = true;
+          }
+        }
+      });
     }
   },
   components: {
@@ -187,6 +205,7 @@ view {
       flex-wrap: nowrap;
       margin: 7px 0;
       line-height: 30px;
+      font-size: 24upx;
       .uni-icon {
         line-height: 30px !important;
       }
@@ -235,9 +254,15 @@ view {
   .history {
     padding: 0 30upx;
     .hotTitle {
-      padding: 20upx 0;
+      margin: 20upx 0;
       font-size: 32upx;
       color: #666;
+      .deleteAll {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+      }
     }
     .hotList {
       display: flex;
@@ -249,6 +274,8 @@ view {
         border-radius: 8upx;
         padding: 8upx 16upx;
         margin: 0 10upx 10upx 0;
+        font-size: 24upx;
+        color: #1a1a1a;
       }
     }
   }
