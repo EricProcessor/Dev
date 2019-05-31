@@ -29,7 +29,7 @@
           >
           <uni-icon type="search" size="22" @tap="getResult" color="#666666"></uni-icon>
         </view>
-        <view class="right">
+        <view class="right" @tap="showLink">
           <i class="tlwok-icon tlwicon-more_light"></i>
         </view>
       </view>
@@ -119,6 +119,30 @@ export default {
     back() {
       uni.navigateBack({
         delta: 1
+      });
+    },
+    showLink() {
+      uni.showActionSheet({
+        itemList: ["首页", "我的收藏"],
+        success: function(res) {
+          console.log("选中了第" + (res.tapIndex + 1) + "个按钮");
+          if (res.tapIndex == 0) {
+            uni.navigateTo({
+              url: "/pages/index/index",
+              animationType: "pop-in",
+              animationDuration: 200
+            });
+          } else {
+            uni.navigateTo({
+              url: "/pages/favorite/favorite",
+              animationType: "pop-in",
+              animationDuration: 200
+            });
+          }
+        },
+        fail: function(res) {
+          console.log(res.errMsg);
+        }
       });
     },
     getHistoryData() {

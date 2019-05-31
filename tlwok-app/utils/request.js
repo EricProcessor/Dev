@@ -1,5 +1,5 @@
 import config from './config.js'
-const tlwok_token = uni.getStorageSync('tlwok_token').data
+const tlwok_token = uni.getStorageSync('tlwok_token')
 async function get(url,data){
 	return new Promise((resolve,reject)=>{
 		uni.request({
@@ -8,7 +8,7 @@ async function get(url,data){
 			method:'get',
 			header: {
         "content-type": 'application/x-www-form-urlencoded',
-        "Authorization":tlwok_token
+        "token":tlwok_token
 			},
 			success:function(data){
         if(data.msg == 'nndn'){
@@ -77,6 +77,24 @@ export function getShopsList(supply){
 // 登录
 export function loginUser(userInfo){
   return post('/auth/login',userInfo).then(res =>{
+    return res
+  })
+}
+// 我的收藏 数量
+// export function getFavoritePro(){
+//   return get('/fav/getFavCount',{}).then(res=>{
+//     return res
+//   })
+// }
+// 我的收藏 商品
+export function getFavoritePro(favInfo){
+  return get('/fav/getItemFav',favInfo).then(res=>{
+    return res
+  })
+}
+// 我的收藏 店铺
+export function getFavoriteShop(favInfo){
+  return get('/fav/getShopFav',favInfo).then(res=>{
     return res
   })
 }

@@ -1,7 +1,7 @@
 <template>
 	<view class="item" @tap="toShop(options.shopId)">
 		<view class="left">
-			<image :src="options.shopLogo" mode=""></image>
+			<image :src="options.logoUrl" mode=""></image>
 		</view>
 		<view class="right">
 			<view class="shopName">{{options.shopName}}</view>

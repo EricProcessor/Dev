@@ -35,10 +35,6 @@
         type:Array
       }
     },
-    mounted(){
-      const arr = this.supplyList
-      console.log(arr)
-    },
 		data() {
 			return {
 				
