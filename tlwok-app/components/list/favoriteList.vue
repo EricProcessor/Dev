@@ -7,13 +7,13 @@
 		 :data-id="options.id">
 			<template v-if="index == 'goods'">
 				<view class="list-left" :data-type="index">
-					<image :src="options.mainPictureUrl" lazy-load="true" mode="heightFix"></image>
+					<image :src="options.describeUrl" lazy-load="true" mode="heightFix"></image>
 				</view>
 				<view class="list-right">
 					<view class="item itemName">{{options.itemName}}</view>
 					<view class="item itemSaleNum">成交: {{options.saleNum}} 笔 </view>
 					<view class="item itemShop">
-						<view><i class="tlwok-icon">&#xe676</i></view>
+						<view><i class="tlwok-icon tlwicon-shop"></i></view>
 						<view><span>天章自营店</span></view>
 					</view>
 					<view class="item itemPrice">
@@ -24,7 +24,7 @@
 			</template>
 			<template v-else :data-type="index">
 				<view class="list-left" :data-type="index">
-					<image :src="options.shopLogo" lazy-load="true" mode="heightFix"></image>
+					<image :src="options.logoUrl" lazy-load="true" mode="heightFix"></image>
 				</view>
 				<view class="list-right">
 					<view class="item itemName">{{options.shopName}}</view>
@@ -97,7 +97,8 @@
 			height: 200upx;
 			image{
 				width: 200upx;
-				height: 200upx;
+        height: 200upx;
+        border: 1px solid #eee;
 			}
 		}
 		.list-right{
@@ -130,7 +131,8 @@
 				}
 				.wholesale{
 					color: #666666;
-					font-size: 26upx;
+          font-size: 26upx;
+          padding-right: 10upx;
 				}
 			}
 			.itemIntroduce{

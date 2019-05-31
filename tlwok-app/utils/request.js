@@ -8,7 +8,7 @@ async function get(url,data){
 			method:'get',
 			header: {
         "content-type": 'application/x-www-form-urlencoded',
-        "Authorization":tlwok_token
+        "token":tlwok_token
 			},
 			success:function(data){
         if(data.msg == 'nndn'){
@@ -70,13 +70,31 @@ export function getIndexFloor(){
 }
 // 获得所有供货商
 export function getShopsList(supply){
-  return get('/sec/shop',{ supply }).then(res =>{
+  return get('/sec/shop',supply).then(res =>{
     return res
   })
 }
 // 登录
 export function loginUser(userInfo){
   return post('/auth/login',userInfo).then(res =>{
+    return res
+  })
+}
+// 我的收藏 数量
+// export function getFavoritePro(){
+//   return get('/fav/getFavCount',{}).then(res=>{
+//     return res
+//   })
+// }
+// 我的收藏 商品
+export function getFavoritePro(favInfo){
+  return get('/fav/getItemFav',favInfo).then(res=>{
+    return res
+  })
+}
+// 我的收藏 店铺
+export function getFavoriteShop(favInfo){
+  return get('/fav/getShopFav',favInfo).then(res=>{
     return res
   })
 }

@@ -99,10 +99,10 @@
       },
       // 获得店铺数据
       async getShops(supply){
-        supply = JSON.stringify(supply)
         const result = await getShopsList(supply)
-        if(result.data.success){
-          this.supply_list = result.data.result
+        console.log(result)
+        if(result.statusCode == 200){
+          this.supply_list = result.data.list
         }
       }
 		}
