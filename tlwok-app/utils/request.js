@@ -76,7 +76,7 @@ export function getShopsList(supply){
 }
 // 登录
 export function loginUser(userInfo){
-  return post('auth/login',userInfo).then(res =>{
+  return post('/auth/login',userInfo).then(res =>{
     return res
   })
 }
