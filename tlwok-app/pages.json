@@ -189,7 +189,8 @@
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "商家店铺"
       }
-    },{
+    },
+    {
       "path": "pages/search/search",
       "style": {
         "navigationStyle": "custom",
@@ -198,11 +199,7 @@
         }
       }
     }
-      ,{
-            "path" : "pages/user/user",
-            "style" : {}
-        }
-    ],
+  ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",

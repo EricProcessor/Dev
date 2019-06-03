@@ -1,12 +1,12 @@
 <template>
 	<view>
-		<view class="settingList"  v-for="items in settingList">
+		<view class="settingList"  v-for="(items,i) in settingList" :key="i">
 			<view>
 				<i class="tlwok-icon" :class="items.icon"></i>
 				<span>{{items.title}}</span>
 			</view>
 			<view>
-				<i class="tlwok-icon">&#xe6a3</i>
+				<i class="tlwok-icon tlwicon-right"></i>
 			</view>
 		</view>
 		<view class="btnCon">
