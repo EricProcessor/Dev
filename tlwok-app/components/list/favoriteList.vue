@@ -7,7 +7,7 @@
 		 :data-id="options.id">
 			<template v-if="index == 'goods'">
 				<view class="list-left" :data-type="index">
-					<image :src="options.describeUrl" lazy-load="true" mode="heightFix"></image>
+					<image :src="options.itemPicture[0].pictureUrl" lazy-load="true" mode="heightFix"></image>
 				</view>
 				<view class="list-right">
 					<view class="item itemName">{{options.itemName}}</view>

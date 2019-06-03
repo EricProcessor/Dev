@@ -41,7 +41,11 @@
 <script>
 import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
 import favoriteList from "@/components/list/favoriteList.vue";
-import { getFavoritePro, getFavoriteShop } from "@/utils/request";
+import {
+  getFavoritePro,
+  getFavoriteShop,
+  getFavoriteCount
+} from "@/utils/request";
 
 export default {
   components: {
@@ -98,6 +102,7 @@ export default {
   onReady() {
     this.getFavoriteData(this.favInfo);
     this.getFavoriteShops(this.favInfo);
+    this.getFavNumber(this.favInfo);
   },
   methods: {
     loadMore(e) {
@@ -161,6 +166,15 @@ export default {
         this.isClickChange = true;
         this.tabIndex = index;
       }
+    },
+    // 获得收藏数量
+    async getFavNumber(supply) {
+      const result = await getFavoriteCount(supply);
+      console.log(result)
+      // if (count.statusCode == 200) {
+      //     this.tabBars[0].number = count.data.list[0].item
+      //     this.tabBars[1].number = count.data.list[0].shop
+      // }
     },
     // 获得收藏商品数据
     async getFavoriteData(favInfo) {

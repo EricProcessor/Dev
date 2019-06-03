@@ -7,7 +7,7 @@
     <view class="content">
       <view class="topBar">
         <view class="left" @tap="back">
-          <i class="tlwok-icon tlwicon-back"></i>
+          <i class="tlwok-icon left-back tlwicon-back"></i>
         </view>
         <view class="input-view">
           <view class="list pos1">
@@ -27,10 +27,10 @@
             v-model="keywords"
             placeholder="输入搜索关键词"
           >
-          <uni-icon type="search" size="22" @tap="getResult" color="#666666"></uni-icon>
+          <uni-icon type="search" class="searchIcon" @tap="getResult" color="#666666"></uni-icon>
         </view>
         <view class="right" @tap="showLink">
-          <i class="tlwok-icon tlwicon-more_light"></i>
+          <i class="tlwok-icon showLink tlwicon-more_light"></i>
         </view>
       </view>
       <view class="history" v-if="isHistory">
@@ -65,7 +65,7 @@
 import uniIcon from "@/components/uni-icon/uni-icon.vue";
 
 export default {
-  data() {
+  data () {
     return {
       selectOption: "产品",
       productObj: {
@@ -114,17 +114,17 @@ export default {
       ] //热门搜索
     };
   },
-  onReady() {},
+  onReady () { },
   methods: {
-    back() {
+    back () {
       uni.navigateBack({
         delta: 1
-      });
+      })
     },
-    showLink() {
+    showLink () {
       uni.showActionSheet({
         itemList: ["首页", "我的收藏"],
-        success: function(res) {
+        success: function (res) {
           console.log("选中了第" + (res.tapIndex + 1) + "个按钮");
           if (res.tapIndex == 0) {
             uni.navigateTo({
@@ -140,59 +140,59 @@ export default {
             });
           }
         },
-        fail: function(res) {
-          console.log(res.errMsg);
+        fail: function (res) {
+          console.log(res.errMsg)
         }
       });
     },
-    getHistoryData() {
-      console.log(123);
+    getHistoryData () {
+      console.log(123)
     },
-    getHotSearchData() {
-      console.log(123);
+    getHotSearchData () {
+      console.log(123)
     },
-    isDown() {
+    isDown () {
       this.productObj.isShow == true
         ? (this.productObj.isShow = false)
-        : (this.productObj.isShow = true);
+        : (this.productObj.isShow = true)
     },
-    productBtn() {
-      this.selectOption = this.productObj.product;
-      this.productObj.isShow = false;
+    productBtn () {
+      this.selectOption = this.productObj.product
+      this.productObj.isShow = false
     },
-    supplyBtn() {
-      this.selectOption = this.productObj.supply;
-      this.productObj.isShow = false;
+    supplyBtn () {
+      this.selectOption = this.productObj.supply
+      this.productObj.isShow = false
     },
-    getResult() {
+    getResult () {
       //跳转搜索结果页--商品列表或店铺列表
-      console.log(this.keywords);
+      console.log(this.keywords)
       // uni.navigateTo({
       //   url: url,
       //   animationType: "pop-in",
       //   animationDuration: 200
       // });
     },
-    getKeywords(id) {
+    getKeywords (id) {
       //跳转该商品列表页或商品页
-      console.log(id);
+      console.log(id)
       // uni.navigateTo({
       //   url: url,
       //   animationType: "pop-in",
       //   animationDuration: 200
       // });
     },
-    deleteAll() {
+    deleteAll () {
       const _this = this;
       uni.showModal({
         //需要修改
         title: "提示",
         content: "确定要清空历史记录吗",
-        success: function(res) {
+        success: function (res) {
           if (res.confirm) {
-            _this.isHistory = false;
+            _this.isHistory = false
           } else if (res.cancel) {
-            _this.isHistory = true;
+            _this.isHistory = true
           }
         }
       });
@@ -204,10 +204,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-view {
-  font-size: 28upx;
-  line-height: inherit;
-}
 .content {
   .topBar {
     display: flex;
@@ -218,26 +214,33 @@ view {
       width: 88upx;
       justify-content: center;
       align-items: center;
+      .left-back,
+      .showLink {
+        font-size: 32upx;
+      }
     }
     .input-view {
       width: 90%;
       display: flex;
       background-color: #e7e7e7;
-      height: 30px;
-      border-radius: 15px;
+      height: 60upx;
+      border-radius: 30upx;
       padding: 0 2%;
       flex-wrap: nowrap;
-      margin: 7px 0;
-      line-height: 30px;
+      margin: 14upx 0;
+      line-height: 60upx;
       font-size: 24upx;
       .uni-icon {
-        line-height: 30px !important;
+        line-height: 60upx !important;
       }
       .input {
         height: 30px;
         line-height: 30px;
         width: 94%;
         padding: 0 3%;
+      }
+      .searchIcon {
+        font-size: 48upx !important;
       }
       .list {
         display: flex;
@@ -246,6 +249,9 @@ view {
           text-align: center;
           font-size: 28upx;
           top: 2upx;
+        }
+        .downIcon {
+          font-size: 32upx;
         }
         .name {
           width: 180upx;
@@ -256,7 +262,7 @@ view {
           border-radius: 12upx;
           position: absolute;
           top: 100upx;
-          left: 84upx;
+          left: 0upx;
           .pro {
             padding-top: 10upx;
           }
@@ -286,6 +292,7 @@ view {
         top: 0;
         right: 0;
         z-index: 1;
+        font-size: 32upx;
       }
     }
     .hotList {
