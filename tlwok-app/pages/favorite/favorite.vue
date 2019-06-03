@@ -52,7 +52,7 @@ export default {
     uniLoadMore,
     favoriteList
   },
-  data() {
+  data () {
     return {
       editStatus: 0,
       scrollLeft: 0,
@@ -81,7 +81,7 @@ export default {
       }
     };
   },
-  onNavigationBarButtonTap() {
+  onNavigationBarButtonTap () {
     let pages = getCurrentPages();
     let page = pages[pages.length - 1];
     this.editStatus = this.editStatus == 0 ? 1 : 0;
@@ -99,17 +99,17 @@ export default {
     });
     // #endif
   },
-  onReady() {
+  onReady () {
     this.getFavoriteData(this.favInfo);
     this.getFavoriteShops(this.favInfo);
     this.getFavNumber(this.favInfo);
   },
   methods: {
-    loadMore(e) {
+    loadMore (e) {
       this.favInfo.pageNum++;
       this.getFavoriteData(this.favInfo);
     },
-    async changeTab(e) {
+    async changeTab (e) {
       this.editStatus = 0;
       let index = e.detail.current;
       if (this.isClickChange) {
@@ -136,7 +136,7 @@ export default {
       this.isClickChange = false;
       this.tabIndex = index; //一旦访问data就会出问题
     },
-    getElSize(id) {
+    getElSize (id) {
       //得到元素的size
       return new Promise((res, rej) => {
         uni
@@ -154,7 +154,7 @@ export default {
           .exec();
       });
     },
-    async tapTab(index) {
+    async tapTab (index) {
       this.editStatus = 0;
       //点击tab-bar
       if (this.tabIndex === index) {
@@ -168,16 +168,18 @@ export default {
       }
     },
     // 获得收藏数量
-    async getFavNumber(supply) {
+    async getFavNumber (supply) {
       const result = await getFavoriteCount(supply);
-      console.log(result)
-      // if (count.statusCode == 200) {
-      //     this.tabBars[0].number = count.data.list[0].item
-      //     this.tabBars[1].number = count.data.list[0].shop
-      // }
+      if (result.statusCode == 200) {
+        result.data.result.forEach(item => {
+          this.tabBars[0].number = item.item
+          this.tabBars[1].number = item.shop
+        })
+
+      }
     },
     // 获得收藏商品数据
-    async getFavoriteData(favInfo) {
+    async getFavoriteData (favInfo) {
       const result = await getFavoritePro(favInfo);
       if (favInfo.pageNum == 1) {
         if (result.statusCode == 200) {
@@ -204,7 +206,7 @@ export default {
       }
     },
     // 获得收藏店铺数据
-    async getFavoriteShops(favInfo) {
+    async getFavoriteShops (favInfo) {
       const result = await getFavoriteShop(favInfo);
       // console.log(result);
       if (favInfo.pageNum == 1) {
@@ -231,7 +233,7 @@ export default {
         }
       }
     },
-    cancelCollect() {
+    cancelCollect () {
       this.editStatus = 0;
     }
   }
