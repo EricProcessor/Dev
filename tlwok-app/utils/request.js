@@ -134,3 +134,9 @@ export function getCouponList() {
     return res
   })
 }
+// 我的订单
+export function getOrderList(info) {
+  return post('/getOrderList',info).then(result => {
+    return result
+  })
+}

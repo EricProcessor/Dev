@@ -14,12 +14,21 @@
     <swiper :current="tabIndex" class="swiper-box" :duration="300" @change="changeTab">
       <swiper-item v-for="(coupons,index1) in couponItems" :key="index1">
         <scroll-view class="list" scroll-y @scrolltolower="loadMore(index1)">
-          <block v-for="(item,index2) in coupons" :key="index2">
-            <couponList :options="item" :index="index1"></couponList>
-          </block>
-          <!-- <view class="uni-tab-bar-loading">
-						{{tab.loadingText}}
-          </view>-->
+          <template v-if="coupons.length!=0">
+            <block v-for="(item,index2) in coupons" :key="index2">
+              <couponList :options="item.coupon" :index="index1"></couponList>
+            </block>
+          </template>
+          <template v-else>
+            <view class="noList">
+              <view class="icon">
+                <i class="tlwok-icon tlwicon-text"></i>
+              </view>
+              <view class="text">
+                <view>暂无数据...</view>
+              </view>
+            </view>
+          </template>
         </scroll-view>
       </swiper-item>
     </swiper>
@@ -41,20 +50,17 @@ export default {
       isClickChange: false,
       tabBars: [{
         name: '未使用',
-        status: '0',
-        number: 10,
+        number: 0,
         id: 'noused'
 
       }, {
-        name: '已使用',
-        status: '1',
-        number: 10,
-        id: 'used'
-      }, {
         name: '已过期',
-        status: '2',
-        number: 10,
+        number: 0,
         id: 'expired'
+      }, {
+        name: '已使用',
+        number: 0,
+        id: 'used'
       }],
       couponItems: []
     }
@@ -68,6 +74,12 @@ export default {
       if (res.statusCode == 200) {
         if (res.data.success) {
           this.couponItems = res.data.result
+          this.getLoop(this.couponItems.expire)
+          this.getLoop(this.couponItems.used)
+          this.getLoop(this.couponItems.valid)
+          this.tabBars[0].number = this.couponItems.valid.length
+          this.tabBars[1].number = this.couponItems.expire.length
+          this.tabBars[2].number = this.couponItems.used.length
         } else {
           uni.showToast({
             title: "数据请求失败",
@@ -137,7 +149,29 @@ export default {
         this.isClickChange = true;
         this.tabIndex = index;
       }
-    }
+    },
+    getLoop (data) {
+      data.forEach(item => {
+        console.log(item.coupon)
+        item.coupon.denomination = parseFloat(item.coupon.denomination / 100)
+        item.coupon.effectiveStartTime = this.formatDate(item.coupon.effectiveStartTime) //开始时间
+        item.coupon.effectiveEndTime = this.formatDate(item.coupon.effectiveEndTime) //结束时间
+      })
+    },
+    formatDate (date) {
+      let d = new Date(date).toLocaleString()
+      return d.split(' ')[0]
+      Date.prototype.toLocaleString = function () {
+        function addZero (num) {
+          if (num < 10)
+            return "0" + num;
+          return num;
+        }
+        // 按自定义拼接格式返回
+        return this.getFullYear() + "/" + addZero(this.getMonth() + 1) + "/" + addZero(this.getDate()) + " " +
+          addZero(this.getHours()) + ":" + addZero(this.getMinutes()) + ":" + addZero(this.getSeconds());
+      }
+    },
   }
 }
 </script>

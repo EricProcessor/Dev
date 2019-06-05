@@ -2,8 +2,8 @@
 	<view>
 		<view class="list-cell">
 			<view class="list-left" :class="index == 'noused' ? 'background1': 'background2'">
-				<view class="left-top">¥<span>{{options.price}}</span></view>
-				<view class="left-bottom">满{{options.priceRange}}元可用</view>
+				<view class="left-top">¥<span>{{options.denomination}}</span></view>
+				<view class="left-bottom">{{options.description}}</view>
 			</view>
 			<view class="list-right">
 				<view class="couponImage" v-show="index != 'noused'">
@@ -15,7 +15,7 @@
 					<view class="shopName">{{options.applicable_scope}}</view>
 				</view>
 				<view class="right-bottom" 
-				 :class="index != 'noused' ? 'font-disabled': ''">有效期至：<span>{{options.timeRange}}</span></view>
+				 :class="index != 'noused' ? 'font-disabled': ''">有效期至：<span>{{options.effectiveStartTime}}-{{options.effectiveEndTime}}</span></view>
 			</view>
 		</view>
 	</view>
@@ -26,15 +26,15 @@
 		props: {
 			options: {
 				type: Object,
-				default: function(e) {
-					return {}
-				}
 			},
 			index:{
 				type: String,
 				required: true,
 			}
-		},
+    },
+    onReady(){
+      console.log(this.options)
+    },
 		methods: {
 			
 		}
@@ -92,7 +92,6 @@
 					line-height: 140upx;
 					padding-left: 20upx;
 					.name{
-						padding-top: 30upx;
 						font-size: 30upx;
 						overflow: hidden;
 						text-overflow: ellipsis;
