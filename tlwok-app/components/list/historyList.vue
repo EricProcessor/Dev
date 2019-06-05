@@ -11,12 +11,12 @@
 					<span>成交：{{options.salenum}}笔</span>
 				</view>
 				<view class="itemShop">
-					<view><i class="tlwok-icon">&#xe676</i></view>
+					<view><i class="tlwok-icon tlwicon-shop"></i></view>
 					<view><span>{{options.shopName}}</span></view>
 				</view>
 				<view class="itemPrice">
-					<view class="price">¥ {{options.Price}}</view>
-					<view class="icon" @tap="addCart(options.itemId)"><i class="tlwok-icon">&#xe6af</i></view>
+					<view class="price">¥ {{options.minPrice}}~{{options.maxPrice}}</view>
+					<view class="icon" @tap="addCart(options.itemId)"><i class="tlwok-icon tlwicon-cart"></i></view>
 				</view>
 			</view>
 		</view>
@@ -83,18 +83,19 @@
 			.itemOther{
 				font-size: 26upx;
 				color: #999;
-				span{
-					margin-left: 20upx;
-				}
 			}
 			.itemShop{
 				display: flex;
 				justify-content: flex-start;
-				height: 40upx;
+        height: 40upx;
+        margin: 12upx 0;
 				view{
 					line-height: 40upx;
 					font-size: 26upx;
-					color: #999999;
+          color: #999;
+          span{
+            padding-left: 8upx;
+          }
 				}
 			}
 			.itemPrice{
@@ -107,7 +108,10 @@
 				.icon{
 					padding-right: 20upx;
 					font-size: 36upx;
-					color: #e4393c;
+          color: #e4393c;
+          i{
+            font-size: 44upx;
+          }
 				}
 			}
 		}

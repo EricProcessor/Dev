@@ -239,6 +239,10 @@
 							"navigationBarTitleText": "意见反馈"
 						}
         }
+        ,{
+            "path" : "pages/searchResult/searchResult",
+            "style" : {}
+        }
     ],
   "globalStyle": {
     "navigationBarTextStyle": "black",

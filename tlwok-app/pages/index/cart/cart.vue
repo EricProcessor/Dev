@@ -343,6 +343,7 @@
 			},
 			// 选中商品
 			goodsSelected(index,index1){
+        console.log(index,index1)
 				let item = this.goodsList[index].goods[index1];
 				item.selected = item.selected?false:true;
 				let i = this.selectedList.indexOf(item.id);

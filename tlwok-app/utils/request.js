@@ -98,3 +98,39 @@ export function getFavoriteShop(favInfo) {
     return res
   })
 }
+// 获得浏览记录 清空记录
+export function getHistoryList(info) {
+  return get('/visittrack/getlist', info).then(res => {
+    return res
+  })
+}
+export function removeAllHistory() {
+  return get('/visittrack/remove', {}).then(res => {
+    return res
+  })
+}
+// 金融服务
+export function getFinanceList(info) {
+  return get('/credit/queryCreditList', info).then(res => {
+    return res
+  })
+}
+// 我的消息-买家
+export function getBuyerMess(msg) {
+  return get('/u/get_msg_list', msg).then(res => {
+    return res
+  })
+}
+
+// 我的地址
+export function getAddress() {
+  return get('/add/getList', {}).then(res => {
+    return res
+  })
+}
+// 我的优惠券
+export function getCouponList() {
+  return get('/coupon/getCouponUseList', {}).then(res => {
+    return res
+  })
+}
