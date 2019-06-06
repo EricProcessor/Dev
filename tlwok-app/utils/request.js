@@ -38,7 +38,7 @@ async function post(url, data) {
       method: 'POST',
       header: {
         "content-type": 'application/x-www-form-urlencoded',
-        "Authorization": tlwok_token
+        "token": tlwok_token
       },
       data,
       success: function (data) {

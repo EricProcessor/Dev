@@ -33,7 +33,7 @@
 		<view class="orderInfo">
 			<view class="allOrder" @tap="orderSel('/pages/order/order?item=0')">
 				<view>我买到的货品</view>
-				<view>全部订单<i class="tlwok-icon">&#xe6a3</i></view>
+				<view>全部订单<i class="tlwok-icon tlwicon-right"></i></view>
 			</view>
 			<view class="orderOthers">
 				<view class="details" v-for="item in orderInfoData" :key="item.id" @tap="orderSel(item.orderlink)">
@@ -59,9 +59,9 @@
 				userName:"sadasd",
 				orderInfoData:[
 						{id:1,ordericon:'tlwok-icon tlwicon-vipcard',ordertitle:'待付款',orderlink:'/pages/order/order?item=1'},
-						{id:6,ordericon:'tlwok-icon tlwicon-text',ordertitle:'待发货',orderlink:'/pages/order/order?item=4'},
-						{id:2,ordericon:'tlwok-icon tlwicon-deliver',ordertitle:'待收货',orderlink:'/pages/order/order?item=2'},
-						{id:3,ordericon:'tlwok-icon tlwicon-comment',ordertitle:'待评价',orderlink:'/pages/order/order?item=3'},
+						{id:6,ordericon:'tlwok-icon tlwicon-text',ordertitle:'待发货',orderlink:'/pages/order/order?item=2'},
+						{id:2,ordericon:'tlwok-icon tlwicon-deliver',ordertitle:'待收货',orderlink:'/pages/order/order?item=3'},
+						{id:3,ordericon:'tlwok-icon tlwicon-comment',ordertitle:'待评价',orderlink:'/pages/order/order?item=4'},
 						{id:4,ordericon:'tlwok-icon tlwicon-recharge',ordertitle:'售后/退款',orderlink:'/pages/afterSale/afterSale'},
 						// {id:5,ordericon:'tlwok-icon tlwicon-calendar',ordertitle:'我的订单',orderlink:'/pages/order/order?item=0'}
 					],

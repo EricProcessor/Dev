@@ -43,7 +43,7 @@ export default {
   methods: {
     async getHistoryData (info) {
       let historyData = JSON.parse(localStorage.getItem('history'))
-      if (historyData.length != 0) {
+      if (historyData != null && historyData.length != 0) {
         this.historyList = historyData
       } else {
         const result = await getHistoryList(info)

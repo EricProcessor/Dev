@@ -40,24 +40,36 @@ import { getAddress } from '@/utils/request'
 export default {
   data () {
     return {
-      addressList: [{
-        contactPerson: "孙隐",
-        contactPhone: "13825604652",
-        fullAddress: "广东省 珠海市 香洲区 人民东路125",
-        id: 1002041,
-        isDefault: false
-      }]
+      addressList: []
     };
   },
-  onReady(){
+  onReady () {
     this.getAddressList()
   },
   methods: {
-    async getAddressList(){
+    async getAddressList () {
       const result = await getAddress()
-      console.log(result)
+      if (result.statusCode == 200) {
+        if (result.data.success) {
+          this.addressList = result.data.result
+          for (let i = 0; i < this.addressList.length; i++) {
+            if (i == 0) {
+              this.addressList[i].isDefault = true
+            } else {
+              this.addressList[i].isDefault = false
+            }
+          }
+
+        } else {
+          uni.showToast({
+            title: '数据获取失败...',
+            duration: 2000,
+            icon: 'none'
+          })
+        }
+      }
     },
-    toEditAddress: function (index) {
+    toEditAddress (index) {
       let addressId = index ? index : '';
       uni.navigateTo({
         url: '/pages/editAddress/editAddress?addressId=' + addressId + ''

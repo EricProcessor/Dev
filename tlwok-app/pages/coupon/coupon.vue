@@ -94,7 +94,6 @@ export default {
           icon: 'none'
         })
       }
-      console.log(this.couponItems)
     },
     loadMore (e) {
       // this.newsitems[e].loadingType = 1;
@@ -152,7 +151,6 @@ export default {
     },
     getLoop (data) {
       data.forEach(item => {
-        console.log(item.coupon)
         item.coupon.denomination = parseFloat(item.coupon.denomination / 100)
         item.coupon.effectiveStartTime = this.formatDate(item.coupon.effectiveStartTime) //开始时间
         item.coupon.effectiveEndTime = this.formatDate(item.coupon.effectiveEndTime) //结束时间
