@@ -91,26 +91,7 @@ export default {
   },
   onLoad: function (option) {
     this.tabIndex = option.item;
-    switch (Number(this.tabIndex)) {
-      case 0:
-        this.info.orderType = 0
-        break
-      case 1:
-        this.info.orderType = 10
-        break
-      case 2:
-        this.info.orderType = 20
-        break
-      case 3:
-        this.info.orderType = 30
-        break
-      case 4:
-        this.info.orderType = 991
-        break
-      case 5:
-        this.info.orderType = 99
-        break
-    }
+    this.judgeState(this.tabIndex)
   },
   onReady () {
     this.getOrder(this.info)
@@ -127,15 +108,59 @@ export default {
         delta: 1
       })
     },
-    getOrder (info) {
-      this.decomposeData(info)
+    async getOrder (info) {
+      const res = await getOrderList(info)
+      if (res.statusCode == 200) {
+        if (this.info.pageNum == 1 || this.info.pageNum <= this.allPages) {
+          let obj = {
+            0: 'all',
+            10: 'Pendingpayment',
+            20: 'toShipped',
+            30: 'beRecived',
+            99: 'succTrad',
+            991: 'beEvaluated'
+          }
+          Object.keys(obj).forEach((key) => {
+            if (this.info.orderType === parseInt(key)) {
+              if (this.info.pageNum == 1) {
+                this.orderitems[obj[key]] = this.cycleData(res.data.list)
+                this.allPages = res.data.pages
+              } else {
+                res.data.list.forEach(item => {
+                  item.addHide = true
+                  item.allCount = 0
+                  if (item.items.length != undefined) {
+                    item.items.forEach(sth => {
+                      if (item.items.length != 1 && item.items.length > 0) {
+                        item.allCount += sth.num
+                      } else {
+                        item.allCount = sth.num || 0
+                      }
+                    })
+                  }
+
+                  this.orderitems[obj[key]].push(item)
+                })
+              }
+            }
+          })
+        } else {
+          uni.showToast({
+            title: "没有更多数据了...",
+            duration: 2000,
+            icon: "none"
+          })
+        }
+      } else {
+        uni.showToast({
+          title: "数据请求失败",
+          duration: 2000,
+          icon: "none"
+        })
+      }
     },
     async tapTab (e) { //点击tab-bar
       let tabIndex = e.target.dataset.current;
-      console.log(tabIndex);
-      // 				if(this.newsitems[tabIndex].data.length === 0){
-      // 					this.addData(tabIndex)
-      // 				}
       if (this.tabIndex === tabIndex) {
         return false;
       } else {
@@ -145,14 +170,13 @@ export default {
         this.scrollLeft = tabBarScrollLeft;
         this.isClickChange = true;
         this.tabIndex = tabIndex;
-
+        this.judgeState(this.tabIndex)
+        this.getOrder(this.info)
       }
+
     },
     async changeTab (e) {
       let index = e.target.current;
-      // 				if(this.newsitems[index].data.length === 0){
-      // 					this.addData(index)
-      // 				}
       if (this.isClickChange) {
         this.tabIndex = index;
         this.isClickChange = false;
@@ -177,6 +201,8 @@ export default {
       }
       this.isClickChange = false;
       this.tabIndex = index; //一旦访问data就会出问题
+      this.judgeState(this.tabIndex)
+      this.getOrder(this.info)
     },
     getElSize (id) { //得到元素的size
       return new Promise((res, rej) => {
@@ -193,60 +219,14 @@ export default {
       this.info.pageNum++
       this.getOrder(this.info)
     },
-    // 数据分解
-    async decomposeData (info) {
-      const res = await getOrderList(info)
-      if (res.statusCode == 200) {
-        // console.log(res.data)       
-        if (this.info.pageNum == 1) {
-          switch (this.info.orderType) {
-            case 0:
-              this.orderitems.all = this.cycleData(res.data.list)
-              break
-            case 10:
-              this.orderitems.Pendingpayment = this.cycleData(res.data.list)
-              break
-            case 20:
-              this.orderitems.toShipped = this.cycleData(res.data.list)
-              break
-            case 30:
-              this.orderitems.beRecived = this.cycleData(res.data.list)
-              break
-            case 99:
-              this.orderitems.succTrad = this.cycleData(res.data.list)
-              break
-            case 991:
-              this.orderitems.beEvaluated = this.cycleData(res.data.list)
-              break
-          }
-          this.allPages = res.data.pages
-        } else if (this.info.pageNum <= this.allPages) {
-          res.data.list.forEach(item => {
-            this.orderitems.all.push(item)
-          })
-        } else {
-          uni.showToast({
-            title: "没有更多数据了...",
-            duration: 2000,
-            icon: "none"
-          })
-        }
-
-      } else {
-        uni.showToast({
-          title: "数据请求失败",
-          duration: 2000,
-          icon: "none"
-        })
-      }
-
-    },
     //遍历数据
     cycleData (data) {
       data.forEach(item1 => {
         item1.addHide = true
         item1.allCount = 0
+        console.log(item1.items)
         if (item1.items.length != undefined) {
+          console.log(item1.items.length)
           if (item1.items.length > 1) {
             item1.items.forEach(item2 => {
               item1.allCount += item2.num
@@ -262,7 +242,30 @@ export default {
 
       })
       return data
-    }
+    },
+    // 判断订单状态
+    judgeState (index) {
+      switch (Number(index)) {
+        case 0:
+          this.info.orderType = 0
+          break
+        case 1:
+          this.info.orderType = 10
+          break
+        case 2:
+          this.info.orderType = 20
+          break
+        case 3:
+          this.info.orderType = 30
+          break
+        case 4:
+          this.info.orderType = 991
+          break
+        case 5:
+          this.info.orderType = 99
+          break
+      }
+    },
   }
 }
 </script>
