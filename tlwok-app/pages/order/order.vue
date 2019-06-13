@@ -109,9 +109,10 @@ export default {
       })
     },
     async getOrder (info) {
+      const _this =this
       const res = await getOrderList(info)
       if (res.statusCode == 200) {
-        if (this.info.pageNum == 1 || this.info.pageNum <= this.allPages) {
+        if (_this.info.pageNum == 1 || _this.info.pageNum <= _this.allPages) {
           let obj = {
             0: 'all',
             10: 'Pendingpayment',
@@ -121,25 +122,27 @@ export default {
             991: 'beEvaluated'
           }
           Object.keys(obj).forEach((key) => {
-            if (this.info.orderType === parseInt(key)) {
-              if (this.info.pageNum == 1) {
-                this.orderitems[obj[key]] = this.cycleData(res.data.list)
-                this.allPages = res.data.pages
+            if (_this.info.orderType === parseInt(key)) {
+              if (_this.info.pageNum == 1) {
+                _this.orderitems[obj[parseInt(key)]] = _this.cycleData(res.data.list)
+                _this.allPages = res.data.pages
               } else {
                 res.data.list.forEach(item => {
                   item.addHide = true
                   item.allCount = 0
-                  if (item.items.length != undefined) {
+                  if (item.items.length != 0) {
                     item.items.forEach(sth => {
-                      if (item.items.length != 1 && item.items.length > 0) {
+                      if (item.items.length > 1) {
                         item.allCount += sth.num
                       } else {
-                        item.allCount = sth.num || 0
+                        item.allCount = sth.num
                       }
                     })
+                  } else {
+                    item.addHide = false
                   }
 
-                  this.orderitems[obj[key]].push(item)
+                  _this.orderitems[obj[parseInt(key)]].push(item)
                 })
               }
             }
@@ -215,7 +218,6 @@ export default {
       })
     },
     loadMore (index) {
-      console.log(index)
       this.info.pageNum++
       this.getOrder(this.info)
     },
@@ -224,23 +226,21 @@ export default {
       data.forEach(item1 => {
         item1.addHide = true
         item1.allCount = 0
-        console.log(item1.items)
-        if (item1.items.length != undefined) {
-          console.log(item1.items.length)
+        if (item1.items.length != 0) {
           if (item1.items.length > 1) {
             item1.items.forEach(item2 => {
               item1.allCount += item2.num
             })
-          } else if (item1.items.length == 1) {
+          } else {
             item1.items.forEach(item2 => {
               item1.allCount = item2.num
             })
-          } else {
-            item1.addHide = false
           }
+        } else {
+          item1.addHide = false
         }
-
       })
+
       return data
     },
     // 判断订单状态

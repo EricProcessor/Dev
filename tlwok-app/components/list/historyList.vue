@@ -1,19 +1,21 @@
 <template>
 	<view>
-		<view class="itemCon" @longtap="delHistory(options.itemId)">
-			<view class="itemLeft">
+		<view class="itemCon">
+			<view class="itemLeft" @tap="detailInfo(options.itemId)">
 				<image :src="options.picUrl" lazy-load="true" mode=""></image>
 			</view>
 			<view class="itemRight">
-				<view class="itemName">{{options.itemName}}</view>
-				<view class="itemOther">
-					{{options.shopAddress}}
-					<span>成交：{{options.salenum}}笔</span>
-				</view>
-				<view class="itemShop">
-					<view><i class="tlwok-icon tlwicon-shop"></i></view>
-					<view><span>{{options.shopName}}</span></view>
-				</view>
+        <view  @tap="detailInfo(options.itemId)">
+          <view class="itemName">{{options.itemName}}</view>
+          <view class="itemOther">
+            {{options.shopAddress}}
+            <span>成交：{{options.salenum}}笔</span>
+          </view>
+          <view class="itemShop">
+            <view><i class="tlwok-icon tlwicon-shop"></i></view>
+            <view><span>{{options.shopName}}</span></view>
+          </view>
+        </view>
 				<view class="itemPrice">
 					<view class="price">¥ {{options.minPrice}}~{{options.maxPrice}}</view>
 					<view class="icon" @tap="addCart(options.itemId)"><i class="tlwok-icon tlwicon-cart"></i></view>
@@ -27,18 +29,21 @@
 	export default {
 		props: {
 			options: {
-				type: Object,
-				default: function(e) {
-					return {}
-				}
+				type: Object,			
 			}
-		},
+    },
+    data(){
+      return{}
+    },
 		methods:{
-			delHistory:function (itemId){
-				console.log(itemId);
-				console.log("删除一条浏览记录")
+			detailInfo (itemId){
+        	uni.navigateTo({
+						url: '/pages/productDetail/productDetail?pid='+itemId,
+						animationType: 'pop-in',
+						animationDuration: 200
+					})
 			},
-			addCart:function (itemId){
+			addCart (itemId){
 				console.log(itemId);
 				console.log("加入购物车成功")
 			}

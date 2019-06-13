@@ -1,6 +1,6 @@
 {
     "name" : "妥了网",
-    "appid" : "__UNI__16211E9",
+    "appid" : "__UNI__6C8D250",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -62,14 +62,14 @@
         "usingComponents" : true
     },
     "h5" : {
-        "devServer": {
-			"port":8080,
-            "disableHostCheck": true,
-            "proxy": {
-                "/m": {
-                    "target": "http://m-new-dev.tlwok.com/",
-                    "changeOrigin": true,
-                    "secure": false
+        "devServer" : {
+            "port" : 8080,
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/m" : {
+                    "target" : "http://m-new-dev.tlwok.com/",
+                    "changeOrigin" : true,
+                    "secure" : false
                 }
             }
         }

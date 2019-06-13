@@ -230,20 +230,28 @@
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "修改支付密码"
       }
+    },
+    {
+      "path": "pages/setting/visitor/visitor",
+      "style": {
+        "navigationBarBackgroundColor": "#FFFFFF",
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "意见反馈"
+      }
+    },
+    {
+      "path": "pages/searchResult/searchResult",
+      "style": {}
+    },
+    {
+      "path": "pages/productDetail/productDetail",
+      "style": {
+        "navigationBarBackgroundColor": "#FFFFFF",
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "商品详情"
+      }
     }
-      ,{
-            "path" : "pages/setting/visitor/visitor",
-            "style" : {
-							"navigationBarBackgroundColor": "#FFFFFF",
-							"navigationBarTextStyle": "black",
-							"navigationBarTitleText": "意见反馈"
-						}
-        }
-        ,{
-            "path" : "pages/searchResult/searchResult",
-            "style" : {}
-        }
-    ],
+  ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
