@@ -64,79 +64,53 @@ async function post(url, data) {
 }
 
 export function getIndexFloor() {
-  return get('/indexfloor', {}).then(res => {
-    return res
-  })
+  return get('/indexfloor', {})
 }
 // 获得所有供货商
 export function getShopsList(supply) {
-  return get('/sec/shop', supply).then(res => {
-    return res
-  })
+  return get('/sec/shop', supply)
 }
 // 登录
 export function loginUser(userInfo) {
-  return post('/auth/login', userInfo).then(res => {
-    return res
-  })
+  return post('/auth/login', userInfo)
 }
 // 我的收藏 数量
-export function getFavoriteCount(supply) {
-  return get('/fav/getFavCount', supply).then(res => {
-    return res
-  })
+export function getFavoriteCount() {
+  return get('/fav/getFavCount', {})
 }
 // 我的收藏 商品
 export function getFavoritePro(favInfo) {
-  return get('/fav/getItemFav', favInfo).then(res => {
-    return res
-  })
+  return get('/fav/getItemFav', favInfo)
 }
 // 我的收藏 店铺
 export function getFavoriteShop(favInfo) {
-  return get('/fav/getShopFav', favInfo).then(res => {
-    return res
-  })
+  return get('/fav/getShopFav', favInfo)
 }
 // 获得浏览记录 清空记录
 export function getHistoryList(info) {
-  return get('/visittrack/getlist', info).then(res => {
-    return res
-  })
+  return get('/visittrack/getlist', info)
 }
 export function removeAllHistory() {
-  return get('/visittrack/remove', {}).then(res => {
-    return res
-  })
+  return get('/visittrack/remove', {})
 }
 // 金融服务
 export function getFinanceList(info) {
-  return get('/credit/queryCreditList', info).then(res => {
-    return res
-  })
+  return get('/credit/queryCreditList', info)
 }
 // 我的消息-买家
 export function getBuyerMess(msg) {
-  return get('/u/get_msg_list', msg).then(res => {
-    return res
-  })
+  return get('/u/get_msg_list', msg)
 }
 
 // 我的地址
 export function getAddress() {
-  return get('/add/getList', {}).then(res => {
-    return res
-  })
+  return get('/add/getList', {})
 }
 // 我的优惠券
 export function getCouponList() {
-  return get('/coupon/getCouponUseList', {}).then(res => {
-    return res
-  })
+  return get('/coupon/getCouponUseList', {})
 }
 // 我的订单
 export function getOrderList(info) {
-  return post('/getOrderList',info).then(result => {
-    return result
-  })
+  return post('/getOrderList',info)
 }

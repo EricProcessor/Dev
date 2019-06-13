@@ -72,34 +72,35 @@ export default {
       }
     }
   },
+
   methods: {
     currentValue (value) {
       this.page_code = value
     },
     async getCurrentData () {
-      this.indexStorage = localStorage.getItem("indexStorage")
-      if (this.indexStorage != null) {
+      this.indexStorage = uni.getStorageSync("indexStorage")
+      if (this.indexStorage != null && this.indexStorage != '') {
         let indexData = JSON.parse(this.indexStorage)
         this.classifyData(indexData)
       } else {
         const res = await getIndexFloor()
         if (res.data.success) {
           let result = JSON.parse(res.data.result)
-          localStorage.setItem("indexStorage", JSON.stringify(result))
+          uni.setStorageSync("indexStorage", JSON.stringify(result))
           this.classifyData(result)
         }
       }
     },
     // 获得店铺数据
     async getShops (supply) {
-      this.shopStorage = JSON.parse(localStorage.getItem("supply_list"))
-      if (this.shopStorage != null) {
-        this.supply_list = this.shopStorage
+      this.shopStorage = uni.getStorageSync("supply_list")
+      if (this.shopStorage != null && this.shopStorage != '') {
+        this.supply_list = JSON.parse(this.shopStorage)
       } else {
         const result = await getShopsList(supply)
         if (result.statusCode == 200) {
           this.supply_list = result.data.list
-          localStorage.setItem("supply_list", JSON.stringify(this.supply_list))
+          uni.setStorageSync("supply_list", JSON.stringify(this.supply_list))
         }
       }
     },
@@ -128,9 +129,9 @@ export default {
           this.picList.push(result.floors[i])
         }
       }
-      localStorage.setItem("swiperList", JSON.stringify(this.swiperList))
-      localStorage.setItem("categoryList", JSON.stringify(this.categoryList))
-      localStorage.setItem("picList", JSON.stringify(this.picList))
+      uni.setStorageSync("swiperList", JSON.stringify(this.swiperList))
+      uni.setStorageSync("categoryList", JSON.stringify(this.categoryList))
+      uni.setStorageSync("picList", JSON.stringify(this.picList))
     }
   }
 }  

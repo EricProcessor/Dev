@@ -1,38 +1,42 @@
 <template>
-	<view class="orderItem">
+	<view class="orderItem" v-if="options.addHide">
 			<view class="topTitle">
 				<view class="item">
 					<text class="tlwok-icon tlwicon-shop"></text>
-					<text>{{ options.shopname }} </text>
+					<text>{{ options.shopName }} </text>
 					<text class="tlwok-icon tlwicon-right"></text>
 				</view>
 				<view class="item">
-					<text class="proTag"> {{ options.name }} </text>
+					<text class="proTag"> {{ options.state==10?'待付款':options.state==20?'待发货':options.state==30?'待收货':options.state==99?'订单完成':'待评价' }} </text>
 					<text class="tlwok-icon tlwicon-delete" @tap="deleteProduct"></text>
 				</view>
 			</view>
-			<view class="productitem">
-				<image :src="options.imageurl" mode=""></image>
-				<text> {{ options.ordertitle }} </text>
-			</view>
-			<view class="productcount">
-				<text>共{{ options.count }}件商品</text>
-				<text>实付款:<text class="pricestyle">¥{{ options.price }}</text> </text>
-			</view>
+      <view class="productitem">
+        <image v-for="(img,i) in options.items" :key="i" :src="img.pictureUrl" mode=""></image>
+      </view>
+      <view class="productcount">
+        <text>共{{ options.allCount }}件商品</text>
+        <text>实付款：<text class="pricestyle">¥{{ options.paymentPrice }}</text> </text>
+      </view>
+			
 			<view class="titleTag">
-				<template v-if="options.name=='待付款'">
+				<template v-if="options.state==10">
+          <view class="item">点击付款</view>
 					<view class="item">再次购买</view>
 				</template>
-				<template v-if="options.name=='待收货'">
+        <template v-if="options.state==20">
+          <view class="item">等待发货</view>
 					<view class="item">再次购买</view>
 				</template>
-				<template v-if="options.name=='待评价'">
+				<template v-if="options.state==30">
+          <view class="item">确认收货</view>
 					<view class="item">再次购买</view>
 				</template>
-				<template v-if="options.name=='已完成'">
+				<template v-if="options.name==991">
+          <view class="item">点击评价</view>
 					<view class="item">再次购买</view>
 				</template>
-				<template v-if="options.name=='已关闭'">
+				<template v-if="options.state==99">
 					<view class="item">再次购买</view>
 				</template>
 			</view>
@@ -45,9 +49,6 @@
 		props: {
 			options: {
 				type: Object,
-				default: function(e) {
-					return {}
-				}
 			},
 		},
 		data(){
@@ -55,9 +56,9 @@
 				// test:this.options.name//
 			}
 		},
-		onLoad() {
-			// console.log( JSON.stringify(this.test) )
-		},
+		onLoad(options) {
+			console.log(this.options)
+    },
 		methods: {
 			deleteProduct() {
 				console.log("删除商品操作");
@@ -78,7 +79,7 @@
 			display: flex;
 			justify-content: space-between;
 			width: 100%;
-
+      padding: 20upx 0;
 			.item {
 				display: flex;
 				justify-content: center;
@@ -122,13 +123,15 @@
 			width: 100%;
 			display: flex;
 			justify-content: flex-end;
-
+      padding: 20upx 0; 
 			text {
 				margin-left: 15upx;
-
+        padding-right: 10upx;
 				.pricestyle {
 					font-weight: bold;
-					margin: 0;
+          margin: 0;
+          color: #e4093c;
+          padding-left: 10upx;
 				}
 			}
 		}
@@ -136,7 +139,7 @@
 		.titleTag {
 			width: 100%;
 			display: flex;
-			padding: 10upx 0;
+			padding: 18upx 0;
 			border-top: 2upx solid #F5F5F5;
 			justify-content: flex-end;
 
@@ -144,7 +147,8 @@
 				background-color: #e4093c;
 				color: #fff;
 				padding: 10upx;
-				border-radius: 10upx;
+        border-radius: 10upx;
+        margin-left: 16upx;
 			}
 		}
 	}

@@ -59,18 +59,18 @@ export default {
       tabBars: [{
         name: '待还款',
         status: '0',
-        number: 1,
+        number: 0,
         id: 'pendingRepayment'
 
       }, {
         name: '已还款',
         status: '1',
-        number: 13,
+        number: 0,
         id: 'pay'
       }, {
         name: '已退款',
         status: '2',
-        number: 30,
+        number: 0,
         id: 'reimbursement'
       }],
       financeList: {
@@ -87,15 +87,17 @@ export default {
     async getFinanceData (info) {
       const result = await getFinanceList(info)
       if (result.statusCode == 200) {
+        if (result.data.success == false) {
+          return
+        }
         result.data.list.forEach(item => {
           item.checkTime = this.formatDate(item.checkTime)
           item.lastPaymentTime = this.formatDate(item.lastPaymentTime)
           item.compare = Math.abs(item.compare)
-          if (item.checkStatus == 5) {
-            this.financeList.reimbursement.push(item)
-          } else if (item.checkStatus == 3) {
+          if (item.checkStatus == 3 || item.checkStatus == 5) {
             item.selected = false
             this.financeList.pendingRepayment.push(item)
+            this.tabBars[0].number = this.financeList.pendingRepayment.length
           } else if (item.checkStatus == 6) {
             this.financeList.refunded.push(item)
           }
@@ -104,7 +106,7 @@ export default {
     },
     selectActive (i) {
       this.financeList.pendingRepayment[i].selected ? this.financeList.pendingRepayment[i].selected = false : this.financeList.pendingRepayment[i].selected = true
-      
+
     },
     loadMore (e) {
       // this.newsitems[e].loadingType = 1;

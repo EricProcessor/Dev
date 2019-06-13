@@ -168,8 +168,8 @@ export default {
       }
     },
     // 获得收藏数量
-    async getFavNumber (supply) {
-      const result = await getFavoriteCount(supply);
+    async getFavNumber () {
+      const result = await getFavoriteCount();
       if (result.statusCode == 200) {
         result.data.result.forEach(item => {
           this.tabBars[0].number = item.item
@@ -217,7 +217,7 @@ export default {
             title: "数据加载失败",
             duration: 2000,
             icon: "none"
-          });
+          })
         }
       } else {
         if (result.data.list) {

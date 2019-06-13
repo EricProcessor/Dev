@@ -42,15 +42,25 @@ export default {
   },
   methods: {
     async getHistoryData (info) {
-      let historyData = JSON.parse(localStorage.getItem('history'))
-      if (historyData != null && historyData.length != 0) {
-        this.historyList = historyData
+      let historyData = uni.getStorageSync('history')
+      if (historyData != null && historyData != '') {
+        this.historyList = JSON.parse(historyData)
       } else {
         const result = await getHistoryList(info)
         if (result.statusCode == 200) {
-          localStorage.setItem('history', JSON.stringify(result.data.list))
-          this.historyList = result.data.list
-          this.historyList.length != 0 ? this.isShow = false : this.isShow = true
+          if (result.data.success == false) {
+            uni.showToast({
+              title: '请求数据失败...',
+              duration: 2000,
+              icon: 'none'
+            })
+            return
+          } else {
+            uni.setStorageSync('history', JSON.stringify(result.data.list))
+            this.historyList = result.data.list
+            this.historyList.length != 0 ? this.isShow = false : this.isShow = true
+          }
+
         }
       }
 

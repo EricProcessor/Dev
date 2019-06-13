@@ -19,7 +19,7 @@
           </view>
           <view class="isOverdue">
             <view class="isOrder order">订单编号：{{options.orderId}}</view>
-            <view class="isOrder overdueDay" v-if="options.checkStatus==2">逾期 {{options.compare}} 天</view>
+            <view class="isOrder overdueDay" v-if="options.checkStatus==5">逾期 {{options.compare}} 天</view>
           </view>
         </view>
       </view>

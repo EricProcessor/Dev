@@ -28,17 +28,18 @@
       </scroll-view>
       <swiper :current="tabIndex" class="swiper-box" :duration="300" @change="changeTab">
         <swiper-item v-for="(ordedatas,index1) in orderitems" :key="index1">
-          <scroll-view class="list" scroll-y>
+          <scroll-view class="list" scroll-y @scrolltolower="loadMore(index1)">
             <template v-if="!ordedatas.length">
               <view class="noOrder">
                 <view class="tlwok-icon tlwicon-text"></view>
                 <text>您还没有相关订单</text>
               </view>
             </template>
-            <!-- <scroll-view class="list" scroll-y @scrolltolower="loadMore(index1)"> -->
-            <block v-for="(orderitem,index2) in ordedatas" :key="index2">
-              <order-list :options="orderitem"></order-list>
-            </block>
+            <template v-else>
+              <block v-for="(orderitem,index2) in ordedatas" :key="index2">
+                <order-list :options="orderitem"></order-list>
+              </block>
+            </template>
           </scroll-view>
         </swiper-item>
       </swiper>
@@ -48,6 +49,7 @@
 
 <script>
 import uniPopup from '@/components/uni-popup/uni-popup.vue'
+import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
 import orderList from '@/components/list/orderList.vue'
 import { getOrderList } from '@/utils/request'
 export default {
@@ -62,6 +64,7 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
+      allPages: 2,
       type: '',//弹框位置类型
       //tab切换
       tabIndex: 0,
@@ -70,175 +73,46 @@ export default {
       tabBars: [
         { name: '全部', id: 'all' },
         { name: '待付款', id: 'Pendingpayment' },
+        { name: '待发货', id: 'toShipped' },
         { name: '待收货', id: 'beRecived' },
         { name: '待评价', id: 'beEvaluated' },
-        { name: '交易成功', id: 'succTrad' },
-        { name: '交易关闭', id: 'closeTrad' }
+        { name: '订单完成', id: 'succTrad' },
       ],
       orderitems: {
-        all: [
-          {
-            name: "待付款",
-            shopname: "这个店铺",
-            ordernum: 12323,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 100.02,
-            postfee: 0
-          }, {
-            name: "待收货",
-            shopname: "这个店铺",
-            ordernum: 12323,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 100.02,
-            postfee: 0
-          }
-        ],
-        Pendingpayment: [
+        all: [],//全部
+        Pendingpayment: [],//待付款
+        toShipped: [],//待发货
+        beRecived: [],//待收货
+        beEvaluated: [],//待评价
+        succTrad: [],//订单完成
 
-        ],
-        beRecived: [
-          {
-            name: "待收货",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          },
-          {
-            name: "待收货",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          },
-          {
-            name: "待收货",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          }
-        ],
-        beEvaluated: [
-          {
-            name: "待评价",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          },
-          {
-            name: "待评价",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          },
-          {
-            name: "待评价",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          },
-          {
-            name: "待评价",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          }
-        ],
-        succTrad: [
-          {
-            name: "已完成",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          },
-          {
-            name: "已完成",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          }
-        ],
-        closeTrad: [
-          {
-            name: "已关闭",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          },
-          {
-            name: "已关闭",
-            shopname: "这个店铺",
-            ordernum: 123093,
-            tradedate: "2019-04-14 12:00",
-            imageurl: "/static/image/productmini.jpg",
-            ordertitle: "Xiaomi/小米 小米电视4C 40英寸高清液晶网络智能平板电视机43",
-            count: 1,
-            price: 110.02,
-            postfee: 0
-          }
-        ]
       }
     };
   },
   onLoad: function (option) {
-    // console.log(JSON.stringify(option) );
     this.tabIndex = option.item;
+    switch (Number(this.tabIndex)) {
+      case 0:
+        this.info.orderType = 0
+        break
+      case 1:
+        this.info.orderType = 10
+        break
+      case 2:
+        this.info.orderType = 20
+        break
+      case 3:
+        this.info.orderType = 30
+        break
+      case 4:
+        this.info.orderType = 991
+        break
+      case 5:
+        this.info.orderType = 99
+        break
+    }
   },
-  onReady(){
+  onReady () {
     this.getOrder(this.info)
   },
   onBackPress () {
@@ -253,9 +127,8 @@ export default {
         delta: 1
       })
     },
-    async getOrder(info){
-      const res=await getOrderList(info)
-      console.log(res)
+    getOrder (info) {
+      this.decomposeData(info)
     },
     async tapTab (e) { //点击tab-bar
       let tabIndex = e.target.dataset.current;
@@ -272,6 +145,7 @@ export default {
         this.scrollLeft = tabBarScrollLeft;
         this.isClickChange = true;
         this.tabIndex = tabIndex;
+
       }
     },
     async changeTab (e) {
@@ -314,6 +188,81 @@ export default {
         }).exec();
       })
     },
+    loadMore (index) {
+      console.log(index)
+      this.info.pageNum++
+      this.getOrder(this.info)
+    },
+    // 数据分解
+    async decomposeData (info) {
+      const res = await getOrderList(info)
+      if (res.statusCode == 200) {
+        // console.log(res.data)       
+        if (this.info.pageNum == 1) {
+          switch (this.info.orderType) {
+            case 0:
+              this.orderitems.all = this.cycleData(res.data.list)
+              break
+            case 10:
+              this.orderitems.Pendingpayment = this.cycleData(res.data.list)
+              break
+            case 20:
+              this.orderitems.toShipped = this.cycleData(res.data.list)
+              break
+            case 30:
+              this.orderitems.beRecived = this.cycleData(res.data.list)
+              break
+            case 99:
+              this.orderitems.succTrad = this.cycleData(res.data.list)
+              break
+            case 991:
+              this.orderitems.beEvaluated = this.cycleData(res.data.list)
+              break
+          }
+          this.allPages = res.data.pages
+        } else if (this.info.pageNum <= this.allPages) {
+          res.data.list.forEach(item => {
+            this.orderitems.all.push(item)
+          })
+        } else {
+          uni.showToast({
+            title: "没有更多数据了...",
+            duration: 2000,
+            icon: "none"
+          })
+        }
+
+      } else {
+        uni.showToast({
+          title: "数据请求失败",
+          duration: 2000,
+          icon: "none"
+        })
+      }
+
+    },
+    //遍历数据
+    cycleData (data) {
+      data.forEach(item1 => {
+        item1.addHide = true
+        item1.allCount = 0
+        if (item1.items.length != undefined) {
+          if (item1.items.length > 1) {
+            item1.items.forEach(item2 => {
+              item1.allCount += item2.num
+            })
+          } else if (item1.items.length == 1) {
+            item1.items.forEach(item2 => {
+              item1.allCount = item2.num
+            })
+          } else {
+            item1.addHide = false
+          }
+        }
+
+      })
+      return data
+    }
   }
 }
 </script>

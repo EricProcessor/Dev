@@ -30,7 +30,7 @@
 		methods:{
 			changeItems: function (e){
 				this.currentIndex = e.currentTarget.dataset.type;
-				this.$emit('currentValue', this.currentIndex)
+        this.$emit('currentValue', this.currentIndex)
 			}
 		},
 	}
