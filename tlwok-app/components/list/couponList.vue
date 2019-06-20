@@ -7,7 +7,7 @@
 			</view>
 			<view class="list-right">
 				<view class="couponImage" v-show="index != 'noused'">
-					<image :src="index == 'used'?'/static/image/ysy.png':'/static/image/ygq.png'" mode=""></image>
+					<image lazy-load :src="index == 'used'?'/static/image/ysy.png':'/static/image/ygq.png'" mode=""></image>
 				</view>
 				<view class="right-top">
 					<view class="name" 

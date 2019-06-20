@@ -16,7 +16,7 @@
 			<template v-if="goodsList.length <= 0">
 				<view class="noList">
 					<view class="icon">
-						<i class="tlwok-icon">&#xe6af</i>
+						<i class="tlwok-icon tlwicon-cart"></i>
 					</view>
 					<view class="text">
 						<view>您的购物车内还没有商品，赶紧挑一下中意的商品吧~</view>
@@ -36,13 +36,13 @@
 							</view>
 							<view class="titleText">
 								<view class="left">
-									<i class="tlwok-icon">&#xe676</i>
+									<i class="tlwok-icon tlwicon-shop"></i>
 									<view class="shopName" @tap="toShop(shopList.shopId)">
 										{{shopList.shopName}}
 									</view>
 								</view>
 								<view>
-									<i class="tlwok-icon" style="">&#xe6a3</i>
+									<i class="tlwok-icon tlwicon-right"></i>
 								</view>
 							</view>
 						</view>
@@ -50,7 +50,7 @@
 						<view class="goodsItem" v-for="(item,index1) in shopList.goods" :key="index1" >
 							<!-- 删除按钮 -->
 							<view class="menu" @tap.stop="deleteGoods(item.id)">
-								<i class="tlwok-icon shanchu">&#xe6b4</i>
+								<i class="tlwok-icon shanchu tlwicon-delete"></i>
 							</view>
 							<!-- 商品 -->
 							<view class="carrier" 

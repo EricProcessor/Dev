@@ -137,13 +137,14 @@
         "navigationBarBackgroundColor": "#FFFFFF",
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "支付管理",
-        "enablePullDownRefresh": true, //下拉刷新
+        "enablePullDownRefresh": true, 
         "app-plus": {
           "titleNView": {
             "buttons": [
               {
                 "fontSrc": "/static/titleIcon.ttf",
                 "fontSize": "14px",
+                "marginRight":"8px",
                 "text": "授信店铺"
               }
             ]
@@ -156,7 +157,8 @@
       "style": {
         "navigationBarBackgroundColor": "#FFFFFF",
         "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "我的消息"
+        "navigationBarTitleText": "我的消息",
+        "enablePullDownRefresh": true
       }
     },
     {
@@ -187,7 +189,8 @@
       "style": {
         "navigationBarBackgroundColor": "#FFFFFF",
         "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "商家店铺"
+        "navigationBarTitleText": "商家店铺",
+        "enablePullDownRefresh": true
       }
     },
     {
@@ -245,13 +248,32 @@
     },
     {
       "path": "pages/productDetail/productDetail",
-      "style": {
-        "navigationBarBackgroundColor": "#FFFFFF",
+      "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "商品详情"
+				
+			}
+    },{
+        "path" : "pages/creditShop/creditShop",
+        "style" : {
+          "navigationBarBackgroundColor": "#FFFFFF",
+          "navigationBarTextStyle": "black",
+          "navigationBarTitleText": "授信店铺",
+          "app-plus": {
+            "titleNView": {
+              "buttons": [
+                {
+                  "fontSrc": "/static/titleIcon.ttf",
+                  "fontSize": "14px",
+                  "text": "账期说明"
+                }
+              ]
+            }
+          }
+        }
       }
-    }
-  ],
+    ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",

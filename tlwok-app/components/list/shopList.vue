@@ -3,12 +3,12 @@
 		<template v-if="showtype == 'allGoods'">
 			<view class="allGoods" :data-id="options.itemId">
 				<view class="left">
-					<image :src="options.imgUrl" mode=""></image>
+					<image lazy-load :src="options.imgUrl" mode=""></image>
 				</view>
 				<view class="right">
 					<p>{{options.itemName}}</p>
 					<p>成交 {{options.saleNum}} 笔</p>
-					<p><i class="tlwok-icon">&#xe697</i>{{options.shop}}</p>
+					<p><i class="tlwok-icon tlwicon-shopfill"></i>{{options.shop}}</p>
 					<p><i class="tlwok-icon">¥</i>{{options.price}}</p>
 				</view>
 			</view>

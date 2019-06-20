@@ -83,6 +83,13 @@ export default {
   onReady () {
     this.getFinanceData(this.financeInfo)
   },
+  onNavigationBarButtonTap(e){
+    uni.navigateTo({
+      url: '/pages/creditShop/creditShop',
+      animationType: 'pop-in',
+      animationDuration: 200
+    })
+  },
   methods: {
     async getFinanceData (info) {
       const result = await getFinanceList(info)

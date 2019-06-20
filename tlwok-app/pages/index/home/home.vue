@@ -8,7 +8,7 @@
 			<view class="headerColor" :style="{opacity:options}"></view>
 			<view class="iconCon">
 				<view class="fl" @tap="toPages($event)" data-pages="/pages/category/category"><i class="tlwok-icon tlwicon-sort"></i><text>分类</text></view>
-				<view class="searchIpt"><input type="text"  @tap="toPages($event)" data-pages="/pages/search/search" value="" /></view>
+				<view class="searchIpt"><view class="seaInput"  @tap="toPages($event)" data-pages="/pages/search/search"></view></view>
 				<view class="msg" @tap="toPages($event)" data-pages="/pages/message/message"><i class="tlwok-icon tlwicon-message"></i><text>消息</text></view>
 			</view>
 		</view>
@@ -136,7 +136,7 @@
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					input{
+					.seaInput{
 						width: 100%;
 						height: 60upx;
 						background: #ffffff;

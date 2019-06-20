@@ -102,9 +102,17 @@ export function getBuyerMess(msg) {
   return get('/u/get_msg_list', msg)
 }
 
-// 我的地址
+// 我的地址列表
 export function getAddress() {
   return get('/add/getList', {})
+}
+// 获得默认地址
+export function getFromAddr(){
+  return get('/add/getAddFromRedis',{})
+}
+// 根据地址判断是否在配送范围内
+export function isScoped(info){
+  return get('/shop/inShopFareRange',info)
 }
 // 我的优惠券
 export function getCouponList() {
@@ -113,4 +121,17 @@ export function getCouponList() {
 // 我的订单
 export function getOrderList(info) {
   return post('/getOrderList',info)
+}
+
+// 商品详情
+export function getProductItem (id){
+  return get('/pro/getInfo',{itemId:id})
+}
+// 商品销量
+export function getSales(id){
+  return post('/pro/getSaleNum',{itemId:id})
+}
+// 获得sku信息
+export function getSkuInfo(sku){
+  return post('/pro/getSkuDetail',sku)
 }

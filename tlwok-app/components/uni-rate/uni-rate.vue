@@ -35,7 +35,7 @@
 			size: {
 				//星星的大小
 				type: [Number, String],
-				default: 24
+				default: 20
 			},
 			value: {
 				//当前评分

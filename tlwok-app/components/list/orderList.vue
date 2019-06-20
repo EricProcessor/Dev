@@ -14,7 +14,7 @@
       </view>
     </view>
     <view class="productitem">
-      <image v-for="(img,i) in options.items" :key="i" :src="img.pictureUrl" mode=""></image>
+      <image v-for="(img,i) in options.items" lazy-load :key="i" :src="img.pictureUrl" mode=""></image>
     </view>
     <view class="productcount">
       <text>共{{ options.allCount }}件商品</text>
